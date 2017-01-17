@@ -1,0 +1,15 @@
+body {
+    height: 100%;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+.title {
+    position: absolute;
+    float: right;
+    right: 100px;
+    margin: 10px;
+    color: #2e6c8b;
+    font-weight: 600;
+}
