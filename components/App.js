@@ -1,6 +1,7 @@
 import React from 'react'
 import GraphiQL from 'graphiql'
 import fetch from 'isomorphic-fetch'
+import cfgreader from '../config/readConfig'
 import '../css/app.css'
 import '../css/codemirror.css'
 import '../css/doc-explorer.css'
@@ -16,12 +17,24 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      parameters: this.getParameters()
+      parameters: this.getParameters(),
+      isConfigLoaded: false
     }
   }
 
+  componentWillMount(){
+    cfgreader.readConfig( config => {
+      console.info("loaded config", config)
+      window.config = config
+      this.setState({
+        ...this.state,
+        isConfigLoaded: true
+      })
+    })
+  }
+
   graphQLFetcher(graphQLParams) {
-    return fetch('https://test.rutebanken.org/apiman-gateway/rutebanken/tiamat/1.0/graphql', {
+    return fetch(window.config.graphQLUrl, {
       method: 'post',
       headers: {
         'accept': '*/*',
@@ -106,11 +119,17 @@ class App extends React.Component {
 
   render() {
 
-    const { parameters } = this.state
+    const { parameters, isConfigLoaded } = this.state
+
+    if (!isConfigLoaded) {
+      return (
+        <div>Loading ...</div>
+      )
+    }
 
     return (
       <div>
-        <div className="title">Stoppestedsregisteret</div>
+        <div className="title">{window.config.serviceName}</div>
         <GraphiQL
           fetcher={this.graphQLFetcher}
           query={parameters.query}
