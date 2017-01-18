@@ -1,30 +1,33 @@
-import fetch from 'isomorphic-fetch'
+import axios from 'axios'
 
 /*
-Reading config json as served out of the node application.
-*/
+ Reading config json as served out of the node application.
+ */
 
 var configreader = {}
 var config
 
 configreader.readConfig = (callback) => {
-  if (config && typeof config !== 'undefined') {
-    callback(config)
+
+  if ( config && typeof config !== 'undefined' ) {
+    callback ( config )
     return
   }
-  fetch('config.json', {
+
+  axios({
+    url: "config.json",
     timeout: 2000,
     method: 'get',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-   })
-    .then( response => response.json() )
-    .then( json => callback(json) )
-    .catch(function(response){
-      throw new Error("Could not read config: "+response)
-    })
-  }
+    responseType: 'json'
+  })
+  .then(function(response) {
+    config = response.data;
+    callback ( config )
+  })
+  .catch(function(response){
+    throw new Error("Could not read config: "+response)
+  })
+}
 
-module.exports = configreader
+export default configreader
 
