@@ -27,6 +27,7 @@
     "json-to-graphql": "^0.1.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "request": "^2.79.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.14.0"
   },
