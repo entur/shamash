@@ -106,7 +106,7 @@ const defaultQuery = {
   	}
       
       
-}
-
 }`
+
+}
 export default defaultQuery
