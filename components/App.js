@@ -21,6 +21,11 @@ class App extends React.Component {
       parameters: this.getParameters(),
       isConfigLoaded: false
     }
+
+    if (window.localStorage) {
+      localStorage.removeItem('graphiql:query')
+    }
+
   }
 
   componentWillMount(){
