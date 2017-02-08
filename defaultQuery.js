@@ -58,9 +58,7 @@ const defaultQuery = {
 #          }
 #    }
 #  }
-#}
-#
-#`,
+#}`,
   'Stoppestedsregisteret': null
 }
 
