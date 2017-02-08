@@ -16,49 +16,46 @@ const defaultQuery = {
 #
 #
 #
-#Example query for planning a journey (uncomment to run)
-##################
-#
+################## Example query for planning a journey  
 #### Arguments
-#{
-#  plan(
-#    fromPlace:"Dyrløkke, Frogn::59.67388,10.655733"
-#    toPlace: "Birkelunden, Oslo::59.927204,10.76015"
-#    numItineraries: 3
-#    date: "2017-02-08"
-#    time: "12:51:14"
-#    walkReluctance: 2
-#    walkBoardCost: 600
-#    minTransferTime: 180
-#    walkSpeed: 1.2
-#    maxWalkDistance: 5000
-#    wheelchair: false
-#    arriveBy: false          
-#  )
-#
-#
+{
+  plan(
+    fromPlace:"Dyrløkke, Frogn::59.67388,10.655733"
+    toPlace: "Birkelunden, Oslo::59.927204,10.76015"
+    numItineraries: 3
+    date: "2017-02-08"
+    time: "12:51:14"
+    walkReluctance: 2
+    walkBoardCost: 600
+    minTransferTime: 180
+    walkSpeed: 1.2
+    maxWalkDistance: 5000
+    wheelchair: false
+    arriveBy: false          
+  )
+
 #### Requested fields
-#  {
-#    itineraries {
-#      startTime
-#      duration
-#      walkDistance
-#        
-#          legs {
-#            transitLeg
-#            mode
-#            distance
-#            route {
-#              shortName
-#            }
-#            legGeometry {
-#              points
-#              length
-#            }
-#          }
-#    }
-#  }
-#}`,
+  {
+    itineraries {
+      startTime
+      duration
+      walkDistance
+        
+          legs {
+            transitLeg
+            mode
+            distance
+            route {
+              shortName
+            }
+            legGeometry {
+              points
+              length
+            }
+          }
+    }
+  }
+}`,
   'Stoppestedsregisteret': null
 }
 
