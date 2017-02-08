@@ -56,7 +56,57 @@ const defaultQuery = {
     }
   }
 }`,
-  'Stoppestedsregisteret': null
+  'Stoppestedsregisteret': `
+# Welcome to GraphiQL
+##################
+# GraphiQL is an in-browser IDE for writing, validating, and
+# testing GraphQL queries.
+#
+# Type queries into this side of the screen, and you will
+# see intelligent typeaheads aware of the current GraphQL type schema and
+# live syntax and validation errors highlighted within the text.
+#
+# To bring up the auto-complete at any point, just press Ctrl-Space.
+#
+# Press the run button above, or Cmd-Enter to execute the query, and the result
+# will appear in the pane to the right.
+#
+#
+#
+################## Example query 1 - fetching id for Frogn
+{
+  topographicPlace(query:"frogn") 
+  {
+    id
+    name {
+      value
+    }
+  }
+
+################## Example query 2 - fetching stopPlace attributes
+  stopPlace(
+      size:5
+      stopPlaceType:onstreetBus
+      municipalityReference:32    
+    ) 
+  
+  {
+    	id
+    	importedId
+    	name {
+    	  value
+    	}
+    		
+    quays{
+      id
+      importedId
+    	location{longitude, longitude}
+      allAreasWheelchairAccessible
+    }
+  	}
+      
+      
 }
 
+}`
 export default defaultQuery
