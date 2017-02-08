@@ -11,6 +11,7 @@ import '../css/loading.css'
 import '../css/show-hint.css'
 import '../css/graphiql.css'
 import '../css/custom.css'
+import defaultQuery from '../defaultQuery'
 
 class App extends React.Component {
 
@@ -106,6 +107,12 @@ class App extends React.Component {
     this.updateURL()
   }
 
+  getDefaultQuery() {
+    if (window.config) {
+      return defaultQuery[window.config.serviceName]
+    }
+  }
+
   updateURL() {
     const { parameters } = this.state
     let newSearch = '?' + Object.keys(parameters).filter(function (key) {
@@ -138,6 +145,7 @@ class App extends React.Component {
           onEditQuery={this.onEditQuery.bind(this)}
           onEditVariables={this.onEditVariables.bind(this)}
           onEditOperationName={this.onEditOperationName.bind(this)}
+          defaultQuery={this.getDefaultQuery()}
         />
       </div>
     )
