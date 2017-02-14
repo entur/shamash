@@ -87,7 +87,7 @@ const defaultQuery = {
   stopPlace(
       size:5
       stopPlaceType:onstreetBus
-      municipalityReference:"NSR:TopographicPlace:32"    
+      municipalityReference:"NSR:TopographicPlace:71"    
     ) 
   
   {
