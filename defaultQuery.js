@@ -100,7 +100,7 @@ const defaultQuery = {
     quays{
       id
       importedId
-    	location{longitude, longitude}
+    	location{longitude, latitude}
       allAreasWheelchairAccessible
     }
   	}
