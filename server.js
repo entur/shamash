@@ -31,7 +31,7 @@ convict.then( convict => {
     res.sendFile(__dirname + '/public/bundle.js')
   })
 
-  app.listen(port, () => console.log('Started on http://localhost:8080/'));
+  app.listen(port, () => console.log(`Started on http://localhost:${port}${ENDPOINTBASE}`))
 })
 
 const getPage = (endpointBase) =>
