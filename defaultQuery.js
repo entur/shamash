@@ -75,8 +75,7 @@ const defaultQuery = {
 #
 ################## Example query 1 - fetching id for Frogn
 {
-  topographicPlace(query:"frogn") 
-  {
+  topographicPlace(query: "frogn") {
     id
     name {
       value
@@ -84,28 +83,25 @@ const defaultQuery = {
   }
 
 ################## Example query 2 - fetching stopPlace attributes
-  stopPlace(
-      size:5
-      stopPlaceType:onstreetBus
-      municipalityReference:"NSR:TopographicPlace:71"    
-    ) 
-  
-  {
-    	id
-    	importedId
-    	name {
-    	  value
-    	}
-    		
-    quays{
+  stopPlace(size: 5, 
+      stopPlaceType: onstreetBus, 
+      municipalityReference: "NSR:TopographicPlace:71"
+    ) {
+    id
+    importedId
+    name {
+      value
+    }
+    quays {
       id
       importedId
-    	location{longitude, latitude}
+      geometry {
+        type
+        coordinates
+      }
       allAreasWheelchairAccessible
     }
-  	}
-      
-      
+  }    
 }`
 
 }
