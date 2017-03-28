@@ -21,6 +21,7 @@ const defaultQuery = {
 {
   plan(
     fromPlace:"Dyrløkke, Frogn::59.67388,10.655733"
+    #alternativ references to  Quays or StopPlace eg.  RB:NSR.StopPlace.26045
     toPlace: "Birkelunden, Oslo::59.927204,10.76015"
     numItineraries: 3
     date: "2017-02-08"
