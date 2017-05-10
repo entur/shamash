@@ -100,7 +100,6 @@ const defaultQuery = {
         type
         coordinates
       }
-      allAreasWheelchairAccessible
     }
   }    
 }`
