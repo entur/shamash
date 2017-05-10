@@ -13,7 +13,6 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       minimize: true,
       beautify: false,
@@ -36,7 +35,7 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         include: __dirname,
-        loader: 'babel',
+        loader: 'babel-loader',
         query: {
           presets: ['es2015', 'stage-0', 'react']
         }
@@ -45,7 +44,7 @@ module.exports = {
         test: /\.css$/,
         exclude: /node_modules/,
         include: path.join(__dirname, 'css'),
-        loaders: ['style', 'css']
+        loaders: ['style-loader', 'css-loader']
       },
     ]
   }
