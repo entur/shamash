@@ -20,11 +20,19 @@ const defaultQuery = {
 #### Arguments
 {
   plan(
-    fromPlace:"Dyrløkke, Frogn::59.67388,10.655733"
-    #alternativ references to  Quays or StopPlace eg.  RB:NSR.StopPlace.26045
-    toPlace: "Birkelunden, Oslo::59.927204,10.76015"
+    
+    #Dyrløkke - coordinates 
+    fromPlace:"59.67388,10.655733"
+    #Dyrløkke - StopPlace reference (preferred solution if you know stopPlace)
+    #fromPlace:"NSR:StopPlace:5664"
+    
+    #Bjørvika - coordinates
+    toPlace: "59.90804,10.756284"
+    #Bjørvika - StopPlace reference (preferred solution if you know stopPlace)
+    #toPlace: "NSR:StopPlace:70032"
+    
     numItineraries: 3
-    date: "2017-02-08"
+    date: "2017-05-16"
     time: "12:51:14"
     walkReluctance: 2
     walkBoardCost: 600
