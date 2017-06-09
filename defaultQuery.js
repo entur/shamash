@@ -93,17 +93,22 @@ const defaultQuery = {
 
 ################## Example query 2 - fetching stopPlace attributes
   stopPlace(size: 5, 
-      stopPlaceType: onstreetBus, 
-      municipalityReference: "NSR:TopographicPlace:71"
+      stopPlaceType: onstreetBus 
     ) {
     id
-    importedId
+    keyValues {
+      key
+      values
+    }
     name {
       value
     }
     quays {
       id
-      importedId
+      keyValues {
+        key
+        values
+      }
       geometry {
         type
         coordinates
