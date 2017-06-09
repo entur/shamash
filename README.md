@@ -35,5 +35,5 @@ endpoints. E.g.
 Optional environment variable `ENDPOINTBASE` overrides namespace for client including slash. Full example:
 
 ```
-SERVICE_NAME=Stoppestedsregisteret ENDPOINTBASE=/admin/shamash/ GRAPHQL_URL=https://test.rutebanken.org/api/tiamat/1.0/graphql npm start
+SERVICE_NAME=Stoppestedsregisteret ENDPOINTBASE=/admin/shamash/ GRAPHQL_URL=https://www-test.entur.org/api/tiamat/1.0/graphql npm start
 ```
