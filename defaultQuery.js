@@ -16,21 +16,21 @@ const defaultQuery = {
 #
 #
 #
-################## Example query for planning a journey  
+################## Example query for planning a journey
 #### Arguments
 {
   plan(
-    
-    #Dyrløkke - coordinates 
+
+    #Dyrløkke - coordinates
     fromPlace:"59.67388,10.655733"
     #Dyrløkke - StopPlace reference (preferred solution if you know stopPlace)
     #fromPlace:"NSR:StopPlace:5664"
-    
+
     #Bjørvika - coordinates
     toPlace: "59.90804,10.756284"
     #Bjørvika - StopPlace reference (preferred solution if you know stopPlace)
     #toPlace: "NSR:StopPlace:70032"
-    
+
     numItineraries: 3
     date: "2017-05-16"
     time: "12:51:14"
@@ -40,7 +40,7 @@ const defaultQuery = {
     walkSpeed: 1.2
     maxWalkDistance: 5000
     wheelchair: false
-    arriveBy: false          
+    arriveBy: false
   )
 
 #### Requested fields
@@ -49,7 +49,7 @@ const defaultQuery = {
       startTime
       duration
       walkDistance
-        
+
           legs {
             transitLeg
             mode
@@ -92,8 +92,8 @@ const defaultQuery = {
   }
 
 ################## Example query 2 - fetching stopPlace attributes
-  stopPlace(size: 5, 
-      stopPlaceType: onstreetBus 
+  stopPlace(size: 5,
+      stopPlaceType: onstreetBus
     ) {
     id
     keyValues {
@@ -103,18 +103,20 @@ const defaultQuery = {
     name {
       value
     }
-    quays {
-      id
-      keyValues {
-        key
-        values
-      }
-      geometry {
-        type
-        coordinates
+    ... on StopPlace {
+      quays {
+        id
+        keyValues {
+          key
+          values
+        }
+        geometry {
+          type
+          coordinates
+        }
       }
     }
-  }    
+  }
 }`
 
 }
