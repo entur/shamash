@@ -15,7 +15,7 @@
     "babel-preset-react-hmre": "1.1.1",
     "babel-preset-stage-0": "6.24.1",
     "babel-register": "6.26.0",
-    "babel-runtime": "6.23.0",
+    "babel-runtime": "6.26.0",
     "convict": "3.0.0",
     "css-loader": "0.28.7",
     "express": "4.14.0",
@@ -32,13 +32,17 @@
     "style-loader": "0.19.0",
     "webpack": "3.8.1"
   },
-  "devDependencies": {
-    "webpack-devserver": "0.0.6"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.config.js",
+    "dev": "NODE_ENV=development SERVICE_NAME=Stoppestedsregisteret GRAPHQL_URL=https://api-test.entur.org/stop_places/1.0/graphql npm start",
     "dev-bundle": "SERVICE_NAME=Stoppestedsregisteret GRAPHQL_URL=https://api-test.entur.org/stop_places/1.0/graphql npm start"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "clean-webpack-plugin": "^0.1.17",
+    "webpack-dev-middleware": "^1.12.0",
+    "webpack-dev-server": "^2.9.4",
+    "webpack-hot-middleware": "^2.20.0"
+  }
 }

@@ -1,30 +1,28 @@
 const webpack = require('webpack');
 const path = require('path');
+var CleanWebpackPlugin = require('clean-webpack-plugin');
+
 
 module.exports = {
-  devtool: 'inline-source-map',
-  entry: {
-    app: './index',
-  },
+  devtool: 'cheap-module-eval-source-map',
+  entry: ['webpack-hot-middleware/client?quiet=true', './index'],
   output: {
     path: __dirname + '/public/',
     filename: 'bundle.js',
     publicPath: './public/'
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
-      beautify: false,
-      comments: false,
-      compress: {
-        warnings: false
-      }
-    }),
     new webpack.ContextReplacementPlugin(/graphql-language-service-interface[\/\\]dist/, /\.js$/),
+    new webpack.HotModuleReplacementPlugin(),
+    new CleanWebpackPlugin(['public'], {
+      root: path.resolve('./'),
+      verbose: true,
+      dry: false,
+    }),
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify('production'),
-        'BABEL_ENV': JSON.stringify('production')
+        'NODE_ENV': JSON.stringify('development'),
+        'BABEL_ENV': JSON.stringify('development')
       }
     })
   ],
