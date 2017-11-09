@@ -18,16 +18,17 @@
     "babel-runtime": "6.26.0",
     "convict": "3.0.0",
     "css-loader": "0.28.7",
-    "express": "4.14.0",
-    "express-graphql": "0.6.1",
+    "express": "4.16.2",
+    "express-graphql": "0.6.11",
     "fetch": "1.1.0",
-    "graphiql": "0.10.2",
-    "graphql": "^0.10.0",
+    "file-loader": "^1.1.5",
+    "graphiql": "0.11.10",
     "graphql-utilities": "0.0.14",
+    "image-webpack-loader": "^3.4.2",
     "isomorphic-fetch": "2.2.1",
     "json-to-graphql": "0.1.1",
-    "react": "15.6.1",
-    "react-dom": "15.6.1",
+    "react": "16.0.0",
+    "react-dom": "16.0.0",
     "request": "2.81.0",
     "style-loader": "0.19.0",
     "webpack": "3.8.1"
@@ -36,7 +37,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.config.js",
     "dev": "NODE_ENV=development SERVICE_NAME=Stoppestedsregisteret GRAPHQL_URL=https://api-test.entur.org/stop_places/1.0/graphql npm start",
-    "dev-bundle": "SERVICE_NAME=Stoppestedsregisteret GRAPHQL_URL=https://api-test.entur.org/stop_places/1.0/graphql npm start"
+    "dev-bundle": "npm run build SERVICE_NAME=Stoppestedsregisteret GRAPHQL_URL=https://api-test.entur.org/stop_places/1.0/graphql npm start"
   },
   "license": "ISC",
   "devDependencies": {

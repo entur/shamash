@@ -5,11 +5,17 @@ body {
     overflow: hidden;
 }
 
-.title {
+.label {
     position: absolute;
     float: right;
     right: 100px;
     margin: 10px;
+    font-size: 1.5em;
     color: #2e6c8b;
     font-weight: 600;
+}
+
+.logo {
+    height: 20px;
+    width: auto;
 }

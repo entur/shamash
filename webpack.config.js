@@ -1,6 +1,20 @@
 const webpack = require('webpack');
 const path = require('path');
 
+const imageLoaderQuery = {
+  mozjpeg: {
+    progressive: true,
+    quality: '55',
+  },
+  optipng: {
+    optimizationLevel: 7,
+  },
+  pngquant: {
+    quality: '55-80',
+    speed: 10,
+  },
+};
+
 module.exports = {
   devtool: 'inline-source-map',
   entry: {
@@ -46,6 +60,13 @@ module.exports = {
         include: path.join(__dirname, 'css'),
         loaders: ['style-loader', 'css-loader']
       },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loaders: [
+          'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
+          'image-webpack-loader?' + JSON.stringify(imageLoaderQuery),
+        ],
+      }
     ]
   }
 };

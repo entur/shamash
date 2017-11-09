@@ -1,13 +1,7 @@
 import React from 'react';
-import GraphiQL from 'graphiql';
+import GraphiQL  from 'graphiql';
 import cfgreader from '../config/readConfig';
 import '../css/app.css';
-import '../css/codemirror.css';
-import '../css/doc-explorer.css';
-import '../css/foldgutter.css';
-import '../css/lint.css';
-import '../css/loading.css';
-import '../css/show-hint.css';
 import '../css/graphiql.css';
 import '../css/custom.css';
 import defaultQuery from '../defaultQuery';
@@ -102,7 +96,9 @@ class App extends React.Component {
 
     return (
       <div>
-        <div className="title">{window.config.serviceName}</div>
+        <div className="label">
+          {window.config.serviceName}
+        </div>
         <GraphiQL
           fetcher={graphQLFetcher}
           query={parameters.query}
@@ -112,7 +108,11 @@ class App extends React.Component {
           onEditVariables={this.onEditVariables.bind(this)}
           onEditOperationName={this.onEditOperationName.bind(this)}
           defaultQuery={this.getDefaultQuery()}
-        />
+        >
+          <GraphiQL.Logo>
+            <img src={require('../static/img/entur.png')} className="logo"/>
+          </GraphiQL.Logo>
+        </GraphiQL>
       </div>
     );
   }

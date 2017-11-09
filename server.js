@@ -1,9 +1,10 @@
 const express = require('express');
-const convict = require('./config/convict-promise');
+const convict = require('./config/convict');
 const webpack = require('webpack');
 
 const app = express();
-const port = process.env.port || 8080
+const port = process.env.port || 8080;
+const path = require('path');
 
 convict.then( convict => {
 
@@ -23,6 +24,8 @@ convict.then( convict => {
       })
     );
     app.use(require('webpack-hot-middleware')(compiler));
+  } else {
+    app.use(ENDPOINTBASE + 'public', express.static(path.join(__dirname, 'public')));
   }
 
   app.get(ENDPOINTBASE, (req, res) => {
