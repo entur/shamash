@@ -37,7 +37,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.config.js"
+    "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.config.js",
+    "dev-bundle": "SERVICE_NAME=Stoppestedsregisteret GRAPHQL_URL=https://api-test.entur.org/stop_places/1.0/graphql npm start"
   },
   "license": "ISC"
 }

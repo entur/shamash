@@ -14,6 +14,8 @@ yarn build
 
 ## Run the app
 
+### Run build against localhost
+
 ```
 npm start
 ```
@@ -21,6 +23,13 @@ or
 ```
 yarn start
 ```
+
+### Run build against test
+
+```
+npm run dev-bundle
+```
+
 
 ## Configuration
 
