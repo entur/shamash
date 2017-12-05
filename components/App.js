@@ -1,5 +1,5 @@
 import React from 'react';
-import GraphiQL  from 'graphiql';
+import GraphiQL from 'graphiql';
 import cfgreader from '../config/readConfig';
 import '../css/app.css';
 import '../css/graphiql.css';
@@ -26,40 +26,37 @@ class App extends React.Component {
       console.info('loaded config', config);
       window.config = config;
       this.setState({
-        ...this.state,
         isConfigLoaded: true
       });
     });
   }
 
-  onEditQuery(newQuery) {
-    const parameters = Object.assign({}, this.state.parameters, {
-      query: newQuery
-    });
-
+  onEditQuery(query) {
     this.setState({
-      parameters: parameters
+      parameters: {
+        ...this.state.parameters,
+        query
+      }
     });
     this.updateURL();
   }
 
-  onEditVariables(newVariables) {
-    const parameters = Object.assign({}, this.state.parameters, {
-      variables: newVariables
-    });
-
+  onEditVariables(variables) {
     this.setState({
-      parameters: parameters
+      parameters: {
+        ...this.state.parameters,
+        variables
+      }
     });
     this.updateURL();
   }
 
-  onEditOperationName(newOperationName) {
-    const parameters = Object.assign({}, this.state.parameters, {
-      operationName: newOperationName
-    });
+  onEditOperationName(operationName) {
     this.setState({
-      parameters: parameters
+      parameters: {
+        ...this.state.parameters,
+        operationName
+      }
     });
     this.updateURL();
   }
@@ -75,10 +72,10 @@ class App extends React.Component {
     let newSearch =
       '?' +
       Object.keys(parameters)
-        .filter(function(key) {
+        .filter(key => {
           return Boolean(parameters[key]);
         })
-        .map(function(key) {
+        .map(key => {
           return (
             encodeURIComponent(key) + '=' + encodeURIComponent(parameters[key])
           );
@@ -110,7 +107,7 @@ class App extends React.Component {
           defaultQuery={this.getDefaultQuery()}
         >
           <GraphiQL.Logo>
-            <img src={require('../static/img/entur.png')} className="logo"/>
+            <img src={require('../static/img/entur.png')} className="logo" />
           </GraphiQL.Logo>
         </GraphiQL>
       </div>
