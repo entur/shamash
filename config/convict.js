@@ -19,13 +19,13 @@ module.exports = new Promise(function(resolve, reject){
     graphQLUrl: {
       doc: "Base URL for GraphQL endpoint including slash",
       format: "url",
-      default: "http://localhost:1888/",
+      default: "https://api-test.entur.org/stop_places/1.0/graphql",
       env: "GRAPHQL_URL"
     },
     serviceName: {
       doc: "Name of service to identify service in client",
       format: String,
-      default: "Shamash",
+      default: "Stoppestedsregisteret",
       env: "SERVICE_NAME"
     },
     endpointBase: {
