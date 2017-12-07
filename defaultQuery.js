@@ -24,15 +24,15 @@ const defaultQuery = {
     #Dyrløkke - coordinates
     fromPlace:"59.67388,10.655733"
     #Dyrløkke - StopPlace reference (preferred solution if you know stopPlace)
-    #fromPlace:"NSR:StopPlace:5664"
+    #fromPlace:"NSR:StopPlace:5532"
 
     #Bjørvika - coordinates
     toPlace: "59.90804,10.756284"
     #Bjørvika - StopPlace reference (preferred solution if you know stopPlace)
-    #toPlace: "NSR:StopPlace:70032"
+    #toPlace: "NSR:StopPlace:58367"
 
     numItineraries: 3
-    date: "2017-05-16"
+    date: "2017-12-16"
     time: "12:51:14"
     walkReluctance: 2
     walkBoardCost: 600
@@ -90,12 +90,12 @@ const defaultQuery = {
     #Dyrløkke - coordinates
     fromPlace:"59.67388,10.6557"
     #Dyrløkke - StopPlace reference (preferred solution if you know stopPlace)
-    #fromPlace:"NSR:StopPlace:5664"
+    #fromPlace:"NSR:StopPlace:5532"
 
     #Bjørvika - coordinates
     toPlace: "59.90804,10.756284"
     #Bjørvika - StopPlace reference (preferred solution if you know stopPlace)
-    #toPlace: "NSR:StopPlace:70032"
+    #toPlace: "NSR:StopPlace:58367"
 
     numTripPatterns: 3
     date: "2017-12-16"
