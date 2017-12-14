@@ -97,14 +97,11 @@ const defaultQuery = {
     #Bjørvika - StopPlace reference (preferred solution if you know stopPlace)
     #toPlace: "NSR:StopPlace:58367"
 
-    numTripPatterns: 3
+    numTripPatterns: 5
     date: "2017-12-16"
     time: "12:51:14"
-    walkReluctance: 2
-    walkBoardCost: 600
     minTransferTime: 180
     walkSpeed: 1.2
-    maxWalkDistance: 5000
     wheelchair: false
     arriveBy: false
   )
