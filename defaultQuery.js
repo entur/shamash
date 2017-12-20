@@ -85,7 +85,6 @@ const defaultQuery = {
 ################## Example query for planning a journey
 #### Arguments
 {
-{
   trip(
     from: {name: "Bjerkealleen 5A, Skedsmo"
     coordinates: {
