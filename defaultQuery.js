@@ -85,22 +85,21 @@ const defaultQuery = {
 ################## Example query for planning a journey
 #### Arguments
 {
+{
   trip(
+    from: {name: "Bjerkealleen 5A, Skedsmo"
+    coordinates: {
+      latitude: 59.96050414081307
+      longitude:11.040338686322317
+    }}
 
-    #Dyrløkke - coordinates
-    fromPlace:"59.67388,10.6557"
-    #Dyrløkke - StopPlace reference (preferred solution if you know stopPlace)
-    #fromPlace:"NSR:StopPlace:5532"
-
-    #Bjørvika - coordinates
-    toPlace: "59.90804,10.756284"
-    #Bjørvika - StopPlace reference (preferred solution if you know stopPlace)
-    #toPlace: "NSR:StopPlace:58367"
-
+    to: {
+      place:"NSR:StopPlace:4906"
+      name:"Bjørvika, Oslo"
+    }
     numTripPatterns: 5
-    date: "2017-12-16"
-    time: "12:51:14"
-    minTransferTime: 180
+    dateTime: "2017-12-18T12:51:14.000+0000"
+    minimumTransferTime: 180
     walkSpeed: 1.2
     wheelchair: false
     arriveBy: false
@@ -113,7 +112,7 @@ const defaultQuery = {
       duration
       walkDistance
 
-          links {
+          legs {
           
             mode
             distance
