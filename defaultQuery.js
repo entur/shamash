@@ -93,13 +93,13 @@ const defaultQuery = {
     }}
 
     to: {
-      place:"NSR:StopPlace:4906"
-      name:"Bjørvika, Oslo"
+      place:"NSR:StopPlace:385"
+      name:"Alna, Oslo"
     }
-    numTripPatterns: 5
-    dateTime: "2017-12-18T12:51:14.000+0000"
+    numTripPatterns: 3
+    dateTime: "2018-01-04T12:51:14.000+0100"
     minimumTransferTime: 180
-    walkSpeed: 1.2
+    walkSpeed: 1.3
     wheelchair: false
     arriveBy: false
   )
