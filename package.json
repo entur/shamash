@@ -23,6 +23,7 @@
     "fetch": "1.1.0",
     "file-loader": "^1.1.5",
     "graphiql": "0.11.10",
+    "graphql": "^14.0.2",
     "graphql-utilities": "0.0.14",
     "image-webpack-loader": "^3.4.2",
     "isomorphic-fetch": "2.2.1",
