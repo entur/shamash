@@ -1,4 +1,4 @@
-# Shamash [![CircleCI](https://circleci.com/gh/rutebanken/shamash/tree/master.svg?style=svg&circle-token=03cc220760321b30f01b19c6edb8692b21234e05)](https://circleci.com/gh/rutebanken/shamash/tree/master)
+# Shamash
 
 An in-browser IDE for exploring GraphQL.
 
