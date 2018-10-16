@@ -3,9 +3,6 @@ aliases:
 - &install-dependencies
   name: Install Node Dependencies
   command: npm install
-- &test
-  name: Test
-  command: npm run test
 - &build
   name: Build
   command: npm run build
@@ -51,16 +48,6 @@ jobs:
     - checkout
     - run: *install-dependencies
     - save-cache: *save-dependency-cache
-  test:
-    docker:
-    - image: eu.gcr.io/carbon-1287/circleci-toolbox-image
-      auth:
-        username: _json_key
-        password: $GCLOUD_SERVICE_KEY
-    steps:
-    - checkout
-    - restore-cache: *restore-dependency-cache
-    - run: *test
   build:
     docker:
     - image: eu.gcr.io/carbon-1287/circleci-toolbox-image
@@ -83,14 +70,10 @@ workflows:
     jobs:
     - install:
         context: org-carbon
-    - test:
-        context: org-carbon
-        requires:
-        - install
     - build:
         context: org-carbon
         requires:
-        - test
+        - install
         filters:
           branches:
             only:
