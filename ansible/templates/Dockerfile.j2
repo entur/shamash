@@ -11,7 +11,7 @@ ENV port 8000
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
-COPY source/ .
+COPY . .
 RUN npm install
 RUN npm build
 
