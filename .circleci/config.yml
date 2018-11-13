@@ -3,9 +3,6 @@ aliases:
 - &install-dependencies
   name: Install Node Dependencies
   command: npm i -f
-- &test
-  name: Test
-  command: npm run test
 - &build
   name: Build
   command: npm run build
@@ -41,12 +38,6 @@ aliases:
     echo 'export BUILD_STATUS_API_KEY="$BUILD_STATUS_API_KEY"' >> $BASH_ENV
     /tools/build_notify.sh
 jobs:
-  preinstall:
-    machine: true
-    steps:
-      - run: |
-          docker login -u _json_key -p $GCLOUD_SERVICE_KEY
-          docker run -d --name toolbox eu.gcr.io/carbon-1287/circleci-toolbox-image
   install:
     docker:
     - image: eu.gcr.io/carbon-1287/circleci-toolbox-image
@@ -57,16 +48,6 @@ jobs:
     - checkout
     - run: *install-dependencies
     - save-cache: *save-dependency-cache
-  test:
-    docker:
-    - image: eu.gcr.io/carbon-1287/circleci-toolbox-image
-      auth:
-        username: _json_key
-        password: $GCLOUD_SERVICE_KEY
-    steps:
-    - checkout
-    - restore-cache: *restore-dependency-cache
-    - run: *test
   build:
     docker:
     - image: eu.gcr.io/carbon-1287/circleci-toolbox-image
@@ -87,18 +68,8 @@ workflows:
   version: 2
   install-test-build-deploy:
     jobs:
-    - preinstall:
-        context: org-carbon
     - install:
         context: org-carbon
-    - test:
-        context: org-carbon
-        requires:
-        - install
-    - build:
-        context: org-carbon
-        requires:
-        - test
         filters:
           branches:
             only:
