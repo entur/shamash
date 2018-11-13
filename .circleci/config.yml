@@ -43,10 +43,10 @@ aliases:
 jobs:
   preinstall:
     machine: true
-      steps:
+    steps:
       - run: |
-        docker login -u _json_key -p $GCLOUD_SERVICE_KEY
-        docker run -d --name toolbox eu.gcr.io/carbon-1287/circleci-toolbox-image
+          docker login -u _json_key -p $GCLOUD_SERVICE_KEY
+          docker run -d --name toolbox eu.gcr.io/carbon-1287/circleci-toolbox-image
   install:
     docker:
     - image: eu.gcr.io/carbon-1287/circleci-toolbox-image
