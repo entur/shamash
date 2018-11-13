@@ -70,6 +70,10 @@ workflows:
     jobs:
     - install:
         context: org-carbon
+    - build:
+        context: org-carbon
+        requires:
+        - install
         filters:
           branches:
             only:
