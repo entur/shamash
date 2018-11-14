@@ -36,7 +36,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "BABEL_ENV=production NODE_ENV=production webpack -p --config ./webpack.config.js",
+    "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.config.js",
     "dev": "NODE_ENV=development SERVICE_NAME=Shamash npm start",
     "dev-bundle": "npm run build SERVICE_NAME=Shamas npm start"
   },
