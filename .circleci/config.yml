@@ -2,7 +2,7 @@ version: 2
 aliases:
 - &install-dependencies
   name: Install Node Dependencies
-  command: npm i -f --save graphql
+  command: npm install
 - &build
   name: Build
   command: npm run build
