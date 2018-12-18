@@ -6,7 +6,7 @@ const graphQLFetcher = graphQLParams => (
     headers: {
       accept: '*/*',
       'Content-Type': 'application/json',
-      'ET-Client-Name': 'shamash',
+      'ET-Client-Name': 'entur-shamash',
     },
     body: JSON.stringify(graphQLParams)
   })
