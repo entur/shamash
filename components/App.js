@@ -1,5 +1,6 @@
 import React from 'react';
 import GraphiQL from 'graphiql';
+import { parse, print } from 'graphql';
 import cfgreader from '../config/readConfig';
 import '../css/app.css';
 import '../css/graphiql.css';
@@ -67,6 +68,29 @@ class App extends React.Component {
     }
   }
 
+  handleClickPrettifyButton() {
+    if (!this.graphiql) return
+    const editor = this.graphiql.getQueryEditor();
+    const currentText = editor.getValue();
+    const prettyText = print(parse(currentText));
+    editor.setValue(prettyText);
+  }
+
+  handleHistoryButton() {
+    if (!this.graphiql) return
+    this.graphiql.setState({
+      historyPaneOpen: !this.graphiql.state.historyPaneOpen,
+    })
+  }
+
+  handleEnvironmentChange(env) {
+    if (env === 'prod') {
+      window.location.href = `https://api.entur.org/doc/shamash-journeyplanner${window.location.search}`
+    } else {
+      window.location.href = `https://api-${env}.entur.org/doc/shamash-journeyplanner${window.location.search}`
+    }
+  }
+
   updateURL() {
     const { parameters } = this.state;
     let newSearch =
@@ -97,6 +121,7 @@ class App extends React.Component {
           {window.config.serviceName}
         </div>
         <GraphiQL
+          ref={c => { this.graphiql = c; }}
           fetcher={graphQLFetcher}
           query={parameters.query}
           variables={parameters.variables}
@@ -109,6 +134,25 @@ class App extends React.Component {
           <GraphiQL.Logo>
             <img src={require('../static/img/entur.png')} className="logo" />
           </GraphiQL.Logo>
+          <GraphiQL.Toolbar>
+            <GraphiQL.Button
+              onClick={this.handleClickPrettifyButton.bind(this)}
+              label="Prettify"
+              title="Prettify Query (Shift-Ctrl-P)"
+            />
+
+            <GraphiQL.Button
+              onClick={this.handleHistoryButton.bind(this)}
+              label="History"
+              title="Show History"
+            />
+
+            <GraphiQL.Menu label="Miljø" title="Miljø">
+              <GraphiQL.MenuItem label="Prod" title="Prod" onSelect={() => this.handleEnvironmentChange('prod')} />
+              <GraphiQL.MenuItem label="Stage" title="Stage" onSelect={() => this.handleEnvironmentChange('stage')} />
+              <GraphiQL.MenuItem label="Test" title="Test" onSelect={() => this.handleEnvironmentChange('test')} />
+            </GraphiQL.Menu>
+          </GraphiQL.Toolbar>
         </GraphiQL>
       </div>
     );
