@@ -144,10 +144,10 @@ class App extends React.Component {
               title="Show History"
             />
 
-            <GraphiQL.Menu label="Miljø" title="Miljø">
+            <GraphiQL.Menu label="Environment" title="Environment">
               <GraphiQL.MenuItem label="Prod" title="Prod" onSelect={() => this.handleEnvironmentChange('prod')} />
-              <GraphiQL.MenuItem label="Stage" title="Stage" onSelect={() => this.handleEnvironmentChange('stage')} />
-              <GraphiQL.MenuItem label="Test" title="Test" onSelect={() => this.handleEnvironmentChange('test')} />
+              <GraphiQL.MenuItem label="Staging" title="Staging" onSelect={() => this.handleEnvironmentChange('stage')} />
+              <GraphiQL.MenuItem label="Dev" title="Dev" onSelect={() => this.handleEnvironmentChange('test')} />
             </GraphiQL.Menu>
           </GraphiQL.Toolbar>
         </GraphiQL>
