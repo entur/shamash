@@ -84,11 +84,8 @@ class App extends React.Component {
   }
 
   handleEnvironmentChange(env) {
-    if (env === 'prod') {
-      window.location.href = `https://api.entur.org/doc/shamash-journeyplanner${window.location.search}`
-    } else {
-      window.location.href = `https://api-${env}.entur.org/doc/shamash-journeyplanner${window.location.search}`
-    }
+    let newOrigin = env === 'prod' ? 'https://api.entur.org' : `https://api-${env}.entur.org`
+    window.location.href = `${newOrigin}${window.location.pathname}${window.location.search}`
   }
 
   updateURL() {
