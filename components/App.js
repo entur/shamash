@@ -83,8 +83,13 @@ class App extends React.Component {
     })
   }
 
+  handleServiceChange(service) {
+    const newPathName = `/doc/shamash-${service}/`
+    window.location.href = `${window.location.origin}${newPathName}${window.location.search}`
+  }
+
   handleEnvironmentChange(env) {
-    let newOrigin = env === 'prod' ? 'https://api.entur.org' : `https://api-${env}.entur.org`
+    const newOrigin = env === 'prod' ? 'https://api.entur.org' : `https://api-${env}.entur.org`
     window.location.href = `${newOrigin}${window.location.pathname}${window.location.search}`
   }
 
@@ -143,6 +148,11 @@ class App extends React.Component {
               label="History"
               title="Show History"
             />
+
+            <GraphiQL.Menu label="Service" title="Service">
+              <GraphiQL.MenuItem label="JourneyPlanner" title="JourneyPlanner" onSelect={() => this.handleServiceChange('journeyplanner')} />
+              <GraphiQL.MenuItem label="NSR" title="NSR" onSelect={() => this.handleServiceChange('nsr')} />
+            </GraphiQL.Menu>
 
             <GraphiQL.Menu label="Environment" title="Environment">
               <GraphiQL.MenuItem label="Prod" title="Prod" onSelect={() => this.handleEnvironmentChange('prod')} />
