@@ -9,6 +9,15 @@ import defaultQuery from '../defaultQuery';
 import { getQueryParameters } from '../utils/';
 import graphQLFetcher from '../utils/graphQLFetcher';
 
+let logo
+
+if (window.location.search.includes('theme=dark')) {
+  require('../css/darktheme.css');
+  logo = require('../static/img/entur-white.png')
+} else {
+  logo = require('../static/img/entur.png')
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -93,6 +102,18 @@ class App extends React.Component {
     window.location.href = `${newOrigin}${window.location.pathname}${window.location.search}`
   }
 
+  handleThemeChange = (theme) => {
+    this.setState({
+      parameters: {
+        ...this.state.parameters,
+        theme
+      }
+    }, () => {
+      this.updateURL();
+      window.location.reload();
+    })
+  }
+
   updateURL() {
     const { parameters } = this.state;
     let newSearch =
@@ -134,7 +155,7 @@ class App extends React.Component {
           defaultQuery={this.getDefaultQuery()}
         >
           <GraphiQL.Logo>
-            <img src={require('../static/img/entur.png')} className="logo" />
+            <img src={logo} className="logo" />
           </GraphiQL.Logo>
           <GraphiQL.Toolbar>
             <GraphiQL.Button
@@ -158,6 +179,11 @@ class App extends React.Component {
               <GraphiQL.MenuItem label="Prod" title="Prod" onSelect={() => this.handleEnvironmentChange('prod')} />
               <GraphiQL.MenuItem label="Staging" title="Staging" onSelect={() => this.handleEnvironmentChange('stage')} />
               <GraphiQL.MenuItem label="Dev" title="Dev" onSelect={() => this.handleEnvironmentChange('test')} />
+            </GraphiQL.Menu>
+
+            <GraphiQL.Menu label="Theme" title="Theme">
+              <GraphiQL.MenuItem label="Light" title="Light" onSelect={() => this.handleThemeChange('light')} />
+              <GraphiQL.MenuItem label="Dark" title="Dark" onSelect={() => this.handleThemeChange('dark')} />
             </GraphiQL.Menu>
           </GraphiQL.Toolbar>
         </GraphiQL>
