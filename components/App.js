@@ -173,6 +173,7 @@ class App extends React.Component {
             <GraphiQL.Menu label="Service" title="Service">
               <GraphiQL.MenuItem label="JourneyPlanner" title="JourneyPlanner" onSelect={() => this.handleServiceChange('journeyplanner')} />
               <GraphiQL.MenuItem label="NSR" title="NSR" onSelect={() => this.handleServiceChange('nsr')} />
+              <GraphiQL.MenuItem label="Raptor" title="Raptor" onSelect={() => this.handleServiceChange('raptor')} />
             </GraphiQL.Menu>
 
             <GraphiQL.Menu label="Environment" title="Environment">
