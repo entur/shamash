@@ -11,7 +11,7 @@ import graphQLFetcher from '../utils/graphQLFetcher';
 
 let logo
 
-if (window.location.search.includes('theme=dark')) {
+if (window.localStorage.getItem('theme') === 'dark') {
   require('../css/darktheme.css');
   logo = require('../static/img/entur-white.png')
 } else {
@@ -103,15 +103,8 @@ class App extends React.Component {
   }
 
   handleThemeChange = (theme) => {
-    this.setState({
-      parameters: {
-        ...this.state.parameters,
-        theme
-      }
-    }, () => {
-      this.updateURL();
-      window.location.reload();
-    })
+    window.localStorage.setItem('theme', theme)
+    window.location.reload();
   }
 
   updateURL() {
