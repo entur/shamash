@@ -13,9 +13,9 @@ convict.then( convict => {
   console.info("ENDPOINTBASE is set to", ENDPOINTBASE);
 
   if (process.env.NODE_ENV === 'development') {
-    let config = require('./webpack.dev.config');
+    let config = require('./webpack.config');
     config.output.publicPath = ENDPOINTBASE + 'public/';
-    const compiler = new webpack(config);
+    const compiler = webpack(config);
     app.use(
       require('webpack-dev-middleware')(compiler, {
         noInfo: true,
