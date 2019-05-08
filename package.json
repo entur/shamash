@@ -17,22 +17,17 @@
     "babel-register": "6.26.0",
     "babel-runtime": "6.26.0",
     "convict": "3.0.0",
-    "css-loader": "0.28.7",
     "express": "4.16.2",
     "express-graphql": "0.6.11",
     "fetch": "1.1.0",
-    "file-loader": "^1.1.5",
-    "graphiql": "0.11.10",
-    "graphql": "^14.0.2",
+    "graphiql": "^0.13.0",
+    "graphql": "^14.3.0",
     "graphql-utilities": "0.0.14",
-    "image-webpack-loader": "^3.4.2",
     "isomorphic-fetch": "2.2.1",
     "json-to-graphql": "0.1.1",
-    "react": "16.0.0",
-    "react-dom": "16.0.0",
-    "request": "2.81.0",
-    "style-loader": "0.19.0",
-    "webpack": "3.8.1"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "request": "^2.88.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -43,8 +38,14 @@
   "license": "ISC",
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.17",
-    "webpack-dev-middleware": "^1.12.0",
-    "webpack-dev-server": "^2.9.4",
-    "webpack-hot-middleware": "^2.20.0"
+    "css-loader": "^2.1.1",
+    "file-loader": "^3.0.1",
+    "image-webpack-loader": "^4.6.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-middleware": "^3.6.2",
+    "webpack-dev-server": "^3.3.1",
+    "webpack-hot-middleware": "^2.24.4"
   }
 }

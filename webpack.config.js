@@ -16,7 +16,7 @@ const imageLoaderQuery = {
 };
 
 module.exports = {
-  devtool: 'inline-source-map',
+  mode: process.env.NODE_ENV || 'production',
   entry: {
     app: './index',
   },
@@ -26,25 +26,10 @@ module.exports = {
     publicPath: './public/'
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
-      beautify: false,
-      comments: false,
-      compress: {
-        warnings: false
-      }
-    }),
     new webpack.ContextReplacementPlugin(/graphql-language-service-interface[\/\\]dist/, /\.js$/),
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production'),
-        'BABEL_ENV': JSON.stringify('production')
-      }
-    })
   ],
-
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
