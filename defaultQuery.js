@@ -1,3 +1,5 @@
+import { toISOStringWithTimezone } from './utils/time'
+
 const defaultQuery = {
     'JourneyPlanner': `
 # Welcome to GraphiQL
@@ -31,7 +33,7 @@ const defaultQuery = {
       name:"Alna, Oslo"
     }
     numTripPatterns: 3
-    dateTime: "2018-01-04T12:51:14.000+0100"
+    dateTime: "${toISOStringWithTimezone(new Date())}"
     minimumTransferTime: 180
     walkSpeed: 1.3
     wheelchair: false
@@ -46,7 +48,7 @@ const defaultQuery = {
       walkDistance
 
           legs {
-          
+
             mode
             distance
             line {
