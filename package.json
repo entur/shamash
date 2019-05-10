@@ -33,8 +33,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.config.js",
-    "dev": "NODE_ENV=development SERVICE_NAME=Shamash npm start",
-    "dev-bundle": "npm run build SERVICE_NAME=Shamas npm start"
+    "dev": "NODE_ENV=development npm start",
+    "dev:journeyplanner": "SERVICE_NAME=JourneyPlanner GRAPHQL_URL=https://api.dev.entur.io/journey-planner/v2/graphql npm run dev",
+    "dev-bundle": "npm run build SERVICE_NAME=JourneyPlanner npm start"
   },
   "license": "ISC",
   "devDependencies": {

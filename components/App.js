@@ -5,9 +5,11 @@ import cfgreader from '../config/readConfig';
 import '../css/app.css';
 import '../css/graphiql.css';
 import '../css/custom.css';
-import defaultQuery from '../defaultQuery';
 import { getQueryParameters } from '../utils/';
 import graphQLFetcher from '../utils/graphQLFetcher';
+
+import { tripQuery, bikeRentalStationsByBboxQuery } from '../queries/journeyplanner';
+import { stopPlaceQuery, topographicPlaceQuery } from '../queries/nsr';
 
 let logo
 
@@ -72,9 +74,11 @@ class App extends React.Component {
   }
 
   getDefaultQuery() {
-    if (window.config) {
-      return defaultQuery[window.config.serviceName];
+    if (!window.config) return
+    if (window.config.serviceName === 'JourneyPlanner') {
+      return tripQuery
     }
+    return topographicPlaceQuery
   }
 
   handleClickPrettifyButton() {
@@ -122,6 +126,23 @@ class App extends React.Component {
         })
         .join('&');
     history.replaceState(null, null, newSearch);
+  }
+
+  renderExamplesMenu = () => {
+    if (window.config.serviceName === 'JourneyPlanner') {
+      return (
+        <GraphiQL.Menu label="Examples" title="Examples">
+          <GraphiQL.MenuItem label="trip" title="trip" onSelect={() => this.onEditQuery(tripQuery)} />
+          <GraphiQL.MenuItem label="bikeRentalStationsByBbox" title="bikeRentalStationsByBbox" onSelect={() => this.onEditQuery(bikeRentalStationsByBboxQuery)} />
+        </GraphiQL.Menu>
+      )
+    }
+    return (
+      <GraphiQL.Menu label="Examples" title="Examples">
+        <GraphiQL.MenuItem label="topographicPlace" title="topographicPlace" onSelect={() => this.onEditQuery(topographicPlaceQuery)}  />
+        <GraphiQL.MenuItem label="stopPlace" title="stopPlace" onSelect={() => this.onEditQuery(stopPlaceQuery)}  />
+      </GraphiQL.Menu>
+    )
   }
 
   render() {
@@ -174,6 +195,8 @@ class App extends React.Component {
               <GraphiQL.MenuItem label="Staging" title="Staging" onSelect={() => this.handleEnvironmentChange('stage')} />
               <GraphiQL.MenuItem label="Dev" title="Dev" onSelect={() => this.handleEnvironmentChange('test')} />
             </GraphiQL.Menu>
+
+            { this.renderExamplesMenu() }
 
             <GraphiQL.Menu label="Theme" title="Theme">
               <GraphiQL.MenuItem label="Light" title="Light" onSelect={() => this.handleThemeChange('light')} />
