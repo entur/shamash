@@ -7,10 +7,6 @@ An in-browser IDE for exploring GraphQL.
 ```
 npm run build
 ```
-or
-```
-yarn build
-```
 
 ## Run the app
 
@@ -18,10 +14,6 @@ yarn build
 
 ```
 npm start
-```
-or
-```
-yarn start
 ```
 
 ### Run build against test
@@ -38,7 +30,7 @@ and `SERVICE_NAME` in order to override default configuration of these
 endpoints. E.g.
 
 ```
-  GRAPHQL_URL=http://localhost:8090/graphql SERVICE_NAME=Stoppestedsregisteret npm start
+GRAPHQL_URL=http://localhost:8090/graphql SERVICE_NAME=Stoppestedsregisteret npm start
 ```
 
 Optional environment variable `ENDPOINTBASE` overrides namespace for client including slash. Full example:
