@@ -97,12 +97,23 @@ class App extends React.Component {
   }
 
   handleServiceChange(service) {
-    const newPathName = `/doc/shamash-${service}/`
+    let newPathName
+    switch (service) {
+      case 'journey-planner':
+        newPathName = '/journey-planner/v2/ide'
+        break;
+      case 'stop-places':
+        newPathName = '/stop-places/v1/ide'
+        break;
+      case 'raptor':
+        newPathName = '/journey-planner/v2/raptor/ide'
+        break;
+    }
     window.location.href = `${window.location.origin}${newPathName}${window.location.search}`
   }
 
   handleEnvironmentChange(env) {
-    const newOrigin = env === 'prod' ? 'https://api.entur.org' : `https://api-${env}.entur.org`
+    const newOrigin = env === 'prod' ? 'https://api.entur.io' : `https://api.${env}.entur.io`
     window.location.href = `${newOrigin}${window.location.pathname}${window.location.search}`
   }
 
@@ -185,15 +196,15 @@ class App extends React.Component {
             />
 
             <GraphiQL.Menu label="Service" title="Service">
-              <GraphiQL.MenuItem label="JourneyPlanner" title="JourneyPlanner" onSelect={() => this.handleServiceChange('journeyplanner')} />
-              <GraphiQL.MenuItem label="NSR" title="NSR" onSelect={() => this.handleServiceChange('nsr')} />
+              <GraphiQL.MenuItem label="JourneyPlanner" title="JourneyPlanner" onSelect={() => this.handleServiceChange('journey-planner')} />
+              <GraphiQL.MenuItem label="NSR" title="NSR" onSelect={() => this.handleServiceChange('stop-places')} />
               <GraphiQL.MenuItem label="Raptor" title="Raptor" onSelect={() => this.handleServiceChange('raptor')} />
             </GraphiQL.Menu>
 
             <GraphiQL.Menu label="Environment" title="Environment">
               <GraphiQL.MenuItem label="Prod" title="Prod" onSelect={() => this.handleEnvironmentChange('prod')} />
-              <GraphiQL.MenuItem label="Staging" title="Staging" onSelect={() => this.handleEnvironmentChange('stage')} />
-              <GraphiQL.MenuItem label="Dev" title="Dev" onSelect={() => this.handleEnvironmentChange('test')} />
+              <GraphiQL.MenuItem label="Staging" title="Staging" onSelect={() => this.handleEnvironmentChange('staging')} />
+              <GraphiQL.MenuItem label="Dev" title="Dev" onSelect={() => this.handleEnvironmentChange('dev')} />
             </GraphiQL.Menu>
 
             { this.renderExamplesMenu() }
