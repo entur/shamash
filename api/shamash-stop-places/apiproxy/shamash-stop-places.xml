@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<APIProxy name="shamash-stop-places">
+    <Description>shamash-stop-places</Description>
+    <DisplayName>shamash-stop-places</DisplayName>
+   <Policies>
+        <Policy>assignMessage.addCors</Policy>
+        <Policy>flowCallout.getEnvironmentConfiguration</Policy>
+        <Policy>flowCalloutreplaceTargetUrl</Policy>
+        <Policy>spikeArrest</Policy>
+        <Policy>raiseFault.addTrailingSlash</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>stop-places-v1-ide</ProxyEndpoint>
+    </ProxyEndpoints>
+    <Resources/>
+    <Spec></Spec>
+    <TargetServers/>
+    <TargetEndpoints>
+        <TargetEndpoint>stop-places-v1-ide</TargetEndpoint>
+    </TargetEndpoints>
+</APIProxy>

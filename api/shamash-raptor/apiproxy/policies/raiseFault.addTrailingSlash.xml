@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<RaiseFault async="false" continueOnError="false" enabled="true" name="raiseFault.addTrailingSlash">
+    <DisplayName>raiseFault.addTrailingSlash</DisplayName>
+    <Properties/>
+    <FaultResponse>
+        <Set>
+            <Headers>
+                <Header name="Location">{proxy.basepath}/</Header>
+            </Headers>
+            <Payload contentType="text/plain"/>
+            <StatusCode>301</StatusCode>
+            <ReasonPhrase>Redirect</ReasonPhrase>
+        </Set>
+    </FaultResponse>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</RaiseFault>
