@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<APIProxy name="shamash-raptor">
-    <Description>shamash-raptor</Description>
-    <DisplayName>shamash-raptor</DisplayName>
+<APIProxy name="shamash-journey-planner-nl">
+    <Description>shamash-journey-planner-nl</Description>
+    <DisplayName>shamash-journey-planner-nl</DisplayName>
    <Policies>
         <Policy>assignMessage.addCors</Policy>
         <Policy>flowCallout.getEnvironmentConfiguration</Policy>
@@ -10,12 +10,12 @@
         <Policy>raiseFault.addTrailingSlash</Policy>
     </Policies>
     <ProxyEndpoints>
-        <ProxyEndpoint>journey-planner-v2-raptor-ide</ProxyEndpoint>
+        <ProxyEndpoint>journey-planner-v2-nl-ide</ProxyEndpoint>
     </ProxyEndpoints>
     <Resources/>
     <Spec></Spec>
     <TargetServers/>
     <TargetEndpoints>
-        <TargetEndpoint>journey-planner-v2-raptor-ide</TargetEndpoint>
+        <TargetEndpoint>journey-planner-v2-nl-ide</TargetEndpoint>
     </TargetEndpoints>
 </APIProxy>
