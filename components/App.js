@@ -124,28 +124,27 @@ class App extends React.Component {
 
   updateURL() {
     const { parameters } = this.state;
-    let newSearch =
-      '?' +
-      Object.keys(parameters)
-        .filter(key => {
-          return Boolean(parameters[key]);
-        })
-        .map(key => {
-          return (
-            encodeURIComponent(key) + '=' + encodeURIComponent(parameters[key])
-          );
-        })
+    let newSearch = Object.keys(parameters)
+        .filter(key => Boolean(parameters[key]))
+        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(parameters[key]))
         .join('&');
-    history.replaceState(null, null, newSearch);
+    history.replaceState(null, null, '?' + newSearch);
   }
 
   renderExamplesMenu = () => {
-    const menuEntries = Object.entries(window.config.serviceName === 'JourneyPlanner' ? journeyplannerQueries : nsrQueries)
+    const isJourneyPlanner = window.config.serviceName === 'JourneyPlanner'
+    const queries = isJourneyPlanner ? journeyplannerQueries : nsrQueries
+    const menuEntries = Object.entries(queries)
 
     return (
       <GraphiQL.Menu label="Examples" title="Examples">
         { menuEntries.map(([ key, value ]) => (
-          <GraphiQL.MenuItem key={key} label={key} title={key} onSelect={() => this.onEditQuery(value)} />
+          <GraphiQL.MenuItem
+            key={key}
+            label={key}
+            title={key}
+            onSelect={() => this.onEditQuery(value)}
+          />
         ))}
       </GraphiQL.Menu>
     )
