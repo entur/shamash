@@ -8,8 +8,8 @@ import '../css/custom.css';
 import { getQueryParameters } from '../utils/';
 import graphQLFetcher from '../utils/graphQLFetcher';
 
-import { tripQuery, bikeRentalStationsByBboxQuery } from '../queries/journeyplanner';
-import { stopPlaceQuery, topographicPlaceQuery } from '../queries/nsr';
+import * as journeyplannerQueries from '../queries/journeyplanner';
+import * as nsrQueries from '../queries/nsr';
 
 let logo
 
@@ -76,9 +76,9 @@ class App extends React.Component {
   getDefaultQuery() {
     if (!window.config) return
     if (window.config.serviceName === 'JourneyPlanner') {
-      return tripQuery
+      return journeyplannerQueries.tripQuery
     }
-    return topographicPlaceQuery
+    return nsrQueries.topographicPlaceQuery
   }
 
   handleClickPrettifyButton() {
@@ -124,34 +124,28 @@ class App extends React.Component {
 
   updateURL() {
     const { parameters } = this.state;
-    let newSearch =
-      '?' +
-      Object.keys(parameters)
-        .filter(key => {
-          return Boolean(parameters[key]);
-        })
-        .map(key => {
-          return (
-            encodeURIComponent(key) + '=' + encodeURIComponent(parameters[key])
-          );
-        })
+    let newSearch = Object.keys(parameters)
+        .filter(key => Boolean(parameters[key]))
+        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(parameters[key]))
         .join('&');
-    history.replaceState(null, null, newSearch);
+    history.replaceState(null, null, '?' + newSearch);
   }
 
   renderExamplesMenu = () => {
-    if (window.config.serviceName === 'JourneyPlanner') {
-      return (
-        <GraphiQL.Menu label="Examples" title="Examples">
-          <GraphiQL.MenuItem label="trip" title="trip" onSelect={() => this.onEditQuery(tripQuery)} />
-          <GraphiQL.MenuItem label="bikeRentalStationsByBbox" title="bikeRentalStationsByBbox" onSelect={() => this.onEditQuery(bikeRentalStationsByBboxQuery)} />
-        </GraphiQL.Menu>
-      )
-    }
+    const isJourneyPlanner = window.config.serviceName === 'JourneyPlanner'
+    const queries = isJourneyPlanner ? journeyplannerQueries : nsrQueries
+    const menuEntries = Object.entries(queries)
+
     return (
       <GraphiQL.Menu label="Examples" title="Examples">
-        <GraphiQL.MenuItem label="topographicPlace" title="topographicPlace" onSelect={() => this.onEditQuery(topographicPlaceQuery)}  />
-        <GraphiQL.MenuItem label="stopPlace" title="stopPlace" onSelect={() => this.onEditQuery(stopPlaceQuery)}  />
+        { menuEntries.map(([ key, value ]) => (
+          <GraphiQL.MenuItem
+            key={key}
+            label={key}
+            title={key}
+            onSelect={() => this.onEditQuery(value)}
+          />
+        ))}
       </GraphiQL.Menu>
     )
   }
