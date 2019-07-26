@@ -35,9 +35,6 @@ module.exports = {
         exclude: /node_modules/,
         include: __dirname,
         loader: 'babel-loader',
-        query: {
-          presets: ['es2015', 'stage-0', 'react']
-        }
       },
       {
         test: /\.css$/,
