@@ -19,7 +19,7 @@ module.exports = new Promise(function(resolve, reject){
     graphQLUrl: {
       doc: "Base URL for GraphQL endpoint including slash",
       format: "url",
-      default: "https://api-test.entur.org/stop_places/1.0/graphql",
+      default: "https://api.dev.entur.io/stop-places/v1/graphql",
       env: "GRAPHQL_URL"
     },
     serviceName: {
@@ -34,7 +34,6 @@ module.exports = new Promise(function(resolve, reject){
       default: "/",
       env: "ENDPOINTBASE"
     }
-
   });
 
   // If configuration URL exists, read it and update the configuration object

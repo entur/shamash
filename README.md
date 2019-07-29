@@ -36,5 +36,5 @@ GRAPHQL_URL=http://localhost:8090/graphql SERVICE_NAME=Stoppestedsregisteret npm
 Optional environment variable `ENDPOINTBASE` overrides namespace for client including slash. Full example:
 
 ```
-SERVICE_NAME=Stoppestedsregisteret ENDPOINTBASE=/admin/shamash/ GRAPHQL_URL=https://api-test.entur.org/stop_places/1.0/graphql npm start
+SERVICE_NAME=Stoppestedsregisteret ENDPOINTBASE=/admin/shamash/ GRAPHQL_URL=https://api.dev.entur.io/stop-places/v1/graphql npm start
 ```
