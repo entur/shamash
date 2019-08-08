@@ -11,6 +11,8 @@ import graphQLFetcher from '../utils/graphQLFetcher';
 import * as journeyplannerQueries from '../queries/journeyplanner';
 import * as nsrQueries from '../queries/nsr';
 
+import GeocoderModal from './GeocoderModal'
+
 let logo
 
 if (window.localStorage.getItem('theme') === 'dark') {
@@ -25,7 +27,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       parameters: getQueryParameters(),
-      isConfigLoaded: false
+      isConfigLoaded: false,
+      showGeocoderModal: false,
     };
 
     if (window.localStorage) {
@@ -131,6 +134,12 @@ class App extends React.Component {
     history.replaceState(null, null, '?' + newSearch);
   }
 
+  searchForId = () => {
+    this.setState({
+      showGeocoderModal: !this.state.showGeocoderModal,
+    })
+  }
+
   renderExamplesMenu = () => {
     const isJourneyPlanner = window.config.serviceName === 'JourneyPlanner'
     const queries = isJourneyPlanner ? journeyplannerQueries : nsrQueries
@@ -207,8 +216,15 @@ class App extends React.Component {
               <GraphiQL.MenuItem label="Light" title="Light" onSelect={() => this.handleThemeChange('light')} />
               <GraphiQL.MenuItem label="Dark" title="Dark" onSelect={() => this.handleThemeChange('dark')} />
             </GraphiQL.Menu>
+
+            <GraphiQL.Button
+              onClick={this.searchForId.bind(this)}
+              label="Search for ID"
+              title="Search for ID"
+            />
           </GraphiQL.Toolbar>
         </GraphiQL>
+        { this.state.showGeocoderModal ? <GeocoderModal onDismiss={() => this.setState({ showGeocoderModal: false })} /> : null }
       </div>
     );
   }
