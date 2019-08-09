@@ -4,8 +4,9 @@
     border-radius: 4px;
     padding: 1rem;
     position: absolute;
-    width: 600px;
-    left: calc(50vw - 250px);
+    width: 50vw;
+    min-width: 500px;
+    left: 25vw;
     top: 100px;
     z-index: 10;
 }
@@ -16,4 +17,18 @@
     border: 0;
     cursor: pointer;
     padding: 0.4rem;
+}
+
+.copied-popup {
+    height: 2rem;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    border: 2px solid #181c56;
+    background-color: white;
+    padding: 5px;
+    z-index: 50;
+    opacity: 0;
 }
