@@ -1,5 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import '@entur/component-library/lib/index.css'
+
 import App from './components/App'
 
 if (module.hot) {

@@ -39,7 +39,12 @@ module.exports = {
       {
         test: /\.css$/,
         exclude: /node_modules/,
-        include: path.join(__dirname, 'css'),
+        include: path.join(__dirname),
+        loaders: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.css$/,
+        include: /node_modules\/@entur\/component-library/,
         loaders: ['style-loader', 'css-loader']
       },
       {

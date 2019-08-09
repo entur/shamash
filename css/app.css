@@ -46,6 +46,7 @@
   align-items: center;
   background: linear-gradient(#f7f7f7, #e2e2e2);
   border-bottom: 1px solid #d0d0d0;
+  box-sizing: unset;
   cursor: default;
   display: flex;
   flex-direction: row;
@@ -212,9 +213,22 @@
   color: #444;
   cursor: pointer;
   display: inline-block;
+  font-size: 14px;
+  font-weight: 400;
   margin: 0 5px 0;
   padding: 2px 8px 4px;
   text-decoration: none;
+}
+
+.graphiql-container .doc-explorer-title-bar,
+.graphiql-container .history-title-bar {
+  box-sizing: unset;
+}
+
+.graphiql-container .doc-explorer-contents a,
+.graphiql-container .field-short-description p {
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .graphiql-container .toolbar-button:active {
