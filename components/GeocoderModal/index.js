@@ -42,6 +42,7 @@ function GeocoderModal({ onDismiss }) {
                 onChange={e => setQuery(e.currentTarget.value)}
                 placeholder="Jernbanetorget"
                 width="fluid"
+                autofocus="true"
             />
             <Table width="fluid">
                 <TableHead>
