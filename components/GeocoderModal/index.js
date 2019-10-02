@@ -53,58 +53,61 @@ function GeocoderModal({ onDismiss }) {
         });
     }
 
-    return (<>
-        <div className="geocoder-modal-overlay" onClick={(e)=>{
-        e.stopPropagation();
+    const onOverlayClick = (event) => {
+        event.stopPropagation();
         onDismiss()
-        }} />
-        <div className="geocoder-modal" ref={modalRef}>
-            <button className="geocoder-modal__close-button" onClick={onDismiss}>
-                <CloseIcon />
-            </button>
-            <h2>Geocoder</h2>
-            <p>
-                Search for IDs for stop places which you then can use in your JourneyPlanner queries.
-                Click a row to copy the ID to your clipboard.
-            </p>
-            <TextField
-                value={query}
-                onChange={e => setQuery(e.currentTarget.value)}
-                placeholder="Jernbanetorget"
-                width="fluid"
-                autoFocus
-            />
-            <Table width="fluid">
-                <TableHead>
-                    <TableRow>
-                        <TableHeaderCell align="left">
-                            Label
-                        </TableHeaderCell>
-                        <TableHeaderCell align="left">
-                            ID
-                        </TableHeaderCell>
-                        <TableHeaderCell align="left">
-                            Categories
-                        </TableHeaderCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    { results.map(feature => {
-                        const { id, label, category } = feature.properties
-                        return (
-                            <TableRow key={id} onClick={event => handleRowClick(id, event)}>
-                                <TableDataCell>{ label }</TableDataCell>
-                                <TableDataCell>{ id }</TableDataCell>
-                                <TableDataCell>{ category.join(', ') }</TableDataCell>
-                            </TableRow>
-                        )}) }
-                </TableBody>
-            </Table>
-            <div className="copied-popup" style={copiedPopupStyle}>
-                ID copied!
+    }
+
+    return (
+        <>
+            <div className="geocoder-modal-overlay" onClick={onOverlayClick} />
+            <div className="geocoder-modal" ref={modalRef}>
+                <button className="geocoder-modal__close-button" onClick={onDismiss}>
+                    <CloseIcon />
+                </button>
+                <h2>Geocoder</h2>
+                <p>
+                    Search for IDs for stop places which you then can use in your JourneyPlanner queries.
+                    Click a row to copy the ID to your clipboard.
+                </p>
+                <TextField
+                    value={query}
+                    onChange={e => setQuery(e.currentTarget.value)}
+                    placeholder="Jernbanetorget"
+                    width="fluid"
+                    autoFocus
+                />
+                <Table width="fluid">
+                    <TableHead>
+                        <TableRow>
+                            <TableHeaderCell align="left">
+                                Label
+                            </TableHeaderCell>
+                            <TableHeaderCell align="left">
+                                ID
+                            </TableHeaderCell>
+                            <TableHeaderCell align="left">
+                                Categories
+                            </TableHeaderCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        { results.map(feature => {
+                            const { id, label, category } = feature.properties
+                            return (
+                                <TableRow key={id} onClick={event => handleRowClick(id, event)}>
+                                    <TableDataCell>{ label }</TableDataCell>
+                                    <TableDataCell>{ id }</TableDataCell>
+                                    <TableDataCell>{ category.join(', ') }</TableDataCell>
+                                </TableRow>
+                            )}) }
+                    </TableBody>
+                </Table>
+                <div className="copied-popup" style={copiedPopupStyle}>
+                    ID copied!
+                </div>
             </div>
-          </div>
-    </>
+        </>
     )
 }
 
