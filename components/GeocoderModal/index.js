@@ -53,7 +53,11 @@ function GeocoderModal({ onDismiss }) {
         });
     }
 
-    return (
+    return (<>
+        <div className="geocoder-modal-overlay" onClick={(e)=>{
+        e.stopPropagation();
+        onDismiss()
+        }} />
         <div className="geocoder-modal" ref={modalRef}>
             <button className="geocoder-modal__close-button" onClick={onDismiss}>
                 <CloseIcon />
@@ -100,6 +104,7 @@ function GeocoderModal({ onDismiss }) {
                 ID copied!
             </div>
           </div>
+    </>
     )
 }
 
