@@ -224,7 +224,7 @@ class App extends React.Component {
             />
           </GraphiQL.Toolbar>
         </GraphiQL>
-        { this.state.showGeocoderModal ? <GeocoderModal onDismiss={() => this.setState({ showGeocoderModal: false })} /> : null }
+        { this.state.showGeocoderModal ? <GeocoderModal onDismiss={() => this.setState({ showGeocoderModal: false })} /> : null }
       </div>
     )
   }

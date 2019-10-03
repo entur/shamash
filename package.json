@@ -29,7 +29,7 @@
     "dev": "NODE_ENV=development npm start",
     "dev:journeyplanner": "SERVICE_NAME=JourneyPlanner GRAPHQL_URL=https://api.dev.entur.io/journey-planner/v2/graphql npm run dev",
     "dev-bundle": "npm run build SERVICE_NAME=JourneyPlanner npm start",
-    "lint": "eslint . --fix"
+    "lint": "eslint index.js server.js components queries utils"
   },
   "license": "ISC",
   "devDependencies": {
