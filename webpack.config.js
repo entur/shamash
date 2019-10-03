@@ -1,5 +1,5 @@
-const webpack = require('webpack');
-const path = require('path');
+const webpack = require('webpack')
+const path = require('path')
 
 const imageLoaderQuery = {
   mozjpeg: {
@@ -13,7 +13,7 @@ const imageLoaderQuery = {
     quality: '55-80',
     speed: 10,
   },
-};
+}
 
 module.exports = {
   mode: process.env.NODE_ENV || 'production',
@@ -56,4 +56,4 @@ module.exports = {
       }
     ]
   }
-};
+}

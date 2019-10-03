@@ -1,22 +1,22 @@
-import React from 'react';
-import GraphiQL from 'graphiql';
-import { parse, print } from 'graphql';
-import cfgreader from '../config/readConfig';
-import '../css/app.css';
-import '../css/graphiql.css';
-import '../css/custom.css';
-import { getQueryParameters } from '../utils/';
-import graphQLFetcher from '../utils/graphQLFetcher';
+import React from 'react'
+import GraphiQL from 'graphiql'
+import { parse, print } from 'graphql'
+import cfgreader from '../config/readConfig'
+import '../css/app.css'
+import '../css/graphiql.css'
+import '../css/custom.css'
+import { getQueryParameters } from '../utils/'
+import graphQLFetcher from '../utils/graphQLFetcher'
 
-import * as journeyplannerQueries from '../queries/journeyplanner';
-import * as nsrQueries from '../queries/nsr';
+import * as journeyplannerQueries from '../queries/journeyplanner'
+import * as nsrQueries from '../queries/nsr'
 
 import GeocoderModal from './GeocoderModal'
 
 let logo
 
 if (window.localStorage.getItem('theme') === 'dark') {
-  require('../css/darktheme.css');
+  require('../css/darktheme.css')
   logo = require('../static/img/entur-white.png')
 } else {
   logo = require('../static/img/entur.png')
@@ -24,26 +24,26 @@ if (window.localStorage.getItem('theme') === 'dark') {
 
 class App extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       parameters: getQueryParameters(),
       isConfigLoaded: false,
       showGeocoderModal: false,
-    };
+    }
 
     if (window.localStorage) {
-      localStorage.removeItem('graphiql:query');
+      localStorage.removeItem('graphiql:query')
     }
   }
 
   componentWillMount() {
     cfgreader.readConfig(config => {
-      console.info('loaded config', config);
-      window.config = config;
+      console.info('loaded config', config)
+      window.config = config
       this.setState({
         isConfigLoaded: true
-      });
-    });
+      })
+    })
   }
 
   onEditQuery(query) {
@@ -52,8 +52,8 @@ class App extends React.Component {
         ...this.state.parameters,
         query
       }
-    });
-    this.updateURL();
+    })
+    this.updateURL()
   }
 
   onEditVariables(variables) {
@@ -62,8 +62,8 @@ class App extends React.Component {
         ...this.state.parameters,
         variables
       }
-    });
-    this.updateURL();
+    })
+    this.updateURL()
   }
 
   onEditOperationName(operationName) {
@@ -72,8 +72,8 @@ class App extends React.Component {
         ...this.state.parameters,
         operationName
       }
-    });
-    this.updateURL();
+    })
+    this.updateURL()
   }
 
   getDefaultQuery() {
@@ -86,10 +86,10 @@ class App extends React.Component {
 
   handleClickPrettifyButton() {
     if (!this.graphiql) return
-    const editor = this.graphiql.getQueryEditor();
-    const currentText = editor.getValue();
-    const prettyText = print(parse(currentText));
-    editor.setValue(prettyText);
+    const editor = this.graphiql.getQueryEditor()
+    const currentText = editor.getValue()
+    const prettyText = print(parse(currentText))
+    editor.setValue(prettyText)
   }
 
   handleHistoryButton() {
@@ -104,13 +104,13 @@ class App extends React.Component {
     switch (service) {
       case 'journey-planner':
         newPathName = '/journey-planner/v2/ide'
-        break;
+        break
       case 'stop-places':
         newPathName = '/stop-places/v1/ide'
-        break;
+        break
       case 'raptor':
         newPathName = '/journey-planner/v2/raptor/ide'
-        break;
+        break
     }
     window.location.href = `${window.location.origin}${newPathName}${window.location.search}`
   }
@@ -122,16 +122,16 @@ class App extends React.Component {
 
   handleThemeChange = (theme) => {
     window.localStorage.setItem('theme', theme)
-    window.location.reload();
+    window.location.reload()
   }
 
   updateURL() {
-    const { parameters } = this.state;
+    const { parameters } = this.state
     let newSearch = Object.keys(parameters)
         .filter(key => Boolean(parameters[key]))
         .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(parameters[key]))
-        .join('&');
-    history.replaceState(null, null, '?' + newSearch);
+        .join('&')
+    history.replaceState(null, null, '?' + newSearch)
   }
 
   searchForId = () => {
@@ -160,10 +160,10 @@ class App extends React.Component {
   }
 
   render() {
-    const { parameters, isConfigLoaded } = this.state;
+    const { parameters, isConfigLoaded } = this.state
 
     if (!isConfigLoaded) {
-      return <div>Loading ...</div>;
+      return <div>Loading ...</div>
     }
 
     return (
@@ -172,7 +172,7 @@ class App extends React.Component {
           {window.config.serviceName}
         </div>
         <GraphiQL
-          ref={c => { this.graphiql = c; }}
+          ref={c => { this.graphiql = c }}
           fetcher={graphQLFetcher}
           query={parameters.query}
           variables={parameters.variables}
@@ -226,8 +226,8 @@ class App extends React.Component {
         </GraphiQL>
         { this.state.showGeocoderModal ? <GeocoderModal onDismiss={() => this.setState({ showGeocoderModal: false })} /> : null }
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App

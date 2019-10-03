@@ -1,6 +1,6 @@
-var convict = require('convict');
-var request = require('request');
-var fs = require('fs');
+var convict = require('convict')
+var request = require('request')
+var fs = require('fs')
 
 module.exports = new Promise(function(resolve, reject){
   var conf = convict({
@@ -34,12 +34,12 @@ module.exports = new Promise(function(resolve, reject){
       default: "/",
       env: "ENDPOINTBASE"
     }
-  });
+  })
 
   // If configuration URL exists, read it and update the configuration object
-  var configUrl = conf.get('configUrl');
+  var configUrl = conf.get('configUrl')
 
-  console.log("configUrl", configUrl);
+  console.log("configUrl", configUrl)
 
   if ( configUrl.indexOf("do_not_read") == -1 ) {
       // Read contents from configUrl if it is given
@@ -48,28 +48,28 @@ module.exports = new Promise(function(resolve, reject){
           fs.readFile(configUrl, (error, data) => {
               if (!error) {
                   data = JSON.parse(data)
-                  conf.load(data);
-                  conf.validate();
+                  conf.load(data)
+                  conf.validate()
                   resolve(conf)
               } else {
                   reject("Could not load data from " + configUrl, error)
               }
-          });
+          })
       } else {
           request(configUrl, function (error, response, body) {
               if (!error && response.statusCode == 200) {
                   body = JSON.parse(body)
-                  conf.load(body);
-                  conf.validate();
+                  conf.load(body)
+                  conf.validate()
                   resolve(conf)
               } else {
                   reject("Could not load data from " + configUrl, error)
               }
-          });
+          })
       }
   } else {
     console.log("The CONFIG_URL element has not been set, so you use the default dev-mode configuration")
-    conf.validate();
+    conf.validate()
     resolve(conf)
   }
 })
