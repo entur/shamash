@@ -28,7 +28,8 @@
     "build": "BABEL_ENV=production NODE_ENV=production webpack --config ./webpack.config.js",
     "dev": "NODE_ENV=development npm start",
     "dev:journeyplanner": "SERVICE_NAME=JourneyPlanner GRAPHQL_URL=https://api.dev.entur.io/journey-planner/v2/graphql npm run dev",
-    "dev-bundle": "npm run build SERVICE_NAME=JourneyPlanner npm start"
+    "dev-bundle": "npm run build SERVICE_NAME=JourneyPlanner npm start",
+    "lint": "eslint . --fix"
   },
   "license": "ISC",
   "devDependencies": {
@@ -37,8 +38,16 @@
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.1.0",
+    "eslint": "^6.5.1",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.15.1",
+    "eslint-plugin-standard": "^4.0.1",
     "file-loader": "^4.1.0",
     "image-webpack-loader": "^5.0.0",
     "style-loader": "^0.23.1",
