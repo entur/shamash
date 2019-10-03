@@ -1,5 +1,5 @@
-import fetch from 'isomorphic-fetch';
-import uuid from 'uuid/v4';
+import fetch from 'isomorphic-fetch'
+import uuid from 'uuid/v4'
 
 const graphQLFetcher = graphQLParams => (
     fetch(window.config.graphQLUrl, {
@@ -13,15 +13,15 @@ const graphQLFetcher = graphQLParams => (
         body: JSON.stringify(graphQLParams)
     })
         .then(function (response) {
-            return response.text();
+            return response.text()
         })
         .then(function (responseBody) {
             try {
-                return JSON.parse(responseBody);
+                return JSON.parse(responseBody)
             } catch (error) {
-                return responseBody;
+                return responseBody
             }
         })
-);
+)
 
-export default graphQLFetcher;
+export default graphQLFetcher
