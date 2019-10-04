@@ -7,7 +7,7 @@ module.exports = {
     },
     extends: [
         'eslint:recommended',
-        'plugin:react/recommended'
+        'plugin:react/recommended',
     ],
     globals: {
         Atomics: 'readonly',
@@ -22,10 +22,18 @@ module.exports = {
         sourceType: 'module'
     },
     plugins: [
-        'react'
+        'react',
+        'react-hooks',
     ],
+    settings: {
+        react: {
+            version: "detect",
+        },
+    },
     rules: {
         semi: ["error", "never"],
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "error",
         "react/prop-types": "off",
     }
 }

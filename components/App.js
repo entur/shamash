@@ -37,7 +37,7 @@ const App = () => {
       window.config = config
       setIsConfigLoaded(true)
     })
-  }, [cfgreader, setIsConfigLoaded, window])
+  }, [])
 
   const updateURL = ()=>{
     let newSearch = Object.keys(parameters)
