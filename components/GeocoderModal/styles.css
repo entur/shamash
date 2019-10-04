@@ -1,4 +1,6 @@
-.geocoder-modal-overlay{
+.geocoder-modal-overlay {
+    background-color: grey;
+    opacity: 0.5;
     position: fixed;
     width: 100%;
     height: 100%;

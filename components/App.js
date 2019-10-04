@@ -15,7 +15,7 @@ import GeocoderModal from './GeocoderModal';
 
 let logo;
 if (window.localStorage.getItem('theme') === 'dark') {
-  require('../css/darktheme.css');
+  require('../css/darktheme.css')
   logo = require('../static/img/entur-white.png')
 } else {
   logo = require('../static/img/entur.png')
@@ -134,7 +134,6 @@ const App = () => {
     )
   };
 
-
   if (!isConfigLoaded) {
     return <div>Loading ...</div>;
   }
@@ -145,6 +144,7 @@ const App = () => {
           {window.config.serviceName}
         </div>
         <GraphiQL
+
             ref={c => {
               graphiql = c;
             }}
@@ -199,6 +199,7 @@ const App = () => {
             />
           </GraphiQL.Toolbar>
         </GraphiQL>
+
         { showGeocoderModal ? <GeocoderModal onDismiss={() => setShowGeocoderModal(false )} /> : null }
       </div>
   );

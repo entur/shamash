@@ -21,7 +21,7 @@ configreader.readConfig = (callback) => {
     responseType: 'json'
   })
   .then(function(response) {
-    config = response.data;
+    config = response.data
     callback ( config )
   })
   .catch(function(response){
