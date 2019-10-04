@@ -25,6 +25,7 @@ module.exports = {
         'react'
     ],
     rules: {
-        semi: ["error", "never"]
+        semi: ["error", "never"],
+        "react/prop-types": "off",
     }
 }

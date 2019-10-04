@@ -200,10 +200,9 @@ const App = () => {
           </GraphiQL.Toolbar>
         </GraphiQL>
 
-        { showGeocoderModal ? <GeocoderModal onDismiss={() => setShowGeocoderModal(false )} /> : null }
+        { showGeocoderModal ? <GeocoderModal onDismiss={() => setShowGeocoderModal(false )} /> : null }
       </div>
   )
 }
-
 
 export default App
