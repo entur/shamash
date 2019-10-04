@@ -47,18 +47,8 @@ const App = () => {
     history.replaceState(null, null, '?' + newSearch)
   }
 
-  const onEditQuery = (query) => {
-    setParameters({ ...parameters, query})
-    updateURL()
-  }
-
-  const onEditVariables = (variables)=>{
-    setParameters({ ...parameters, variables})
-    updateURL()
-  }
-
-  const onEditOperationName = (operationName)=>{
-    setParameters({ ...parameters, operationName})
+  const editParameter = (key, value) => {
+    setParameters({ ...parameters, [key]: value })
     updateURL()
   }
 
@@ -127,7 +117,7 @@ const App = () => {
                   key={key}
                   label={key}
                   title={key}
-                  onSelect={() => onEditQuery(value)}
+                  onSelect={() => editParameter('query', value)}
               />
           ))}
         </GraphiQL.Menu>
@@ -144,7 +134,6 @@ const App = () => {
           {window.config.serviceName}
         </div>
         <GraphiQL
-
             ref={c => {
               graphiql = c
             }}
@@ -152,9 +141,9 @@ const App = () => {
             query={parameters.query}
             variables={parameters.variables}
             operationName={parameters.operationName}
-            onEditQuery={()=>onEditQuery()}
-            onEditVariables={()=>onEditVariables()}
-            onEditOperationName={()=>onEditOperationName()}
+            onEditQuery={value => editParameter('query', value)}
+            onEditVariables={value => editParameter('variables', value)}
+            onEditOperationName={value => editParameter('operationName', value)}
             defaultQuery={getDefaultQuery()}
         >
           <GraphiQL.Logo>
