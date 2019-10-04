@@ -21,15 +21,15 @@ if (window.localStorage.getItem('theme') === 'dark') {
     logo = require('../static/img/entur.png')
 }
 
+if (window.localStorage) {
+    localStorage.removeItem('graphiql:query');
+}
+
 const App = () => {
     const [parameters, setParameters] = useState(getQueryParameters());
     const [isConfigLoaded, setIsConfigLoaded] = useState(false);
     const [showGeocoderModal, setShowGeocoderModal] = useState(false);
     let graphiql;
-
-    if (window.localStorage) {
-        localStorage.removeItem('graphiql:query');
-    }
 
     useEffect(() => {
         cfgreader.readConfig(config => {
@@ -49,17 +49,17 @@ const App = () => {
 
     const onEditQuery = (query) => {
         setParameters({ ...parameters, query});
-        this.updateURL();
+        updateURL();
     };
 
     const onEditVariables = (variables)=>{
         setParameters({ ...parameters, variables});
-        this.updateURL();
+        updateURL();
     };
 
     const onEditOperationName = (operationName)=>{
         setParameters({ ...parameters, operationName});
-        this.updateURL();
+        updateURL();
     };
 
     const getDefaultQuery = () => {
@@ -134,6 +134,7 @@ const App = () => {
         )
     };
 
+
         if (!isConfigLoaded) {
             return <div>Loading ...</div>;
         }
@@ -167,7 +168,7 @@ const App = () => {
                         />
 
                         <GraphiQL.Button
-                            onClick={handleHistoryButton.bind(this)}
+                            onClick={()=>{handleHistoryButton()}}
                             label="History"
                             title="Show History"
                         />
@@ -192,7 +193,7 @@ const App = () => {
                         </GraphiQL.Menu>
 
                         <GraphiQL.Button
-                            onClick={searchForId.bind(this)}
+                            onClick={()=>{searchForId()}}
                             label="Search for ID"
                             title="Search for ID"
                         />
@@ -202,5 +203,6 @@ const App = () => {
             </div>
         );
 };
+
 
 export default App;
