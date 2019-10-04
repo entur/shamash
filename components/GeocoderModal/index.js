@@ -48,7 +48,7 @@ function GeocoderModal({ onDismiss }) {
                     popupTimeout = setTimeout(() => setCopiedPopupStyle({ opacity: 0 }), 1000)
                 }, () => {
                     setCopiedPopupStyle(null)
-                  })
+                })
             }
         })
     }
