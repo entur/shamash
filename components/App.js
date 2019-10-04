@@ -1,19 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import GraphiQL  from 'graphiql';
-import { parse, print } from 'graphql';
-import cfgreader from '../config/readConfig';
-import '../css/app.css';
-import '../css/graphiql.css';
-import '../css/custom.css';
-import { getQueryParameters } from '../utils/';
-import graphQLFetcher from '../utils/graphQLFetcher';
+import React, {useState, useEffect} from 'react'
+import GraphiQL  from 'graphiql'
+import { parse, print } from 'graphql'
+import cfgreader from '../config/readConfig'
+import '../css/app.css'
+import '../css/graphiql.css'
+import '../css/custom.css'
+import { getQueryParameters } from '../utils/'
+import graphQLFetcher from '../utils/graphQLFetcher'
 
-import * as journeyplannerQueries from '../queries/journeyplanner';
-import * as nsrQueries from '../queries/nsr';
+import * as journeyplannerQueries from '../queries/journeyplanner'
+import * as nsrQueries from '../queries/nsr'
 
-import GeocoderModal from './GeocoderModal';
+import GeocoderModal from './GeocoderModal'
 
-let logo;
+let logo
 if (window.localStorage.getItem('theme') === 'dark') {
   require('../css/darktheme.css')
   logo = require('../static/img/entur-white.png')
@@ -22,103 +22,103 @@ if (window.localStorage.getItem('theme') === 'dark') {
 }
 
 if (window.localStorage) {
-  localStorage.removeItem('graphiql:query');
+  localStorage.removeItem('graphiql:query')
 }
 
 const App = () => {
-  const [parameters, setParameters] = useState(getQueryParameters());
-  const [isConfigLoaded, setIsConfigLoaded] = useState(false);
-  const [showGeocoderModal, setShowGeocoderModal] = useState(false);
-  let graphiql;
+  const [parameters, setParameters] = useState(getQueryParameters())
+  const [isConfigLoaded, setIsConfigLoaded] = useState(false)
+  const [showGeocoderModal, setShowGeocoderModal] = useState(false)
+  let graphiql
 
   useEffect(() => {
     cfgreader.readConfig(config => {
-      console.info('loaded config', config);
-      window.config = config;
+      console.info('loaded config', config)
+      window.config = config
       setIsConfigLoaded(true)
-    });
-  }, [cfgreader, setIsConfigLoaded, window]);
+    })
+  }, [cfgreader, setIsConfigLoaded, window])
 
   const updateURL = ()=>{
     let newSearch = Object.keys(parameters)
         .filter(key => Boolean(parameters[key]))
         .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(parameters[key]))
-        .join('&');
-    history.replaceState(null, null, '?' + newSearch);
-  };
+        .join('&')
+    history.replaceState(null, null, '?' + newSearch)
+  }
 
   const onEditQuery = (query) => {
-    setParameters({ ...parameters, query});
-    updateURL();
-  };
+    setParameters({ ...parameters, query})
+    updateURL()
+  }
 
   const onEditVariables = (variables)=>{
-    setParameters({ ...parameters, variables});
-    updateURL();
-  };
+    setParameters({ ...parameters, variables})
+    updateURL()
+  }
 
   const onEditOperationName = (operationName)=>{
-    setParameters({ ...parameters, operationName});
-    updateURL();
-  };
+    setParameters({ ...parameters, operationName})
+    updateURL()
+  }
 
   const getDefaultQuery = () => {
-    if (!window.config) return;
+    if (!window.config) return
     if (window.config.serviceName === 'JourneyPlanner') {
-      return journeyplannerQueries.tripQuery;
+      return journeyplannerQueries.tripQuery
     }
-    return nsrQueries.topographicPlaceQuery;
-  };
+    return nsrQueries.topographicPlaceQuery
+  }
 
   const handleClickPrettifyButton = ()=>{
-    if (!graphiql) return;
-    const editor = graphiql.getQueryEditor();
-    const currentText = editor.getValue();
-    const prettyText = print(parse(currentText));
-    editor.setValue(prettyText);
-  };
+    if (!graphiql) return
+    const editor = graphiql.getQueryEditor()
+    const currentText = editor.getValue()
+    const prettyText = print(parse(currentText))
+    editor.setValue(prettyText)
+  }
 
   const handleHistoryButton = () => {
-    if (!graphiql) return;
+    if (!graphiql) return
     graphiql.setState({
       historyPaneOpen: !graphiql.state.historyPaneOpen,
-    });
-  };
+    })
+  }
 
   const handleServiceChange = (service) => {
-    let newPathName;
+    let newPathName
     switch (service) {
       case 'journey-planner':
-        newPathName = '/journey-planner/v2/ide';
-        break;
+        newPathName = '/journey-planner/v2/ide'
+        break
       case 'stop-places':
-        newPathName = '/stop-places/v1/ide';
-        break;
+        newPathName = '/stop-places/v1/ide'
+        break
       case 'raptor':
-        newPathName = '/journey-planner/v2/raptor/ide';
-        break;
+        newPathName = '/journey-planner/v2/raptor/ide'
+        break
       default: // need for good performance
     }
-    window.location.href = `${window.location.origin}${newPathName}${window.location.search}`;
-  };
+    window.location.href = `${window.location.origin}${newPathName}${window.location.search}`
+  }
 
   const handleEnvironmentChange = (env) => {
-    const newOrigin = env === 'prod' ? 'https://api.entur.io' : `https://api.${env}.entur.io`;
-    window.location.href = `${newOrigin}${window.location.pathname}${window.location.search}`;
-  };
+    const newOrigin = env === 'prod' ? 'https://api.entur.io' : `https://api.${env}.entur.io`
+    window.location.href = `${newOrigin}${window.location.pathname}${window.location.search}`
+  }
 
   const handleThemeChange = (theme) => {
-    window.localStorage.setItem('theme', theme);
-    window.location.reload();
-  };
+    window.localStorage.setItem('theme', theme)
+    window.location.reload()
+  }
   const searchForId = () => {
-    setShowGeocoderModal( !showGeocoderModal);
-  };
+    setShowGeocoderModal( !showGeocoderModal)
+  }
 
   const renderExamplesMenu = () => {
-    const isJourneyPlanner = window.config.serviceName === 'JourneyPlanner';
-    const queries = isJourneyPlanner ? journeyplannerQueries : nsrQueries;
-    const menuEntries = Object.entries(queries);
+    const isJourneyPlanner = window.config.serviceName === 'JourneyPlanner'
+    const queries = isJourneyPlanner ? journeyplannerQueries : nsrQueries
+    const menuEntries = Object.entries(queries)
 
     return (
         <GraphiQL.Menu label="Examples" title="Examples">
@@ -132,10 +132,10 @@ const App = () => {
           ))}
         </GraphiQL.Menu>
     )
-  };
+  }
 
   if (!isConfigLoaded) {
-    return <div>Loading ...</div>;
+    return <div>Loading ...</div>
   }
 
   return (
@@ -146,7 +146,7 @@ const App = () => {
         <GraphiQL
 
             ref={c => {
-              graphiql = c;
+              graphiql = c
             }}
             fetcher={graphQLFetcher}
             query={parameters.query}
@@ -202,8 +202,8 @@ const App = () => {
 
         { showGeocoderModal ? <GeocoderModal onDismiss={() => setShowGeocoderModal(false )} /> : null }
       </div>
-  );
-};
+  )
+}
 
 
-export default App;
+export default App
