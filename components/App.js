@@ -7,6 +7,7 @@ import '../css/graphiql.css'
 import '../css/custom.css'
 import { getQueryParameters } from '../utils/'
 import graphQLFetcher from '../utils/graphQLFetcher'
+import getPreferredTheme from '../utils/getPreferredTheme'
 
 import * as journeyplannerQueries from '../queries/journeyplanner'
 import * as nsrQueries from '../queries/nsr'
@@ -14,7 +15,7 @@ import * as nsrQueries from '../queries/nsr'
 import GeocoderModal from './GeocoderModal'
 
 let logo
-if (window.localStorage.getItem('theme') === 'dark') {
+if (getPreferredTheme() === 'dark') {
   require('../css/darktheme.css')
   logo = require('../static/img/entur-white.png')
 } else {
