@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import debounce from 'lodash.debounce'
 import EnturService from '@entur/sdk'
+import getPreferredTheme from '../../utils/getPreferredTheme';
 
 import {
     TextField,
@@ -26,6 +27,7 @@ function GeocoderModal({ onDismiss }) {
     const [results, setResults] = useState([])
     const modalRef = useRef(null)
     const [copiedPopupStyle, setCopiedPopupStyle] = useState({ top: 10, left: 10 })
+    const theme = getPreferredTheme();
 
     let popupTimeout = null
 
@@ -61,11 +63,11 @@ function GeocoderModal({ onDismiss }) {
     return (
         <>
             <div className="geocoder-modal-overlay" onClick={onOverlayClick} />
-            <div className="geocoder-modal" ref={modalRef}>
-                <button className="geocoder-modal__close-button" onClick={onDismiss}>
+            <div className ={`geocoder-modal geocoder-modal--${theme}`} ref={modalRef}>
+                <button className={`geocoder-modal__close-button close-button--${theme}`} onClick={onDismiss}>
                     <CloseIcon />
                 </button>
-                <h2>Geocoder</h2>
+                <h2 className={`geocoder-modal__title--${theme}`}>Geocoder</h2>
                 <p>
                     Search for IDs for stop places which you then can use in your JourneyPlanner queries.
                     Click a row to copy the ID to your clipboard.
@@ -75,18 +77,19 @@ function GeocoderModal({ onDismiss }) {
                     onChange={e => setQuery(e.currentTarget.value)}
                     placeholder="Jernbanetorget"
                     width="fluid"
+                    className = {`geocoder-modal__input geocoder-modal__input--${theme}`}
                     autoFocus
                 />
-                <Table width="fluid">
+                <Table width="fluid" className="geocoder-modal__table">
                     <TableHead>
-                        <TableRow>
-                            <TableHeaderCell align="left">
+                        <TableRow className={`geocoder-modal__table-row--${theme}`}>
+                            <TableHeaderCell className = {`geocoder-modal__table-header--${theme}`} align="left">
                                 Label
                             </TableHeaderCell>
-                            <TableHeaderCell align="left">
+                            <TableHeaderCell className = {`geocoder-modal__table-header--${theme}`} align="left">
                                 ID
                             </TableHeaderCell>
-                            <TableHeaderCell align="left">
+                            <TableHeaderCell className = {`geocoder-modal__table-header--${theme}`} align="left">
                                 Categories
                             </TableHeaderCell>
                         </TableRow>
@@ -95,15 +98,15 @@ function GeocoderModal({ onDismiss }) {
                         { results.map(feature => {
                             const { id, label, category } = feature.properties
                             return (
-                                <TableRow key={id} onClick={event => handleRowClick(id, event)}>
-                                    <TableDataCell>{ label }</TableDataCell>
-                                    <TableDataCell>{ id }</TableDataCell>
-                                    <TableDataCell>{ category.join(', ') }</TableDataCell>
+                                <TableRow className={`geocoder-modal__table-row--${theme}`} key={id} onClick={event => handleRowClick(id, event)}>
+                                    <TableDataCell className = {`geocoder-modal__table-data--${theme}`}>{ label }</TableDataCell>
+                                    <TableDataCell className = {`geocoder-modal__table-data--${theme}`}>{ id }</TableDataCell>
+                                    <TableDataCell className = {`geocoder-modal__table-data--${theme}`}>{ category.join(', ') }</TableDataCell>
                                 </TableRow>
                             )}) }
                     </TableBody>
                 </Table>
-                <div className="copied-popup" style={copiedPopupStyle}>
+                <div className= {`copied-popup copied-popup--${theme}`} style={copiedPopupStyle}>
                     ID copied!
                 </div>
             </div>
