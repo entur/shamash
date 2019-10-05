@@ -12,10 +12,11 @@
     background: white;
     border: 4px solid #d1d3d3;
     border-radius: 4px;
-    padding: 1rem;
+    padding: 2rem;
     position: absolute;
     width: 50vw;
     min-width: 500px;
+    min-height: 44vh;
     left: 25vw;
     top: 100px;
     z-index: 10;
@@ -41,4 +42,61 @@
     padding: 5px;
     z-index: 50;
     opacity: 0;
+}
+
+
+.geocoder-modal--dark{
+    background-color: #222222;
+    border: none;
+    color: white;
+}
+
+.close-button--dark{
+    background-color: #222222;
+    color: white;
+    transition: background-color 0.365s;
+    border: none;
+}
+
+.close-button--dark:hover{
+    background-color: #E15053;
+}
+
+.geocoder-modal__title--dark{
+    color: #ED484E;
+}
+
+.geocoder-modal__input--dark, .geocoder-modal__input--dark:focus, .geocoder-modal__input--dark:hover{
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+}
+
+
+.geocoder-modal__input--dark::placeholder{
+    color: white;
+}
+
+.geocoder-modal__table{
+    top: 1vh;
+}
+
+.geocoder-modal__table-header--dark{
+    color: #ed484e;
+    border-bottom: 0.125rem solid #ed484e;
+}
+
+.geocoder-modal__table-data--dark{
+    border-bottom: 0.125rem solid #ed484e;
+}
+
+.geocoder-modal__table-row--dark:hover{
+    background-color: black !important;
+}
+
+.copied-popup--dark{
+    background-color: #222222;
+    border: none;
+    color: #ED484E;
+    font-size: 0.75rem;
 }
