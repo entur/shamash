@@ -114,8 +114,20 @@
     background: #21262b;
 }
 
-.graphiql-container .execute-options > li.selected, .graphiql-container .toolbar-menu-items > li.hover, .graphiql-container .toolbar-menu-items > li:active, .graphiql-container .toolbar-menu-items > li:hover, .graphiql-container .toolbar-select-options > li.hover, .graphiql-container .toolbar-select-options > li:active, .graphiql-container .toolbar-select-options > li:hover, .graphiql-container .history-contents > p:hover, .graphiql-container .history-contents > p:active {
+.graphiql-container .execute-options > li.selected,
+.graphiql-container .toolbar-menu-items > li.hover,
+.graphiql-container .toolbar-menu-items > li:active,
+.graphiql-container .toolbar-menu-items > li:hover,
+.graphiql-container .toolbar-select-options > li.hover,
+.graphiql-container .toolbar-select-options > li:active,
+.graphiql-container .toolbar-select-options > li:hover,
+.graphiql-container .history-contents > p:hover,
+.graphiql-container .history-contents > p:active {
     background: #383C41;
+}
+
+.graphiql-container .toolbar-menu-items > li {
+    color: #383C41;
 }
 
 .graphiql-container .doc-category-title {
@@ -133,6 +145,19 @@
 
 .cm-property {
     color: #A5ACB8;
+}
+
+.cm-punctuation {
+    color: #ACACAC;
+}
+
+.cm-ws {
+    color: #ACACAC;
+}
+
+.graphiql-container div.CodeMirror span.CodeMirror-matchingbracket {
+  color: #ACACAC;
+  text-decoration: underline;
 }
 
 .cm-string {
