@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import GraphiQL from "graphiql";
 import { parse, print } from "graphql";
 import graphQLFetcher from "utils/graphQLFetcher";
@@ -16,28 +16,60 @@ if (getPreferredTheme() === "dark") {
   logo = require("static/images/entur.png");
 }
 
+const DEFAULT_SERVICE_ID = "journey-planner";
+
+const updateURL = parameters => {
+  let newSearch = Object.keys(parameters)
+    .filter(key => Boolean(parameters[key]))
+    .map(
+      key => encodeURIComponent(key) + "=" + encodeURIComponent(parameters[key])
+    )
+    .join("&");
+  window.history.replaceState(null, null, "?" + newSearch);
+};
+
+const parametersUpdater = ([parameters, setParameters]) => (key, value) => {
+  const newParameters = { ...parameters, [key]: value };
+  setParameters(newParameters);
+  updateURL(newParameters);
+};
+
 function App() {
   const [parameters, setParameters] = useState(getQueryParameters());
+  const editParameter = parametersUpdater([parameters, setParameters]);
+  const [services, setServices] = useState(null);
+  const [currentService, setCurrentService] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   let graphiql = useRef(null);
 
-  const updateURL = () => {
-    let newSearch = Object.keys(parameters)
-      .filter(key => Boolean(parameters[key]))
-      .map(
-        key =>
-          encodeURIComponent(key) + "=" + encodeURIComponent(parameters[key])
-      )
-      .join("&");
-    window.history.replaceState(null, null, "?" + newSearch);
+  useEffect(() => {
+    fetch("/config.json")
+      .then(resp => resp.json())
+      .then(services => {
+        setServices(services);
+        setCurrentService(services.find(s => s.id === DEFAULT_SERVICE_ID));
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (currentService) {
+      editParameter("service", currentService.id);
+    }
+  }, [currentService]);
+
+  if (loading) {
+    return null;
+  }
+
+  const handleServiceChange = id => {
+    const service = services.find(s => s.id === id);
+    setCurrentService(service);
+    editParameter("service", service.id);
+    editParameter("query", service.defaultQuery);
   };
 
-  const editParameter = (key, value) => {
-    setParameters({ ...parameters, [key]: value });
-    updateURL();
-  };
-
-  const handleServiceChange = () => {};
   const handleEnvironmentChange = () => {};
 
   const handleThemeChange = theme => {
@@ -67,12 +99,13 @@ function App() {
     <div className="App">
       <GraphiQL
         ref={graphiql}
-        fetcher={graphQLFetcher}
+        fetcher={graphQLFetcher(currentService.url)}
         query={parameters.query}
         variables={parameters.variables}
         operationName={parameters.operationName}
         onEditQuery={value => editParameter("query", value)}
         onEditVariables={value => editParameter("variables", value)}
+        onEditOperationName={value => editParameter("operationName", value)}
       >
         <GraphiQL.Logo>
           <img alt="logo" src={logo} className="logo" />
@@ -93,21 +126,14 @@ function App() {
           />
 
           <GraphiQL.Menu label="Service" title="Service">
-            <GraphiQL.MenuItem
-              label="JourneyPlanner"
-              title="JourneyPlanner"
-              onSelect={() => handleServiceChange("journey-planner")}
-            />
-            <GraphiQL.MenuItem
-              label="NSR"
-              title="NSR"
-              onSelect={() => handleServiceChange("stop-places")}
-            />
-            <GraphiQL.MenuItem
-              label="Raptor"
-              title="Raptor"
-              onSelect={() => handleServiceChange("raptor")}
-            />
+            {services.map(service => (
+              <GraphiQL.MenuItem
+                key={service.id}
+                label={service.name}
+                title={service.name}
+                onSelect={() => handleServiceChange(service.id)}
+              />
+            ))}
           </GraphiQL.Menu>
 
           <GraphiQL.Menu label="Environment" title="Environment">

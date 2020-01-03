@@ -1,9 +1,7 @@
 import fetch from "isomorphic-fetch";
 import uuid from "uuid/v4";
 
-const graphQLUrl = "https://api.entur.io/stop-places/v1/graphql";
-
-const graphQLFetcher = graphQLParams =>
+const graphQLFetcher = graphQLUrl => graphQLParams =>
   fetch(graphQLUrl, {
     method: "post",
     headers: {
