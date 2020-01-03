@@ -1,5 +1,0 @@
----
-docker_build_root: /usr/src
-build_log_directory: /usr/src/log
-shamash_root: "{{docker_build_root}}/shamash"
-shamash_docker_image: "eu.gcr.io/carbon-1287/shamash"
