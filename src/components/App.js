@@ -3,7 +3,8 @@ import GraphiQL from "graphiql";
 import { parse, print } from "graphql";
 import graphQLFetcher from "utils/graphQLFetcher";
 import getPreferredTheme from "utils/getPreferredTheme";
-import { getQueryParameters } from "utils";
+import history from "utils/history";
+import queryString from "query-string";
 import "static/css/app.css";
 import "graphiql/graphiql.css";
 import "static/css/custom.css";
@@ -18,28 +19,13 @@ if (getPreferredTheme() === "dark") {
 
 const DEFAULT_SERVICE_ID = "journey-planner";
 
-const updateURL = parameters => {
-  let newSearch = Object.keys(parameters)
-    .filter(key => Boolean(parameters[key]))
-    .map(
-      key => encodeURIComponent(key) + "=" + encodeURIComponent(parameters[key])
-    )
-    .join("&");
-  window.history.replaceState(null, null, "?" + newSearch);
-};
-
-const parametersUpdater = ([parameters, setParameters]) => (key, value) => {
-  const newParameters = { ...parameters, [key]: value };
-  setParameters(newParameters);
-  updateURL(newParameters);
-};
-
 function App() {
-  const [parameters, setParameters] = useState(getQueryParameters());
-  const editParameter = parametersUpdater([parameters, setParameters]);
   const [services, setServices] = useState(null);
-  const [currentService, setCurrentService] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [pathname, setPathname] = useState(history.location.pathname);
+  const [parameters, setParameters] = useState(
+    queryString.parse(history.location.search)
+  );
 
   let graphiql = useRef(null);
 
@@ -48,26 +34,36 @@ function App() {
       .then(resp => resp.json())
       .then(services => {
         setServices(services);
-        setCurrentService(services.find(s => s.id === DEFAULT_SERVICE_ID));
         setLoading(false);
       });
   }, []);
 
   useEffect(() => {
-    if (currentService) {
-      editParameter("service", currentService.id);
-    }
-  }, [currentService]);
+    history.listen(location => {
+      setPathname(location.pathname);
+      setParameters(queryString.parse(location.search));
+    });
+  }, []);
 
   if (loading) {
     return null;
   }
 
+  const currentService =
+    services.find(s => pathname.includes(s.id)) ||
+    services.find(s => s.id === DEFAULT_SERVICE_ID);
+
   const handleServiceChange = id => {
-    const service = services.find(s => s.id === id);
-    setCurrentService(service);
-    editParameter("service", service.id);
-    editParameter("query", service.defaultQuery);
+    history.push(`/${id}`);
+  };
+
+  const editParameter = (key, value) => {
+    history.replace({
+      search: queryString.stringify({
+        ...parameters,
+        [key]: value
+      })
+    });
   };
 
   const handleEnvironmentChange = () => {};
@@ -95,14 +91,20 @@ function App() {
   const renderExamplesMenu = () => {};
   const searchForId = () => {};
 
+  const {
+    query = currentService.defaultQuery,
+    variables,
+    operationName
+  } = parameters;
+
   return (
     <div className="App">
       <GraphiQL
         ref={graphiql}
         fetcher={graphQLFetcher(currentService.url)}
-        query={parameters.query}
-        variables={parameters.variables}
-        operationName={parameters.operationName}
+        query={query}
+        variables={variables}
+        operationName={operationName}
         onEditQuery={value => editParameter("query", value)}
         onEditVariables={value => editParameter("variables", value)}
         onEditOperationName={value => editParameter("operationName", value)}
