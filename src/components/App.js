@@ -39,7 +39,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    history.listen(location => {
+    return history.listen(location => {
       setPathname(location.pathname);
       setParameters(queryString.parse(location.search));
     });
