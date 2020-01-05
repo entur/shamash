@@ -13,7 +13,7 @@ const configureApp = (app, endpointBase = '/') => {
     res.send([
       {
         id: 'stop-places',
-        name: 'NSR',
+        name: 'Stoppestedsregisteret',
         url: 'https://api.entur.io/stop-places/v1/graphql',
         queries: 'stop-places',
         defaultQuery: 'stopPlace'
