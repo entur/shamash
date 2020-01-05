@@ -5,6 +5,8 @@ import graphQLFetcher from "utils/graphQLFetcher";
 import getPreferredTheme from "utils/getPreferredTheme";
 import history from "utils/history";
 import queryString from "query-string";
+import * as journeyplannerQueries from "queries/journey-planner";
+import * as nsrQueries from "queries/stop-places";
 import "static/css/app.css";
 import "graphiql/graphiql.css";
 import "static/css/custom.css";
@@ -88,11 +90,38 @@ function App() {
     });
   };
 
-  const renderExamplesMenu = () => {};
+  const renderExamplesMenu = () => {
+    let queries;
+
+    if (currentService.queries === "journey-planner") {
+      queries = journeyplannerQueries;
+    } else if (currentService.queries === "stop-places") {
+      queries = nsrQueries;
+    } else {
+      return null;
+    }
+
+    return (
+      <GraphiQL.Menu label="Examples" title="Examples">
+        {Object.entries(queries).map(([key, value]) => (
+          <GraphiQL.MenuItem
+            key={key}
+            label={key}
+            title={key}
+            onSelect={() => editParameter("query", value)}
+          />
+        ))}
+      </GraphiQL.Menu>
+    );
+  };
+
   const searchForId = () => {};
 
   const {
-    query = currentService.defaultQuery,
+    query = currentService
+      ? require(`queries/${currentService.queries}/${currentService.defaultQuery}`)
+          .default
+      : "",
     variables,
     operationName
   } = parameters;

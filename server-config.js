@@ -15,65 +15,15 @@ const configureApp = (app, endpointBase = '/') => {
         id: 'stop-places',
         name: 'NSR',
         url: 'https://api.entur.io/stop-places/v1/graphql',
-        defaultQuery: `
-        {
-          topographicPlace(query: "frogn") {
-            id
-            name {
-              value
-            }
-          }
-        }
-        `
+        queries: 'stop-places',
+        defaultQuery: 'stopPlace'
       },
       {
         id: 'journey-planner',
         name: 'JourneyPlanner',
         url: 'https://api.entur.io/journey-planner/v2/graphql',
-        defaultQuery: `
-        {
-          trip(
-            from: {
-              name: "Bjerkealleen 5A, Skedsmo"
-              coordinates: {
-                latitude: 59.96050414081307
-                longitude:11.040338686322317
-              }
-            }
-            to: {
-              place:"NSR:StopPlace:385"
-              name:"Alna, Oslo"
-            }
-            numTripPatterns: 3
-            dateTime: "2020-01-03T19:18:26.997+01:00"
-            minimumTransferTime: 180
-            walkSpeed: 1.3
-            wheelchair: false
-            arriveBy: false
-          )
-
-        #### Requested fields
-          {
-            tripPatterns {
-              startTime
-              duration
-              walkDistance
-              legs {
-                mode
-                distance
-                line {
-                  id
-                  publicCode
-                }
-                pointsOnLink {
-                  points
-                  length
-                }
-              }
-            }
-          }
-        }
-        `
+        queries: 'journey-planner',
+        defaultQuery: 'trip'
       }
     ]);
   });
