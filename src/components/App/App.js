@@ -8,13 +8,13 @@ import queryString from "query-string";
 import * as journeyplannerQueries from "queries/journey-planner";
 import * as nsrQueries from "queries/stop-places";
 import GeocoderModal from "components/GeocoderModal";
-import "static/css/app.css";
+import "./app.css";
+import "./custom.css";
 import "graphiql/graphiql.css";
-import "static/css/custom.css";
 
 let logo;
 if (getPreferredTheme() === "dark") {
-  require("static/css/darktheme.css");
+  require("./darktheme.css");
   logo = require("static/images/entur-white.png");
 } else {
   logo = require("static/images/entur.png");
@@ -132,7 +132,6 @@ function App() {
 
   return (
     <div className="App">
-      <div className="label">{currentService.name}</div>
       <GraphiQL
         ref={graphiql}
         fetcher={graphQLFetcher(currentService.url)}
@@ -213,6 +212,18 @@ function App() {
             title="Search for ID"
           />
         </GraphiQL.Toolbar>
+        <GraphiQL.Footer>
+          <div className="label">
+            {currentService.name}:{" "}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={currentService.url}
+            >
+              {currentService.url}
+            </a>
+          </div>
+        </GraphiQL.Footer>
       </GraphiQL>
       {showGeocoderModal ? (
         <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
