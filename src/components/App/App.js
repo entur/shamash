@@ -7,6 +7,7 @@ import history from "utils/history";
 import queryString from "query-string";
 import * as journeyplannerQueries from "queries/journey-planner";
 import * as nsrQueries from "queries/stop-places";
+import GeocoderModal from "components/GeocoderModal";
 import "static/css/app.css";
 import "graphiql/graphiql.css";
 import "static/css/custom.css";
@@ -28,6 +29,7 @@ function App() {
   const [parameters, setParameters] = useState(
     queryString.parse(history.location.search)
   );
+  const [showGeocoderModal, setShowGeocoderModal] = useState(false);
 
   let graphiql = useRef(null);
 
@@ -115,7 +117,9 @@ function App() {
     );
   };
 
-  const searchForId = () => {};
+  const searchForId = () => {
+    setShowGeocoderModal(!showGeocoderModal);
+  };
 
   const {
     query = currentService
@@ -210,6 +214,9 @@ function App() {
           />
         </GraphiQL.Toolbar>
       </GraphiQL>
+      {showGeocoderModal ? (
+        <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
+      ) : null}
     </div>
   );
 }
