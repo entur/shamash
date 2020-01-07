@@ -16,6 +16,9 @@ workflows:
           tag: ${CIRCLE_BRANCH#"env/"}-v$CIRCLE_BUILD_NUM
           deploy: true
           context: global
+          filters:
+            branches:
+              only: v2
 #          requires:
 #            - test
 #          pre-steps:
