@@ -1,20 +1,3 @@
 domain: .rtd.entur.io
 environment: rtd
 loadBalancerIP: 35.205.170.68
-configJson: |-
-  [
-    {
-      id: 'stop-places',
-      name: 'Stoppestedsregisteret',
-      url: 'https://api.entur.io/stop-places/v1/graphql',
-      queries: 'stop-places',
-      defaultQuery: 'stopPlace'
-    },
-    {
-      id: 'journey-planner',
-      name: 'JourneyPlanner',
-      url: 'https://api.entur.io/journey-planner/v2/graphql',
-      queries: 'journey-planner',
-      defaultQuery: 'trip'
-    }
-  ]
