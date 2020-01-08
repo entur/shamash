@@ -1,57 +1,31 @@
-import React, { useState, useRef, useEffect } from "react";
-import GraphiQL from "graphiql";
-import { parse, print } from "graphql";
-import graphQLFetcher from "utils/graphQLFetcher";
-import getPreferredTheme from "utils/getPreferredTheme";
-import history from "utils/history";
-import queryString from "query-string";
-import * as journeyplannerQueries from "queries/journey-planner";
-import * as nsrQueries from "queries/stop-places";
-import GeocoderModal from "components/GeocoderModal";
-import "./app.css";
-import "./custom.css";
-import "graphiql/graphiql.css";
+import React, { useState, useRef, useEffect } from 'react';
+import GraphiQL from 'graphiql';
+import { parse, print } from 'graphql';
+import graphQLFetcher from 'utils/graphQLFetcher';
+import getPreferredTheme from 'utils/getPreferredTheme';
+import history from 'utils/history';
+import queryString from 'query-string';
+import * as journeyplannerQueries from 'queries/journey-planner';
+import * as nsrQueries from 'queries/stop-places';
+import GeocoderModal from 'components/GeocoderModal';
+import './app.css';
+import './custom.css';
+import 'graphiql/graphiql.css';
 
 let logo;
-if (getPreferredTheme() === "dark") {
-  require("./darktheme.css");
-  logo = require("static/images/entur-white.png");
+if (getPreferredTheme() === 'dark') {
+  require('./darktheme.css');
+  logo = require('static/images/entur-white.png');
 } else {
-  logo = require("static/images/entur.png");
+  logo = require('static/images/entur.png');
 }
 
-const DEFAULT_SERVICE_ID = "journey-planner";
+const DEFAULT_SERVICE_ID = 'journey-planner';
 
-function App() {
-  const [services, setServices] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [pathname, setPathname] = useState(history.location.pathname);
-  const [parameters, setParameters] = useState(
-    queryString.parse(history.location.search)
-  );
+export const App = ({ services, pathname, parameters }) => {
   const [showGeocoderModal, setShowGeocoderModal] = useState(false);
 
   let graphiql = useRef(null);
-
-  useEffect(() => {
-    fetch("/config.json")
-      .then(resp => resp.json())
-      .then(services => {
-        setServices(services);
-        setLoading(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    return history.listen(location => {
-      setPathname(location.pathname);
-      setParameters(queryString.parse(location.search));
-    });
-  }, []);
-
-  if (loading) {
-    return null;
-  }
 
   const currentService =
     services.find(s => pathname.includes(s.id)) ||
@@ -73,7 +47,7 @@ function App() {
   const handleEnvironmentChange = () => {};
 
   const handleThemeChange = theme => {
-    window.localStorage.setItem("theme", theme);
+    window.localStorage.setItem('theme', theme);
     window.location.reload();
   };
 
@@ -95,9 +69,9 @@ function App() {
   const renderExamplesMenu = () => {
     let queries;
 
-    if (currentService.queries === "journey-planner") {
+    if (currentService.queries === 'journey-planner') {
       queries = journeyplannerQueries;
-    } else if (currentService.queries === "stop-places") {
+    } else if (currentService.queries === 'stop-places') {
       queries = nsrQueries;
     } else {
       return null;
@@ -110,7 +84,7 @@ function App() {
             key={key}
             label={key}
             title={key}
-            onSelect={() => editParameter("query", value)}
+            onSelect={() => editParameter('query', value)}
           />
         ))}
       </GraphiQL.Menu>
@@ -125,7 +99,7 @@ function App() {
     query = currentService
       ? require(`queries/${currentService.queries}/${currentService.defaultQuery}`)
           .default
-      : "",
+      : '',
     variables,
     operationName
   } = parameters;
@@ -138,9 +112,9 @@ function App() {
         query={query}
         variables={variables}
         operationName={operationName}
-        onEditQuery={value => editParameter("query", value)}
-        onEditVariables={value => editParameter("variables", value)}
-        onEditOperationName={value => editParameter("operationName", value)}
+        onEditQuery={value => editParameter('query', value)}
+        onEditVariables={value => editParameter('variables', value)}
+        onEditOperationName={value => editParameter('operationName', value)}
       >
         <GraphiQL.Logo>
           <img alt="logo" src={logo} className="logo" />
@@ -175,17 +149,17 @@ function App() {
             <GraphiQL.MenuItem
               label="Prod"
               title="Prod"
-              onSelect={() => handleEnvironmentChange("prod")}
+              onSelect={() => handleEnvironmentChange('prod')}
             />
             <GraphiQL.MenuItem
               label="Staging"
               title="Staging"
-              onSelect={() => handleEnvironmentChange("staging")}
+              onSelect={() => handleEnvironmentChange('staging')}
             />
             <GraphiQL.MenuItem
               label="Dev"
               title="Dev"
-              onSelect={() => handleEnvironmentChange("dev")}
+              onSelect={() => handleEnvironmentChange('dev')}
             />
           </GraphiQL.Menu>
 
@@ -195,12 +169,12 @@ function App() {
             <GraphiQL.MenuItem
               label="Light"
               title="Light"
-              onSelect={() => handleThemeChange("light")}
+              onSelect={() => handleThemeChange('light')}
             />
             <GraphiQL.MenuItem
               label="Dark"
               title="Dark"
-              onSelect={() => handleThemeChange("dark")}
+              onSelect={() => handleThemeChange('dark')}
             />
           </GraphiQL.Menu>
 
@@ -214,7 +188,7 @@ function App() {
         </GraphiQL.Toolbar>
         <GraphiQL.Footer>
           <div className="label">
-            {currentService.name}:{" "}
+            {currentService.name}:{' '}
             <a
               target="_blank"
               rel="noopener noreferrer"
@@ -230,6 +204,35 @@ function App() {
       ) : null}
     </div>
   );
-}
+};
 
-export default App;
+export default () => {
+  const [services, setServices] = useState(null);
+  const [pathname, setPathname] = useState(history.location.pathname);
+  const [parameters, setParameters] = useState(
+    queryString.parse(history.location.search)
+  );
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      const resp = await fetch('/config.json');
+      setServices(await resp.json());
+    };
+    fetchServices();
+  }, []);
+
+  useEffect(() => {
+    return history.listen(location => {
+      setPathname(location.pathname);
+      setParameters(queryString.parse(location.search));
+    });
+  }, []);
+
+  if (services === null) {
+    return null;
+  }
+
+  return (
+    <App services={services} pathname={pathname} parameters={parameters} />
+  );
+};
