@@ -1,0 +1,16 @@
+apiVersion: v1
+name: shamash
+version: 1.0
+appVersion: '{{ .Values.appVersion }}'
+description: An in-browser GraphQL IDE
+keywords:
+- shamash
+- graphql
+- ror
+home: http://{{ .Release.Name }}{{ .Values.domain }}/
+sources:
+- https://github.com/entur/shamash
+maintainers: #TODO: fill in correct data
+- name: Team ROR
+  email: ror@entur.org
+engine: gotpl

@@ -1,0 +1,27 @@
+# For help and tutorials, visit https://circleci.com/docs/
+# For internal documentation visit https://enturas.atlassian.net/wiki/spaces/ESP/pages/580026490/CircleCI
+version: 2.1
+
+orbs:
+#  slack: circleci/slack@1.0.0
+  docker: circleci/docker-publish@0.1.6
+
+workflows:
+  "Build Pipeline":
+    jobs:
+      - docker/publish:
+          name: publish
+          registry: $DOCKER_REGISTRY
+          image: $CIRCLE_PROJECT_REPONAME
+          tag: ${CIRCLE_BRANCH#"env/"}-v$CIRCLE_BUILD_NUM
+          deploy: true
+          context: global
+          filters:
+            branches:
+              only: v2
+#          requires:
+#            - test
+#          pre-steps:
+#            - add_ssh_keys:
+#                fingerprints:
+#                  - "77:16:ab:67:b0:fc:9f:22:42:66:a5:7e:46:a6:6e:96"
