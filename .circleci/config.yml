@@ -6,10 +6,13 @@ orbs:
 #  slack: circleci/slack@1.0.0
   docker: circleci/docker-publish@0.1.6
 
+# Run yarn test
+# Build locally
+
 workflows:
   "Build Pipeline":
     jobs:
-      - docker/publish:
+      - docker/publish: # TODO: attach workspace
           name: publish
           registry: $DOCKER_REGISTRY
           image: $CIRCLE_PROJECT_REPONAME

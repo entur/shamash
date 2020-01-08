@@ -1,5 +1,5 @@
-domain: .dev.entur.io
-environment: dev
+domain: .rtd.entur.io
+environment: rtd
 loadBalancerIP: 35.205.170.68
 configJson: |-
   [
