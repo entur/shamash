@@ -1,14 +1,14 @@
-import fetch from "isomorphic-fetch";
-import uuid from "uuid/v4";
+import fetch from 'isomorphic-fetch';
+import uuid from 'uuid/v4';
 
 const graphQLFetcher = graphQLUrl => graphQLParams =>
   fetch(graphQLUrl, {
-    method: "post",
+    method: 'post',
     headers: {
-      accept: "*/*",
-      "Content-Type": "application/json",
-      "ET-Client-Name": "entur-shamash",
-      "X-Correlation-Id": uuid()
+      accept: '*/*',
+      'Content-Type': 'application/json',
+      'ET-Client-Name': 'entur-shamash',
+      'X-Correlation-Id': uuid()
     },
     body: JSON.stringify(graphQLParams)
   })

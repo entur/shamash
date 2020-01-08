@@ -2,8 +2,8 @@
   color: #141823;
   display: flex;
   flex-direction: row;
-  font-family: system, -apple-system, "San Francisco", ".SFNSDisplay-Regular",
-    "Segoe UI", Segoe, "Segoe WP", "Helvetica Neue", helvetica, "Lucida Grande",
+  font-family: system, -apple-system, 'San Francisco', '.SFNSDisplay-Regular',
+    'Segoe UI', Segoe, 'Segoe WP', 'Helvetica Neue', helvetica, 'Lucida Grande',
     arial, sans-serif;
   font-size: 14px;
   margin: 0;
@@ -67,7 +67,7 @@
 .graphiql-container .docExplorerShow:before {
   border-left: 2px solid #3b5998;
   border-top: 2px solid #3b5998;
-  content: "";
+  content: '';
   display: inline-block;
   height: 9px;
   margin: 0 3px -1px 0;
@@ -169,7 +169,7 @@
 .graphiql-container .footer:before {
   background: #eeeeee;
   bottom: 0;
-  content: " ";
+  content: ' ';
   left: -13px;
   position: absolute;
   top: -1px;
@@ -295,7 +295,7 @@
 
 .graphiql-container .CodeMirror {
   color: #141823;
-  font-family: "Consolas", "Inconsolata", "Droid Sans Mono", "Monaco", monospace;
+  font-family: 'Consolas', 'Inconsolata', 'Droid Sans Mono', 'Monaco', monospace;
   font-size: 13px;
   height: 100%;
   left: 0;
@@ -312,8 +312,8 @@
   box-orient: vertical;
   color: #141823;
   display: flex;
-  font-family: system, -apple-system, "San Francisco", ".SFNSDisplay-Regular",
-    "Segoe UI", Segoe, "Segoe WP", "Helvetica Neue", helvetica, "Lucida Grande",
+  font-family: system, -apple-system, 'San Francisco', '.SFNSDisplay-Regular',
+    'Segoe UI', Segoe, 'Segoe WP', 'Helvetica Neue', helvetica, 'Lucida Grande',
     arial, sans-serif;
   font-size: 13px;
   line-clamp: 3;
@@ -367,8 +367,8 @@ div.CodeMirror-lint-tooltip {
   border: 0;
   color: #141823;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
-  font-family: system, -apple-system, "San Francisco", ".SFNSDisplay-Regular",
-    "Segoe UI", Segoe, "Segoe WP", "Helvetica Neue", helvetica, "Lucida Grande",
+  font-family: system, -apple-system, 'San Francisco', '.SFNSDisplay-Regular',
+    'Segoe UI', Segoe, 'Segoe WP', 'Helvetica Neue', helvetica, 'Lucida Grande',
     arial, sans-serif;
   font-size: 13px;
   line-height: 16px;
