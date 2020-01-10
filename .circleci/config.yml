@@ -8,6 +8,18 @@ orbs:
   node: circleci/node@1.1.6
 
 jobs:
+  test:
+    executor:
+      name: node/default
+      tag: '10.4'
+    steps:
+      - checkout
+      - node/with-cache:
+        cache-key: yarn.lock
+        steps:
+          - run: yarn
+      - run: yarn test
+
   build:
     executor:
       name: node/default
@@ -18,9 +30,7 @@ jobs:
         cache-key: yarn.lock
         steps:
           - run: yarn
-      - run:
-        - yarn test
-        - yarn build
+      - run: yarn build
 
 workflows:
   "Build Pipeline":
@@ -36,4 +46,5 @@ workflows:
             branches:
               only: v2
           requires:
+            - test
             - build
