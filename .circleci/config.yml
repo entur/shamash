@@ -4,62 +4,74 @@ version: 2.1
 
 orbs:
 #  slack: circleci/slack@1.0.0
-  docker: circleci/docker-publish@0.1.6
+  docker: circleci/docker@0.5.20
   node: circleci/node@1.1.6
 
-jobs:
-  install:
-    executor:
-      name: node/default
-      tag: '10.13'
-    steps:
-      - checkout
-      - node/with-cache:
-          cache-key: yarn.lock
-          steps:
-            - run: yarn
-  test:
-    executor:
-      name: node/default
-      tag: '10.13'
-    steps:
-      - checkout
-      - node/with-cache:
-          cache-key: yarn.lock
-          steps:
-            - run: yarn test
+references:
+  workspace_root: &workspace_root
+    /tmp/workspace
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
 
+jobs:
   build:
     executor:
       name: node/default
       tag: '10.13'
     steps:
+      - *attach_workspace
       - checkout
       - node/with-cache:
           cache-key: yarn.lock
+          cache-version: v1
           steps:
-            - run: yarn build
+            - run: yarn
+      - run:
+          name: "Run tests"
+          command: yarn test
+      - run:
+          name: "Create production build"
+          command: yarn build
+      - run:
+          name: "Persist built files"
+          command: |
+            set -exu
+            mv build /tmp/workspace/
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - build/*
+  docker:
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - *attach_workspace
+      - run: |
+        mv /tmp/workspace/build .
+      - node/with-cache:
+          cache-key: yarn.lock
+          cache-version: v1
+          steps:
+            - run: yarn
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: $CIRCLE_PROJECT_REPONAME
+          tag: ${CIRCLE_BRANCH#"env/"}-v$CIRCLE_BUILD_NUM
+          registry: $DOCKER_REGISTRY
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
 
 workflows:
   "Build Pipeline":
     jobs:
-      - install
-      - test:
-          requires:
-            - install
-      - build:
-          requires:
-            - install
-      - docker/publish: # TODO: attach workspace
-          name: publish
-          registry: $DOCKER_REGISTRY
-          image: $CIRCLE_PROJECT_REPONAME
-          tag: ${CIRCLE_BRANCH#"env/"}-v$CIRCLE_BUILD_NUM
-          deploy: true
+      - build
+      - docker:
           context: global
           filters:
             branches:
               only: v2
           requires:
-            - test
             - build
