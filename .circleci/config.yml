@@ -11,7 +11,7 @@ jobs:
   install:
     executor:
       name: node/default
-      tag: '10.4'
+      tag: '10.13'
     steps:
       - checkout
       - node/with-cache:
@@ -21,7 +21,7 @@ jobs:
   test:
     executor:
       name: node/default
-      tag: '10.4'
+      tag: '10.13'
     steps:
       - checkout
       - node/with-cache:
@@ -32,7 +32,7 @@ jobs:
   build:
     executor:
       name: node/default
-      tag: '10.4'
+      tag: '10.13'
     steps:
       - checkout
       - node/with-cache:

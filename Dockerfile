@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:10.13
 # https://hub.docker.com/_/node/
 
 # https://github.com/Yelp/dumb-init
