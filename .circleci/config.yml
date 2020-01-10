@@ -52,7 +52,7 @@ jobs:
           mv /tmp/workspace/build .
       - restore_cache:
           keys:
-          - node-deps-v1-{{ .Branch }}-{{ yarn.lock }}
+          - node-deps-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - docker/push:
           digest-path: /tmp/digest.txt
           image: $CIRCLE_PROJECT_REPONAME
