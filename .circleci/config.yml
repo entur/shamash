@@ -45,9 +45,11 @@ workflows:
     jobs:
       - install
       - test:
-        requires: [install]
+        requires:
+          - install
       - build:
-        requires: [install]
+        requires:
+          - install
       - docker/publish: # TODO: attach workspace
           name: publish
           registry: $DOCKER_REGISTRY
@@ -58,4 +60,6 @@ workflows:
           filters:
             branches:
               only: v2
-          requires: [test, build]
+          requires:
+            - test
+            - build
