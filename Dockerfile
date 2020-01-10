@@ -12,7 +12,5 @@ ENV port 8000
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY . .
-RUN yarn
-RUN yarn build
 
 CMD [ "dumb-init", "yarn", "run", "start:server" ]

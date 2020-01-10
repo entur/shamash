@@ -5,9 +5,21 @@ version: 2.1
 orbs:
 #  slack: circleci/slack@1.0.0
   docker: circleci/docker-publish@0.1.6
+  node: circleci/node@1.1.6
 
-# Run yarn test
-# Build locally
+jobs:
+  build:
+    executor:
+      name: node/default
+      tag: '10.4'
+    steps:
+      - checkout
+      - node/with-cache
+        cache-key: yarn.lock
+        steps:
+          - run: yarn
+      - run: yarn test
+      - run: yarn build
 
 workflows:
   "Build Pipeline":
@@ -22,9 +34,5 @@ workflows:
           filters:
             branches:
               only: v2
-#          requires:
-#            - test
-#          pre-steps:
-#            - add_ssh_keys:
-#                fingerprints:
-#                  - "77:16:ab:67:b0:fc:9f:22:42:66:a5:7e:46:a6:6e:96"
+          requires:
+            - build
