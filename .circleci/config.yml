@@ -4,7 +4,7 @@ version: 2.1
 
 orbs:
 #  slack: circleci/slack@1.0.0
-  docker: circleci/docker@0.5.20
+  docker-publish: circleci/docker-publish@0.1.7
   node: circleci/node@1.1.6
 
 references:
@@ -43,27 +43,20 @@ jobs:
           paths:
             - build/*
   docker:
-    executor: docker/docker
+    executor: docker-publish/docker
     steps:
       - setup_remote_docker
-      - checkout
       - *attach_workspace
+      - checkout
       - run: |
           mv /tmp/workspace/build .
       - restore_cache:
           keys:
           - node-deps-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - docker/build:
+      - docker-publish/publish:
           image: $CIRCLE_PROJECT_REPONAME
           tag: ${CIRCLE_BRANCH#"env/"}-v$CIRCLE_BUILD_NUM
           registry: $DOCKER_REGISTRY
-      - docker/push:
-          image: $CIRCLE_PROJECT_REPONAME
-          tag: ${CIRCLE_BRANCH#"env/"}-v$CIRCLE_BUILD_NUM
-          registry: $DOCKER_REGISTRY
-      - run:
-          command: |
-            echo "Digest is: $(</tmp/digest.txt)"
 
 workflows:
   "Build Pipeline":
