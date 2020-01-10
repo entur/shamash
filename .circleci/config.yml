@@ -49,12 +49,10 @@ jobs:
       - checkout
       - *attach_workspace
       - run: |
-        mv /tmp/workspace/build .
-      - node/with-cache:
-          cache-key: yarn.lock
-          cache-version: v1
-          steps:
-            - run: yarn
+          mv /tmp/workspace/build .
+      - restore_cache:
+          keys:
+          - node-deps-v1-{{ yarn.lock }}
       - docker/push:
           digest-path: /tmp/digest.txt
           image: $CIRCLE_PROJECT_REPONAME
