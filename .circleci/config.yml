@@ -53,10 +53,7 @@ jobs:
       - restore_cache:
           keys:
           - node-deps-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - docker/check
-      - docker/build:
-          image: $CIRCLE_PROJECT_REPONAME
-      - docker/push:
+      - docker/publish:
           digest-path: /tmp/digest.txt
           image: $CIRCLE_PROJECT_REPONAME
           tag: ${CIRCLE_BRANCH#"env/"}-v$CIRCLE_BUILD_NUM
