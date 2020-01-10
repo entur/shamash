@@ -35,6 +35,8 @@ jobs:
 workflows:
   "Build Pipeline":
     jobs:
+      - test
+      - build
       - docker/publish: # TODO: attach workspace
           name: publish
           registry: $DOCKER_REGISTRY
