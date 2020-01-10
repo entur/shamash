@@ -15,9 +15,9 @@ jobs:
     steps:
       - checkout
       - node/with-cache:
-        cache-key: yarn.lock
-        steps:
-          - run: yarn
+          cache-key: yarn.lock
+          steps:
+            - run: yarn
       - run: yarn test
 
   build:
@@ -27,9 +27,9 @@ jobs:
     steps:
       - checkout
       - node/with-cache:
-        cache-key: yarn.lock
-        steps:
-          - run: yarn
+          cache-key: yarn.lock
+          steps:
+            - run: yarn
       - run: yarn build
 
 workflows:
