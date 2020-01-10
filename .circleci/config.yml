@@ -45,11 +45,11 @@ workflows:
     jobs:
       - install
       - test:
-        requires:
-          - install
+          requires:
+            - install
       - build:
-        requires:
-          - install
+          requires:
+            - install
       - docker/publish: # TODO: attach workspace
           name: publish
           registry: $DOCKER_REGISTRY
