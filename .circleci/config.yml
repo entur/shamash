@@ -18,8 +18,9 @@ jobs:
         cache-key: yarn.lock
         steps:
           - run: yarn
-      - run: yarn test
-      - run: yarn build
+      - run:
+        - yarn test
+        - yarn build
 
 workflows:
   "Build Pipeline":
