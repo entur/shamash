@@ -54,6 +54,9 @@ workflows:
               only: v2
           requires:
             - build
+          image: $CIRCLE_PROJECT_REPONAME
+          tag: ${CIRCLE_BRANCH#"env/"}-v$CIRCLE_BUILD_NUM
+          registry: $DOCKER_REGISTRY
           before_build:
             - *attach_workspace
             - run: |
