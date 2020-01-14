@@ -54,7 +54,7 @@ workflows:
               only: v2
           requires:
             - build
-          before_buikd:
+          before_build:
             - *attach_workspace
             - run: |
                 mv /tmp/workspace/build .
