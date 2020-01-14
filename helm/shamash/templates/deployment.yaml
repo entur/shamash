@@ -20,9 +20,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.internalPort }}
-          envFrom:
-          - configMapRef:
-              name: {{ .Release.Name }}-config
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/config
           livenessProbe:
             initialDelaySeconds: 110
             httpGet:
@@ -39,3 +39,7 @@ spec:
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
     {{- end }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Release.Name }}-config

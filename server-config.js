@@ -1,8 +1,33 @@
+const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const fallback = require('express-history-api-fallback');
 
 const contentRoot = path.resolve(process.env.CONTENT_BASE || './build');
+
+let config;
+
+try {
+  config = JSON.parse(fs.readFileSync('/etc/config/config.json'));
+} catch {
+  console.warn("Could not read config from file system");
+  config = [
+    {
+      id: 'stop-places',
+      name: 'Stoppestedsregisteret',
+      url: 'https://api.entur.io/stop-places/v1/graphql',
+      queries: 'stop-places',
+      defaultQuery: 'stopPlace'
+    },
+    {
+      id: 'journey-planner',
+      name: 'JourneyPlanner',
+      url: 'https://api.entur.io/journey-planner/v2/graphql',
+      queries: 'journey-planner',
+      defaultQuery: 'trip'
+    }
+  ];
+}
 
 const configureApp = (app, endpointBase = '/') => {
   app.get(endpointBase + '_health', function(req, res) {
@@ -10,22 +35,7 @@ const configureApp = (app, endpointBase = '/') => {
   });
 
   app.get(endpointBase + 'config.json', function(req, res) {
-    res.send([
-      {
-        id: 'stop-places',
-        name: 'Stoppestedsregisteret',
-        url: 'https://api.entur.io/stop-places/v1/graphql',
-        queries: 'stop-places',
-        defaultQuery: 'stopPlace'
-      },
-      {
-        id: 'journey-planner',
-        name: 'JourneyPlanner',
-        url: 'https://api.entur.io/journey-planner/v2/graphql',
-        queries: 'journey-planner',
-        defaultQuery: 'trip'
-      }
-    ]);
+    res.send(config);
   });
 
   app.use(endpointBase, express.static(contentRoot))

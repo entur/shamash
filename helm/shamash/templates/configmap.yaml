@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
     name: {{ .Release.Name }}-config
 data:
-    DUMMY: "dummy" #config.json: {{ .Values.configJson }} #TODO: mount as file
+    config.json: "{}"
