@@ -42,4 +42,4 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: {{ .Release.Name }}-config
+            name: shamash-server-config
