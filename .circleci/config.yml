@@ -42,30 +42,22 @@ jobs:
           root: *workspace_root
           paths:
             - build/*
-  docker:
-    executor: docker-publish/docker
-    steps:
-      - setup_remote_docker
-      - *attach_workspace
-      - checkout
-      - run: |
-          mv /tmp/workspace/build .
-      - restore_cache:
-          keys:
-          - node-deps-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - docker-publish/publish:
-          image: $CIRCLE_PROJECT_REPONAME
-          tag: ${CIRCLE_BRANCH#"env/"}-v$CIRCLE_BUILD_NUM
-          registry: $DOCKER_REGISTRY
 
 workflows:
   "Build Pipeline":
     jobs:
       - build
-      - docker:
+      - docker-publish/publish:
           context: global
           filters:
             branches:
               only: v2
           requires:
             - build
+          before_buikd:
+            - *attach_workspace
+            - run: |
+                mv /tmp/workspace/build .
+            - restore_cache:
+                keys:
+                - node-deps-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
