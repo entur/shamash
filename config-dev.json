@@ -1,0 +1,37 @@
+[
+  {
+    "id": "stop-places",
+    "name": "Stoppestedsregisteret",
+    "url": "https://api.entur.io/stop-places/v1/graphql",
+    "queries": "stop-places",
+    "defaultQuery": "stopPlace"
+  },
+  {
+    "id": "journey-planner",
+    "name": "JourneyPlanner",
+    "url": "https://api.entur.io/journey-planner/v2/graphql",
+    "queries": "journey-planner",
+    "defaultQuery": "trip"
+  },
+  {
+    "id": "journey-planner-v3",
+    "name": "JourneyPlanner-raptor",
+    "url": "https://api.dev.entur.io/journey-planner/v3/graphql",
+    "queries": "journey-planner",
+    "defaultQuery": "trip"
+  },
+  {
+    "id": "journey-planner-nl",
+    "name": "JourneyPlanner-nl",
+    "url": "https://api.dev.entur.io/journey-planner/v2/nl/graphql",
+    "queries": "journey-planner",
+    "defaultQuery": "trip"
+  },
+  {
+    "id": "journey-planner-nordic",
+    "name": "JourneyPlanner-nordic",
+    "url": "https://api.dev.entur.io/journey-planner/v2/nordic/graphql",
+    "queries": "journey-planner",
+    "defaultQuery": "trip"
+  }
+]

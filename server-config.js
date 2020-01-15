@@ -10,23 +10,8 @@ let config;
 try {
   config = JSON.parse(fs.readFileSync('/etc/config/config.json'));
 } catch {
-  console.warn("Could not read config from file system");
-  config = [
-    {
-      id: 'stop-places',
-      name: 'Stoppestedsregisteret',
-      url: 'https://api.entur.io/stop-places/v1/graphql',
-      queries: 'stop-places',
-      defaultQuery: 'stopPlace'
-    },
-    {
-      id: 'journey-planner',
-      name: 'JourneyPlanner',
-      url: 'https://api.entur.io/journey-planner/v2/graphql',
-      queries: 'journey-planner',
-      defaultQuery: 'trip'
-    }
-  ];
+  console.warn("Could not read config from file system - using development config.");
+  config = require('./config-dev.json');
 }
 
 const configureApp = (app, endpointBase = '/') => {
