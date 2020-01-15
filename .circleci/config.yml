@@ -43,6 +43,7 @@ jobs:
           root: *workspace_root
           paths:
             - build/*
+            - node_modules/*
 
 workflows:
   "Build Pipeline":
