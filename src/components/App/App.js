@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import GraphiQL from 'graphiql';
 import { parse, print } from 'graphql';
+import queryString from 'query-string';
+import Helmet from 'react-helmet';
 import graphQLFetcher from 'utils/graphQLFetcher';
 import getPreferredTheme from 'utils/getPreferredTheme';
 import history from 'utils/history';
-import queryString from 'query-string';
 import * as journeyplannerQueries from 'queries/journey-planner';
 import * as nsrQueries from 'queries/stop-places';
 import GeocoderModal from 'components/GeocoderModal';
@@ -14,7 +15,6 @@ import 'graphiql/graphiql.css';
 
 let logo;
 if (getPreferredTheme() === 'dark') {
-  require('./darktheme.css');
   logo = require('static/images/entur-white.png');
 } else {
   logo = require('static/images/entur.png');
@@ -106,6 +106,11 @@ export const App = ({ services, pathname, parameters }) => {
 
   return (
     <div className="App">
+      <Helmet>
+        {getPreferredTheme() === 'dark' && (
+          <link rel="stylesheet" type="text/css" href="/darktheme.css" />
+        )}
+      </Helmet>
       <GraphiQL
         ref={graphiql}
         fetcher={graphQLFetcher(currentService.url)}
