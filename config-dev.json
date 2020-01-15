@@ -15,7 +15,7 @@
   },
   {
     "id": "journey-planner-v3",
-    "name": "JourneyPlanner-raptor",
+    "name": "JourneyPlanner-v3",
     "url": "https://api.dev.entur.io/journey-planner/v3/graphql",
     "queries": "journey-planner",
     "defaultQuery": "trip"
