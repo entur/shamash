@@ -24,7 +24,7 @@ jobs:
       - checkout
       - node/with-cache:
           cache-key: yarn.lock
-          cache-version: v1
+          cache-version: v2
           steps:
             - run: yarn
       - run:
@@ -61,8 +61,6 @@ workflows:
             - *attach_workspace
             - run: |
                 mv /tmp/workspace/build .
-            - node/with-cache:
-                cache-key: yarn.lock
-                cache-version: v1
-                steps:
-                  - run: yarn
+            - restore_cache:
+                keys:
+                - node-deps-v2-{{ .Branch }}-{{ checksum "yarn.lock" }}
