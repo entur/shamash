@@ -45,6 +45,13 @@
   border-color: #181a1f;
 }
 
+.graphiql-container .footer,
+.graphiql-container .footer:before {
+  background: #21262b;
+  color: #cacdd3;
+  border-color: #181a1f;
+}
+
 .graphiql-container .docExplorerHide {
   color: #606671;
 }
