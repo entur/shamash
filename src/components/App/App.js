@@ -28,7 +28,7 @@ export const App = ({ services, pathname, parameters }) => {
   let graphiql = useRef(null);
 
   const currentService =
-    services.find(s => pathname.includes(s.id)) ||
+    services.find(s => pathname === `/${s.id}`) ||
     services.find(s => s.id === DEFAULT_SERVICE_ID);
 
   const handleServiceChange = id => {
