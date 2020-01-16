@@ -52,10 +52,6 @@ export default `
           id
           publicCode
         }
-        pointsOnLink {
-          points
-          length
-        }
       }
     }
   }
