@@ -20,7 +20,7 @@ if (getPreferredTheme() === 'dark') {
   logo = require('static/images/entur.png');
 }
 
-const BASE_PATH = process.env.REACT_APP_BASE_PATH || '';
+const BASE_PATH = process.env.PUBLIC_URL || '';
 const DEFAULT_SERVICE_ID = 'journey-planner';
 
 export const App = ({ services, pathname, parameters }) => {
