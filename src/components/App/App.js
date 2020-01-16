@@ -20,6 +20,7 @@ if (getPreferredTheme() === 'dark') {
   logo = require('static/images/entur.png');
 }
 
+const BASE_PATH = process.env.REACT_APP_BASE_PATH || '';
 const DEFAULT_SERVICE_ID = 'journey-planner';
 
 export const App = ({ services, pathname, parameters }) => {
@@ -28,11 +29,11 @@ export const App = ({ services, pathname, parameters }) => {
   let graphiql = useRef(null);
 
   const currentService =
-    services.find(s => pathname === `/${s.id}`) ||
+    services.find(s => pathname === `${BASE_PATH}/${s.id}`) ||
     services.find(s => s.id === DEFAULT_SERVICE_ID);
 
   const handleServiceChange = id => {
-    history.push(`/${id}`);
+    history.push(`${BASE_PATH}/${id}`);
   };
 
   const editParameter = (key, value) => {
@@ -108,7 +109,11 @@ export const App = ({ services, pathname, parameters }) => {
     <div className="App">
       <Helmet>
         {getPreferredTheme() === 'dark' && (
-          <link rel="stylesheet" type="text/css" href="/darktheme.css" />
+          <link
+            rel="stylesheet"
+            type="text/css"
+            href={`${BASE_PATH}/darktheme.css`}
+          />
         )}
       </Helmet>
       <GraphiQL
@@ -220,7 +225,7 @@ export default () => {
 
   useEffect(() => {
     const fetchServices = async () => {
-      const resp = await fetch('config.json');
+      const resp = await fetch(`${BASE_PATH}/config.json`);
       setServices(await resp.json());
     };
     fetchServices();
