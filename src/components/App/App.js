@@ -220,7 +220,7 @@ export default () => {
 
   useEffect(() => {
     const fetchServices = async () => {
-      const resp = await fetch('/config.json');
+      const resp = await fetch('config.json');
       setServices(await resp.json());
     };
     fetchServices();
