@@ -67,5 +67,5 @@
   "prettier": {
     "singleQuote": true
   },
-  "homepage": "/graphql-api-explorer"
+  "homepage": "/graphql-explorer"
 }

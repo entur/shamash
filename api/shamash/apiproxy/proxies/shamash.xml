@@ -26,7 +26,7 @@
         <Response/>
     </PreFlow>
     <HTTPProxyConnection>
-        <BasePath>/graphql-api-explorer</BasePath>
+        <BasePath>/graphql-explorer</BasePath>
         <Properties/>
         <VirtualHost>entur</VirtualHost>
     </HTTPProxyConnection>
