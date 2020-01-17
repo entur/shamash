@@ -27,6 +27,6 @@
     </PreFlow>
     <HTTPTargetConnection>
         <Properties/>
-        <URL>https://shamash.INGRESS_ENVIRONMENT</URL>
+        <URL>https://shamash-NAMESPACE.INGRESS_ENVIRONMENT</URL>
     </HTTPTargetConnection>
 </TargetEndpoint>
