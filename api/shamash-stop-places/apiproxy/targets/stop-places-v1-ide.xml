@@ -27,6 +27,6 @@
     </PreFlow>
     <HTTPTargetConnection>
         <Properties/>
-        <URL>https://stop-places-v1-ide-NAMESPACE.INGRESS_ENVIRONMENT/stop-places/v1/ide/</URL>
+        <URL>https://shamash-NAMESPACE.INGRESS_ENVIRONMENT/stop-places/</URL>
     </HTTPTargetConnection>
 </TargetEndpoint>

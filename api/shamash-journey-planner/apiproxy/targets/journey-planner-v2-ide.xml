@@ -27,6 +27,6 @@
     </PreFlow>
     <HTTPTargetConnection>
         <Properties/>
-        <URL>https://journey-planner-v2-ide-NAMESPACE.INGRESS_ENVIRONMENT/journey-planner/v2/ide/</URL>
+        <URL>https://shamash-NAMESPACE.INGRESS_ENVIRONMENT/journey-planner/</URL>
     </HTTPTargetConnection>
 </TargetEndpoint>
