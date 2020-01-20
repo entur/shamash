@@ -28,8 +28,12 @@ export const App = ({ services, pathname, parameters }) => {
 
   let graphiql = useRef(null);
 
+  const serviceName = pathname.split('/').find(segment => {
+    return segment !== BASE_PATH;
+  });
+
   const currentService =
-    services.find(s => pathname === `${BASE_PATH}/${s.id}`) ||
+    services.find(s => s.id === serviceName) ||
     services.find(s => s.id === DEFAULT_SERVICE_ID);
 
   const handleServiceChange = id => {
