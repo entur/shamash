@@ -12,6 +12,7 @@ import GeocoderModal from 'components/GeocoderModal';
 import './app.css';
 import './custom.css';
 import 'graphiql/graphiql.css';
+import findServiceName from 'utils/findServiceName';
 
 let logo;
 if (getPreferredTheme() === 'dark') {
@@ -28,12 +29,7 @@ export const App = ({ services, pathname, parameters }) => {
 
   let graphiql = useRef(null);
 
-  const serviceName = pathname
-    .split('/')
-    .filter(Boolean)
-    .find(segment => {
-      return segment !== BASE_PATH;
-    });
+  const serviceName = findServiceName(pathname, BASE_PATH);
 
   const currentService =
     services.find(s => s.id === serviceName) ||
