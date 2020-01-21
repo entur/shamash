@@ -48,7 +48,19 @@ export const App = ({ services, pathname, parameters }) => {
     });
   };
 
-  const handleEnvironmentChange = () => {};
+  const handleEnvironmentChange = env => {
+    if (window.location.host.includes('localhost')) {
+      return;
+    }
+
+    if (env === 'dev') {
+      window.location.host = 'api.dev.entur.io';
+    } else if (env === 'staging') {
+      window.location.host = 'api.staging.entur.io';
+    } else if (env === 'prod') {
+      window.location.host = 'api.entur.io';
+    }
+  };
 
   const handleThemeChange = theme => {
     window.localStorage.setItem('theme', theme);
