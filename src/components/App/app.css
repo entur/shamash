@@ -1,3 +1,8 @@
+.App {
+  display: flex;
+  flex-direction: row;
+}
+
 .graphiql-container {
   color: #141823;
   display: flex;

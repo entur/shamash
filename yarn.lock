@@ -4404,6 +4404,11 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
 
+graphiql-explorer@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/graphiql-explorer/-/graphiql-explorer-0.5.1.tgz#b0cdb82f720294fc83c1f28a93caa75ce8ddde2b"
+  integrity sha512-kp0mcnqi8lsy5O5rXM22oAee8SF2atmXM5FvkJSR3y9g0Va4BMrbJSzTY25RM7YMs8bl7CWIpWYM5yCYg8gz8g==
+
 graphiql@^0.17.5:
   version "0.17.5"
   resolved "https://registry.yarnpkg.com/graphiql/-/graphiql-0.17.5.tgz#76c553fc0d8936f77e33114ac3374f1807a718ff"
