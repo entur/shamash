@@ -43,13 +43,15 @@ export const App = ({ services, pathname, parameters }) => {
     services.find(s => s.id === serviceName) ||
     services.find(s => s.id === DEFAULT_SERVICE_ID);
 
+  const fetcher = graphQLFetcher(currentService.url);
+
   useEffect(() => {
-    graphQLFetcher(currentService.url)({
+    fetcher({
       query: getIntrospectionQuery()
     }).then(result => {
       setSchema(buildClientSchema(result.data));
     });
-  }, [currentService.url]);
+  }, [fetcher]);
 
   const handleServiceChange = id => {
     history.push(`${BASE_PATH}/${id}`);
@@ -143,7 +145,6 @@ export const App = ({ services, pathname, parameters }) => {
   return (
     <div className="App">
       <GraphiQLExplorer
-        style={{ float: 'left' }}
         schema={schema}
         query={query}
         onEdit={value => editParameter('query', value)}
@@ -165,7 +166,7 @@ export const App = ({ services, pathname, parameters }) => {
         </Helmet>
         <GraphiQL
           ref={graphiql}
-          fetcher={graphQLFetcher(currentService.url)}
+          fetcher={fetcher}
           query={query}
           variables={variables}
           operationName={operationName}
