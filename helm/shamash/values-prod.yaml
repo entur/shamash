@@ -1,0 +1,3 @@
+domain: .entur.io
+environment: prod
+loadBalancerIP: 35.187.95.255
