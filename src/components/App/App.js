@@ -248,10 +248,12 @@ export default () => {
 
   useEffect(() => {
     return history.listen(location => {
-      setPathname(location.pathname);
-      setParameters(queryString.parse(location.search));
+      if (location.pathname !== pathname) {
+        setPathname(location.pathname);
+        setParameters(queryString.parse(location.search));
+      }
     });
-  }, []);
+  }, [pathname]);
 
   if (services === null) {
     return null;
