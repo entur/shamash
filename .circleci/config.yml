@@ -53,7 +53,7 @@ workflows:
           context: global
           filters:
             branches:
-              only: v2
+              only: master
           requires:
             - build
           image: $CIRCLE_PROJECT_REPONAME
