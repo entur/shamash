@@ -1,3 +1,27 @@
 domain: .staging.entur.io
 environment: test
 loadBalancerIP: 35.233.47.68
+config: |
+    [
+      {
+        "id": "stop-places",
+        "name": "stop-places",
+        "url": "https://api.staging.entur.io/stop-places/v1/graphql",
+        "queries": "stop-places",
+        "defaultQuery": "stopPlace"
+      },
+      {
+        "id": "journey-planner",
+        "name": "journey-planner-v2",
+        "url": "https://api.staging.entur.io/journey-planner/v2/graphql",
+        "queries": "journey-planner",
+        "defaultQuery": "trip"
+      },
+      {
+        "id": "journey-planner-v3",
+        "name": "journey-planner-v3",
+        "url": "https://api.staging.entur.io/journey-planner/v3/graphql",
+        "queries": "journey-planner",
+        "defaultQuery": "trip"
+      }
+    ]

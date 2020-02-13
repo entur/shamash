@@ -10,7 +10,7 @@ keywords:
 home: http://{{ .Release.Name }}{{ .Values.domain }}/
 sources:
 - https://github.com/entur/shamash
-maintainers: #TODO: fill in correct data
-- name: Team ROR
-  email: ror@entur.org
+maintainers:
+- name: 'team-ror'
+  email: team.rutedata@entur.org
 engine: gotpl

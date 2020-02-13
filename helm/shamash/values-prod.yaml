@@ -1,3 +1,20 @@
 domain: .entur.io
 environment: production
 loadBalancerIP: 35.205.233.237
+config: |
+    [
+      {
+        "id": "stop-places",
+        "name": "stop-places",
+        "url": "https://api.entur.io/stop-places/v1/graphql",
+        "queries": "stop-places",
+        "defaultQuery": "stopPlace"
+      },
+      {
+        "id": "journey-planner",
+        "name": "journey-planner-v2",
+        "url": "https://api.entur.io/journey-planner/v2/graphql",
+        "queries": "journey-planner",
+        "defaultQuery": "trip"
+      }
+    ]
