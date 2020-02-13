@@ -1,6 +1,7 @@
 apiVersion: v1
 data:
-  config.json: {{ .Values.config }}
+  config.json: |
+    {{ .Values.config }}
 
 kind: ConfigMap
 metadata:
