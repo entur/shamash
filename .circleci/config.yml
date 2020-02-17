@@ -20,10 +20,11 @@ aliases:
   command: |
     echo "export VERSION=$CIRCLE_BRANCH-v$CIRCLE_BUILD_NUM-$(echo -n $CIRCLE_SHA1 | tail -c 8)"  >> $BASH_ENV
     echo "$CIRCLE_BRANCH-v$CIRCLE_BUILD_NUM-$(echo -n $CIRCLE_SHA1 | tail -c 8)" > version
+    cp ./version /tmp/workspace
 - &read-image-version
   name: Read new image version from workspace
   command: |
-    echo "export VERSION=$(cat ./version)" >> $BASH_ENV
+    echo "export VERSION=$(cat /tmp/workspace/version)" >> $BASH_ENV
 - &tag-git-version
   name: Tag git commit with build version and push to github
   command: |
