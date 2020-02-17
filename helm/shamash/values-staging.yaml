@@ -1,7 +1,7 @@
 domain: .staging.entur.io
 environment: test
 loadBalancerIP: 35.233.47.68
-config: |
+config: |-
     [
       {
         "id": "stop-places",

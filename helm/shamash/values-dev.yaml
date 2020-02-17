@@ -1,7 +1,7 @@
 domain: .dev.entur.io
 environment: dev
 loadBalancerIP: 35.205.134.173
-config: |
+config: |-
     [
       {
         "id": "stop-places",
