@@ -62,11 +62,10 @@ workflows:
   "Build Pipeline":
     jobs:
       - build
-      - tag
-        context: global
-        filter:
-          branches:
-            only: master
+      - tag:
+          filter:
+            branches:
+              only: master
       - docker-publish/publish:
           context: global
           filters:
