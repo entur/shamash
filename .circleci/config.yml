@@ -14,6 +14,15 @@ references:
     attach_workspace:
       at: *workspace_root
 
+aliases:
+- &tag-git-version
+  name: Tag git commit with build version and push to github
+  command: |
+    git config --global user.email "circleci@entur.no"
+    git config --global user.name "circleci"
+    git tag ${CIRCLE_BRANCH#"env/"}-v$CIRCLE_BUILD_NUM
+    git push origin ${CIRCLE_BRANCH#"env/"}-v$CIRCLE_BUILD_NUM
+
 jobs:
   build:
     executor:
@@ -44,11 +53,20 @@ jobs:
           paths:
             - build/*
             - node_modules/*
+  tag:
+    steps:
+      - checkout
+      - run: *tag-git-version
 
 workflows:
   "Build Pipeline":
     jobs:
       - build
+      - tag
+        context: global
+        filter:
+          branches:
+            only: master
       - docker-publish/publish:
           context: global
           filters:
