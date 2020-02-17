@@ -15,13 +15,22 @@ references:
       at: *workspace_root
 
 aliases:
+- &create-image-version
+  name: Create new image version and store to env var and as file in workspace
+  command: |
+    echo "export VERSION=$CIRCLE_BRANCH-v$CIRCLE_BUILD_NUM-$(echo -n $CIRCLE_SHA1 | tail -c 8)"  >> $BASH_ENV
+    echo "$CIRCLE_BRANCH-v$CIRCLE_BUILD_NUM-$(echo -n $CIRCLE_SHA1 | tail -c 8)" > version
+- &read-image-version
+  name: Read new image version from workspace
+  command: |
+    echo "export VERSION=$(cat ./version)" >> $BASH_ENV
 - &tag-git-version
   name: Tag git commit with build version and push to github
   command: |
     git config --global user.email "circleci@entur.no"
     git config --global user.name "circleci"
-    git tag ${CIRCLE_BRANCH#"env/"}-v$CIRCLE_BUILD_NUM
-    git push origin ${CIRCLE_BRANCH#"env/"}-v$CIRCLE_BUILD_NUM
+    git tag $VERSION
+    git push origin $VERSION
 
 jobs:
   build:
@@ -61,7 +70,12 @@ jobs:
           password: $DOCKER_PASSWORD
     steps:
       - checkout
+      - run: *create-image-version
       - run: *tag-git-version
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - ./version
 
 workflows:
   "Build Pipeline":
@@ -80,10 +94,11 @@ workflows:
           requires:
             - build
           image: $CIRCLE_PROJECT_REPONAME
-          tag: ${CIRCLE_BRANCH#"env/"}-v$CIRCLE_BUILD_NUM
+          tag: $VERSION
           registry: $DOCKER_REGISTRY
           before_build:
             - *attach_workspace
+            - run: *read-image-version
             - run: |
                 mv /tmp/workspace/build .
                 mv /tmp/workspace/node_modules .
