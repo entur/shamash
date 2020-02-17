@@ -93,6 +93,7 @@ workflows:
               only: master
           requires:
             - build
+            - tag
           image: $CIRCLE_PROJECT_REPONAME
           tag: $VERSION
           registry: $DOCKER_REGISTRY
