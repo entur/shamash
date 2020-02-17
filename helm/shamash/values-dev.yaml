@@ -1,6 +1,7 @@
 domain: .dev.entur.io
 environment: dev
 loadBalancerIP: 35.205.134.173
+replicaCount: 1
 config: |-
     [
       {
