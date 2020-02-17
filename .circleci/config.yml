@@ -69,6 +69,7 @@ jobs:
           username: _json_key
           password: $DOCKER_PASSWORD
     steps:
+      - *attach_workspace
       - checkout
       - run: *create-image-version
       - run: *tag-git-version
