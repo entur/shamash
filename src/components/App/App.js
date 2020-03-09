@@ -5,7 +5,8 @@ import {
   parse,
   print,
   getIntrospectionQuery,
-  buildClientSchema
+  buildClientSchema,
+  stripIgnoredCharacters
 } from 'graphql';
 import queryString from 'query-string';
 import Helmet from 'react-helmet';
@@ -91,6 +92,14 @@ export const App = ({ services, pathname, parameters }) => {
     const currentText = editor.getValue();
     const prettyText = print(parse(currentText));
     editor.setValue(prettyText);
+  };
+
+  const handleClickMinifyButton = () => {
+    if (!graphiql) return;
+    const editor = graphiql.current.getQueryEditor();
+    const currentText = editor.getValue();
+    const uglyText = stripIgnoredCharacters(currentText);
+    editor.setValue(uglyText);
   };
 
   const handleHistoryButton = () => {
@@ -179,9 +188,14 @@ export const App = ({ services, pathname, parameters }) => {
           </GraphiQL.Logo>
           <GraphiQL.Toolbar>
             <GraphiQL.Button
-              onClick={() => handleClickPrettifyButton()}
+              onClick={handleClickPrettifyButton}
               label="Prettify"
               title="Prettify Query (Shift-Ctrl-P)"
+            />
+            <GraphiQL.Button
+              onClick={handleClickMinifyButton}
+              label="Minify"
+              title="Minify Query"
             />
 
             <GraphiQL.Button
