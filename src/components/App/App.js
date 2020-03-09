@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useMemo, useState, useRef, useEffect } from 'react';
 import GraphiQL from 'graphiql';
 import GraphiQLExplorer from 'graphiql-explorer';
 import {
@@ -43,7 +43,9 @@ export const App = ({ services, pathname, parameters }) => {
     services.find(s => s.id === serviceName) ||
     services.find(s => s.id === DEFAULT_SERVICE_ID);
 
-  const fetcher = graphQLFetcher(currentService.url);
+  const fetcher = useMemo(() => graphQLFetcher(currentService.url), [
+    currentService.url
+  ]);
 
   useEffect(() => {
     fetcher({
