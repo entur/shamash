@@ -89,10 +89,20 @@ export const App = ({ services, pathname, parameters }) => {
 
   const handleClickPrettifyButton = () => {
     if (!graphiql) return;
-    const editor = graphiql.current.getQueryEditor();
-    const currentText = editor.getValue();
-    const prettyText = print(parse(currentText));
-    editor.setValue(prettyText);
+
+    const queryEditor = graphiql.current.getQueryEditor();
+    const currentQueryText = queryEditor.getValue();
+    const prettyQueryText = print(parse(currentQueryText));
+    queryEditor.setValue(prettyQueryText);
+
+    const variablesEditor = graphiql.current.getVariableEditor();
+    const currentVariablesText = variablesEditor.getValue();
+    const prettyVariablesText = JSON.stringify(
+      JSON.parse(currentVariablesText),
+      null,
+      2
+    );
+    variablesEditor.setValue(prettyVariablesText);
   };
 
   const handleHistoryButton = () => {
