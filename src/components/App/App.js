@@ -1,6 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import GraphiQL from 'graphiql';
-import { parse, print } from 'graphql';
+import GraphiQLExplorer from 'graphiql-explorer';
+import {
+  parse,
+  print,
+  getIntrospectionQuery,
+  buildClientSchema
+} from 'graphql';
 import queryString from 'query-string';
 import Helmet from 'react-helmet';
 import graphQLFetcher from 'utils/graphQLFetcher';
@@ -26,6 +32,8 @@ const DEFAULT_SERVICE_ID = 'journey-planner';
 
 export const App = ({ services, pathname, parameters }) => {
   const [showGeocoderModal, setShowGeocoderModal] = useState(false);
+  const [schema, setSchema] = useState();
+  const [showExplorer, setShowExplorer] = useState(false);
 
   let graphiql = useRef(null);
 
@@ -34,6 +42,16 @@ export const App = ({ services, pathname, parameters }) => {
   const currentService =
     services.find(s => s.id === serviceName) ||
     services.find(s => s.id === DEFAULT_SERVICE_ID);
+
+  const fetcher = graphQLFetcher(currentService.url);
+
+  useEffect(() => {
+    fetcher({
+      query: getIntrospectionQuery()
+    }).then(result => {
+      setSchema(buildClientSchema(result.data));
+    });
+  }, [fetcher]);
 
   const handleServiceChange = id => {
     history.push(`${BASE_PATH}/${id}`);
@@ -82,6 +100,10 @@ export const App = ({ services, pathname, parameters }) => {
     });
   };
 
+  const toggleExplorer = () => {
+    setShowExplorer(prevShowExplorer => !prevShowExplorer);
+  };
+
   const renderExamplesMenu = () => {
     let queries;
 
@@ -122,111 +144,127 @@ export const App = ({ services, pathname, parameters }) => {
 
   return (
     <div className="App">
-      <Helmet>
-        {getPreferredTheme() === 'dark' && (
-          <link
-            rel="stylesheet"
-            type="text/css"
-            href={`${BASE_PATH}/darktheme.css`}
-          />
-        )}
-      </Helmet>
-      <GraphiQL
-        ref={graphiql}
-        fetcher={graphQLFetcher(currentService.url)}
+      <GraphiQLExplorer
+        schema={schema}
         query={query}
-        variables={variables}
-        operationName={operationName}
-        onEditQuery={value => editParameter('query', value)}
-        onEditVariables={value => editParameter('variables', value)}
-        onEditOperationName={value => editParameter('operationName', value)}
-      >
-        <GraphiQL.Logo>
-          <img alt="logo" src={logo} className="logo" />
-        </GraphiQL.Logo>
-        <GraphiQL.Toolbar>
-          <GraphiQL.Button
-            onClick={() => handleClickPrettifyButton()}
-            label="Prettify"
-            title="Prettify Query (Shift-Ctrl-P)"
-          />
+        onEdit={value => editParameter('query', value)}
+        onRunOperation={operationName =>
+          graphiql.current.handleRunQuery(operationName)
+        }
+        explorerIsOpen={showExplorer}
+        onToggleExplorer={toggleExplorer}
+      />
+      <div style={{ flex: 1 }}>
+        <Helmet>
+          {getPreferredTheme() === 'dark' && (
+            <link
+              rel="stylesheet"
+              type="text/css"
+              href={`${BASE_PATH}/darktheme.css`}
+            />
+          )}
+        </Helmet>
+        <GraphiQL
+          ref={graphiql}
+          fetcher={fetcher}
+          query={query}
+          variables={variables}
+          operationName={operationName}
+          onEditQuery={value => editParameter('query', value)}
+          onEditVariables={value => editParameter('variables', value)}
+          onEditOperationName={value => editParameter('operationName', value)}
+        >
+          <GraphiQL.Logo>
+            <img alt="logo" src={logo} className="logo" />
+          </GraphiQL.Logo>
+          <GraphiQL.Toolbar>
+            <GraphiQL.Button
+              onClick={() => handleClickPrettifyButton()}
+              label="Prettify"
+              title="Prettify Query (Shift-Ctrl-P)"
+            />
 
-          <GraphiQL.Button
-            onClick={() => {
-              handleHistoryButton();
-            }}
-            label="History"
-            title="Show History"
-          />
+            <GraphiQL.Button
+              onClick={handleHistoryButton}
+              label="History"
+              title="Show History"
+            />
 
-          <GraphiQL.Menu label="Service" title="Service">
-            {services.map(service => (
+            <GraphiQL.Button
+              onClick={toggleExplorer}
+              label="Explorer"
+              title="Show Explorer"
+            />
+
+            <GraphiQL.Menu label="Service" title="Service">
+              {services.map(service => (
+                <GraphiQL.MenuItem
+                  key={service.id}
+                  label={service.name}
+                  title={service.name}
+                  onSelect={() => handleServiceChange(service.id)}
+                />
+              ))}
+            </GraphiQL.Menu>
+
+            <GraphiQL.Menu label="Environment" title="Environment">
               <GraphiQL.MenuItem
-                key={service.id}
-                label={service.name}
-                title={service.name}
-                onSelect={() => handleServiceChange(service.id)}
+                label="Prod"
+                title="Prod"
+                onSelect={() => handleEnvironmentChange('prod')}
               />
-            ))}
-          </GraphiQL.Menu>
+              <GraphiQL.MenuItem
+                label="Staging"
+                title="Staging"
+                onSelect={() => handleEnvironmentChange('staging')}
+              />
+              <GraphiQL.MenuItem
+                label="Dev"
+                title="Dev"
+                onSelect={() => handleEnvironmentChange('dev')}
+              />
+            </GraphiQL.Menu>
 
-          <GraphiQL.Menu label="Environment" title="Environment">
-            <GraphiQL.MenuItem
-              label="Prod"
-              title="Prod"
-              onSelect={() => handleEnvironmentChange('prod')}
-            />
-            <GraphiQL.MenuItem
-              label="Staging"
-              title="Staging"
-              onSelect={() => handleEnvironmentChange('staging')}
-            />
-            <GraphiQL.MenuItem
-              label="Dev"
-              title="Dev"
-              onSelect={() => handleEnvironmentChange('dev')}
-            />
-          </GraphiQL.Menu>
+            {renderExamplesMenu()}
 
-          {renderExamplesMenu()}
+            <GraphiQL.Menu label="Theme" title="Theme">
+              <GraphiQL.MenuItem
+                label="Light"
+                title="Light"
+                onSelect={() => handleThemeChange('light')}
+              />
+              <GraphiQL.MenuItem
+                label="Dark"
+                title="Dark"
+                onSelect={() => handleThemeChange('dark')}
+              />
+            </GraphiQL.Menu>
 
-          <GraphiQL.Menu label="Theme" title="Theme">
-            <GraphiQL.MenuItem
-              label="Light"
-              title="Light"
-              onSelect={() => handleThemeChange('light')}
+            <GraphiQL.Button
+              onClick={() => {
+                searchForId();
+              }}
+              label="Search for ID"
+              title="Search for ID"
             />
-            <GraphiQL.MenuItem
-              label="Dark"
-              title="Dark"
-              onSelect={() => handleThemeChange('dark')}
-            />
-          </GraphiQL.Menu>
-
-          <GraphiQL.Button
-            onClick={() => {
-              searchForId();
-            }}
-            label="Search for ID"
-            title="Search for ID"
-          />
-        </GraphiQL.Toolbar>
-        <GraphiQL.Footer>
-          <div className="label">
-            {currentService.name}:{' '}
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={currentService.url}
-            >
-              {currentService.url}
-            </a>
-          </div>
-        </GraphiQL.Footer>
-      </GraphiQL>
-      {showGeocoderModal ? (
-        <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
-      ) : null}
+          </GraphiQL.Toolbar>
+          <GraphiQL.Footer>
+            <div className="label">
+              {currentService.name}:{' '}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={currentService.url}
+              >
+                {currentService.url}
+              </a>
+            </div>
+          </GraphiQL.Footer>
+        </GraphiQL>
+        {showGeocoderModal ? (
+          <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
+        ) : null}
+      </div>
     </div>
   );
 };
