@@ -108,10 +108,16 @@ export const App = ({ services, pathname, parameters }) => {
 
   const handleClickMinifyButton = () => {
     if (!graphiql) return;
-    const editor = graphiql.current.getQueryEditor();
-    const currentText = editor.getValue();
-    const uglyText = stripIgnoredCharacters(currentText);
-    editor.setValue(uglyText);
+
+    const queryEditor = graphiql.current.getQueryEditor();
+    const currentQueryText = queryEditor.getValue();
+    const uglyQueryText = stripIgnoredCharacters(currentQueryText);
+    queryEditor.setValue(uglyQueryText);
+
+    const variablesEditor = graphiql.current.getVariableEditor();
+    const currentVariablesText = variablesEditor.getValue();
+    const uglyVariablesText = JSON.stringify(JSON.parse(currentVariablesText));
+    variablesEditor.setValue(uglyVariablesText);
   };
 
   const handleHistoryButton = () => {
