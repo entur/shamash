@@ -1,2 +1,2 @@
-export { default as stopPlaceQuery } from "./stopPlace";
-export { default as topographicPlaceQuery } from "./topographicPlace";
+export { default as stopPlaceQuery } from './stopPlace';
+export { default as topographicPlaceQuery } from './topographicPlace';

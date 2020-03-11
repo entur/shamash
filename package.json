@@ -22,7 +22,6 @@
     "isomorphic-fetch": "^2.2.1",
     "lint-staged": "^9.5.0",
     "lodash.debounce": "^4.0.8",
-    "prettier": "^1.19.1",
     "query-string": "^6.9.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -37,10 +36,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint": "eslint src",
     "format": "prettier --write src/**/*.{js,jsx,ts,tsx,json,css,scss,md}"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [
@@ -68,5 +65,9 @@
   "prettier": {
     "singleQuote": true
   },
-  "homepage": "/graphql-explorer"
+  "homepage": "/graphql-explorer",
+  "devDependencies": {
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^1.19.1"
+  }
 }

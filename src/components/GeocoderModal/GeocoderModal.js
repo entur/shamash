@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import debounce from "lodash.debounce";
-import EnturService from "@entur/sdk";
-import getPreferredTheme from "utils/getPreferredTheme";
+import React, { useState, useEffect, useRef } from 'react';
+import debounce from 'lodash.debounce';
+import EnturService from '@entur/sdk';
+import getPreferredTheme from 'utils/getPreferredTheme';
 
-import { TextField } from "@entur/form";
+import { TextField } from '@entur/form';
 import {
   Table,
   TableHead,
@@ -11,16 +11,16 @@ import {
   TableRow,
   HeaderCell as TableHeaderCell,
   DataCell as TableDataCell
-} from "@entur/table";
-import { CloseIcon } from "@entur/icons";
+} from '@entur/table';
+import { CloseIcon } from '@entur/icons';
 
-import "@entur/form/dist/styles.css";
-import "@entur/table/dist/styles.css";
-import "@entur/icons/dist/styles.css";
+import '@entur/form/dist/styles.css';
+import '@entur/table/dist/styles.css';
+import '@entur/icons/dist/styles.css';
 
-import "./styles.css";
+import './styles.css';
 
-const service = new EnturService({ clientName: "entur-shamash" });
+const service = new EnturService({ clientName: 'entur-shamash' });
 
 const autocompleteSearch = debounce(
   (query, callback) =>
@@ -33,7 +33,7 @@ const autocompleteSearch = debounce(
 );
 
 function GeocoderModal({ onDismiss }) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const modalRef = useRef(null);
   const [copiedPopupStyle, setCopiedPopupStyle] = useState({
@@ -54,8 +54,8 @@ function GeocoderModal({ onDismiss }) {
 
   const handleRowClick = (newClip, event) => {
     const { clientX, clientY } = event;
-    navigator.permissions.query({ name: "clipboard-write" }).then(result => {
-      if (result.state === "granted" || result.state === "prompt") {
+    navigator.permissions.query({ name: 'clipboard-write' }).then(result => {
+      if (result.state === 'granted' || result.state === 'prompt') {
         navigator.clipboard.writeText(newClip).then(
           function() {
             const { offsetLeft = 0, offsetTop = 0 } = modalRef
@@ -153,7 +153,7 @@ function GeocoderModal({ onDismiss }) {
                   <TableDataCell
                     className={`geocoder-modal__table-data--${theme}`}
                   >
-                    {category.join(", ")}
+                    {category.join(', ')}
                   </TableDataCell>
                 </TableRow>
               );
