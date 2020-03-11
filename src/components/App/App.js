@@ -31,7 +31,7 @@ if (getPreferredTheme() === 'dark') {
 const BASE_PATH = process.env.PUBLIC_URL || '';
 const DEFAULT_SERVICE_ID = 'journey-planner';
 
-export const App = ({ services, pathname, parameters }) => {
+export const App = ({ services, pathname, parameters, setParameters }) => {
   const [showGeocoderModal, setShowGeocoderModal] = useState(false);
   const [schema, setSchema] = useState();
   const [showExplorer, setShowExplorer] = useState(false);
@@ -61,6 +61,11 @@ export const App = ({ services, pathname, parameters }) => {
   };
 
   const editParameter = (key, value) => {
+    setParameters(prevParameters => ({
+      ...prevParameters,
+      [key]: value
+    }));
+
     history.replace({
       search: queryString.stringify({
         ...parameters,
@@ -330,6 +335,11 @@ export default () => {
   }
 
   return (
-    <App services={services} pathname={pathname} parameters={parameters} />
+    <App
+      services={services}
+      pathname={pathname}
+      parameters={parameters}
+      setParameters={setParameters}
+    />
   );
 };
