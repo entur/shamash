@@ -104,8 +104,10 @@
 
 .graphiql-container,
 .graphiql-container button,
-.graphiql-container input {
+.graphiql-container input,
+.graphiql-container select {
   color: #9299a7;
+  background-color: #21262b;
 }
 
 .CodeMirror-gutters {
@@ -212,4 +214,9 @@ a {
 
 .CodeMirror-lint-tooltip {
   background: #1a1e22 !important;
+  color: #acacac !important;
+}
+
+.graphiql-container .doc-explorer-title-bar {
+  background: #21262b;
 }
