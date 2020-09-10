@@ -3,7 +3,6 @@ import GraphiQL from 'graphiql';
 import GraphiQLExplorer from 'graphiql-explorer';
 import {
   parse,
-  print,
   getIntrospectionQuery,
   buildClientSchema,
   stripIgnoredCharacters
@@ -20,6 +19,8 @@ import './app.css';
 import './custom.css';
 import 'graphiql/graphiql.css';
 import findServiceName from 'utils/findServiceName';
+
+import { print } from '../../utils/graphqlPrinter';
 
 let logo;
 if (getPreferredTheme() === 'dark') {
