@@ -10,10 +10,10 @@ import { visit } from 'graphql';
  */
 
 function printBlockString(
-  value: string,
-  indentation?: string = '',
-  preferMultipleLines?: boolean = false
-): string {
+  value,
+  indentation = '',
+  preferMultipleLines = false
+) {
   const isSingleLine = value.indexOf('\n') === -1;
   const hasLeadingSpace = value[0] === ' ' || value[0] === '\t';
   const hasTrailingQuote = value[value.length - 1] === '"';
@@ -289,7 +289,7 @@ function addDescription(cb) {
  * Given maybeArray, print an empty string if it is null or empty, otherwise
  * print all items together separated by separator if provided
  */
-function join(maybeArray: ?Array<string>, separator = ''): string {
+function join(maybeArray, separator = '') {
   return maybeArray?.filter(x => x).join(separator) ?? '';
 }
 
@@ -297,27 +297,27 @@ function join(maybeArray: ?Array<string>, separator = ''): string {
  * Given array, print each item on its own line, wrapped in an
  * indented "{ }" block.
  */
-function block(array: ?Array<string>): string {
+function block(array) {
   return wrap('{\n', indent(join(array, '\n')), '\n}');
 }
 
 /**
  * If maybeString is not null or empty, then wrap with start and end, otherwise print an empty string.
  */
-function wrap(start: string, maybeString: ?string, end: string = ''): string {
+function wrap(start, maybeString, end = '') {
   return maybeString != null && maybeString !== ''
     ? start + maybeString + end
     : '';
 }
 
-function indent(str: string): string {
+function indent(str) {
   return wrap('  ', str.replace(/\n/g, '\n  '));
 }
 
-function isMultiline(str: string): boolean {
+function isMultiline(str) {
   return str.indexOf('\n') !== -1;
 }
 
-function hasMultilineItems(maybeArray: ?Array<string>): boolean {
+function hasMultilineItems(maybeArray) {
   return maybeArray != null && maybeArray.some(isMultiline);
 }
