@@ -1,6 +1,7 @@
 import { toISOStringWithTimezone } from '../../utils/time';
 
-export default `
+export default {
+  query: `
 # Welcome to GraphiQL
 ##################
 # GraphiQL is an in-browser IDE for writing, validating, and
@@ -56,4 +57,5 @@ export default `
     }
   }
 }
-`;
+`
+};

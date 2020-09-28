@@ -1,4 +1,5 @@
-export default `
+export default {
+  query: `
 # Welcome to GraphiQL
 ##################
 # GraphiQL is an in-browser IDE for writing, validating, and
@@ -15,14 +16,10 @@ export default `
 #
 #
 ################## Example query
-#### Arguments
-{
+query ($id: String!) {
   stopPlace(
-    id:"NSR:StopPlace:337"
-  )
-
-#### Requested fields
-  {
+    id: $id
+  ) {
     name
     id
     estimatedCalls {
@@ -39,4 +36,8 @@ export default `
     }
   }
 }
-`;
+`,
+  variables: {
+    id: 'NSR:StopPlace:337'
+  }
+};
