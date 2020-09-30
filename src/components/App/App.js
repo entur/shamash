@@ -174,7 +174,7 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
   const {
     query = currentService
       ? require(`queries/${currentService.queries}/${currentService.defaultQuery}`)
-          .default
+          .default.query
       : '',
     variables,
     operationName
