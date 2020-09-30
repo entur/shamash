@@ -15,11 +15,11 @@ import history from 'utils/history';
 import * as journeyplannerQueries from 'queries/journey-planner';
 import * as nsrQueries from 'queries/stop-places';
 import GeocoderModal from 'components/GeocoderModal';
-import './app.css';
 import './custom.css';
-import 'graphiql/graphiql.css';
 import findServiceName from 'utils/findServiceName';
 
+import explorerDarkColors from './DarkmodeExplorerColors';
+import 'graphiql/graphiql.css';
 import { print } from '../../utils/graphqlPrinter';
 
 let logo;
@@ -176,7 +176,7 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
   } = parameters;
 
   return (
-    <div className="App">
+    <div className="App graphiql-container">
       <GraphiQLExplorer
         schema={schema}
         query={query}
@@ -186,6 +186,7 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
         }
         explorerIsOpen={showExplorer}
         onToggleExplorer={toggleExplorer}
+        colors={getPreferredTheme() === 'dark' && explorerDarkColors}
       />
       <div style={{ flex: 1 }}>
         <Helmet>
