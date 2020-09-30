@@ -19,8 +19,8 @@ config: |-
         "defaultQuery": "trip"
       },
       {
-        "id": "journey-planner-v3",
-        "name": "journey-planner-v3",
+        "id": "journey-planner-v3-beta",
+        "name": "journey-planner-v3-beta",
         "url": "https://api.dev.entur.io/journey-planner/v3/graphql",
         "queries": "journey-planner",
         "defaultQuery": "trip"
