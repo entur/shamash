@@ -150,12 +150,17 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
 
     return (
       <GraphiQL.Menu label="Examples" title="Examples">
-        {Object.entries(queries).map(([key, value]) => (
+        {Object.entries(queries).map(([key, { query, variables }]) => (
           <GraphiQL.MenuItem
             key={key}
             label={key}
             title={key}
-            onSelect={() => editParameter('query', value)}
+            onSelect={() => {
+              editParameter('query', query);
+              if (variables) {
+                editParameter('variables', JSON.stringify(variables, null, 2));
+              }
+            }}
           />
         ))}
       </GraphiQL.Menu>
