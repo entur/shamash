@@ -34,9 +34,7 @@ export default {
     }
     numTripPatterns: 3
     dateTime: "${toISOStringWithTimezone(new Date())}"
-    minimumTransferTime: 180
     walkSpeed: 1.3
-    wheelchair: false
     arriveBy: false
   )
 
