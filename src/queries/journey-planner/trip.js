@@ -41,7 +41,7 @@ export default {
 #### Requested fields
   {
     tripPatterns {
-      startTime
+      expectedStartTime
       duration
       walkDistance
       legs {
