@@ -279,8 +279,8 @@ fragment estimatedCallFields on EstimatedCall {
       place: 'NSR:StopPlace:59872'
     },
     to: {
-      name: 'Bergen stasjon, Bergen',
-      place: 'NSR:StopPlace:59983'
+      name: 'Kjelsås, Oslo',
+      place: 'NSR:StopPlace:59648'
     },
     dateTime: toISOStringWithTimezone(new Date()),
     arriveBy: false,
