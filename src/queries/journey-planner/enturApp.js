@@ -21,8 +21,8 @@ query ($numTripPatterns: Int!, $from: Location!, $to: Location!, $dateTime: Date
     whiteListed: $whiteListed
   ) {
     tripPatterns {
-      startTime
-      endTime
+      expectedStartTime
+      expectedEndTime
       directDuration
       duration
       distance
@@ -157,10 +157,6 @@ fragment situationFields on PtSituationElement {
     language
     value
   }
-  detail {
-    language
-    value
-  }
   lines {
     ...lineFields
   }
@@ -272,7 +268,7 @@ fragment estimatedCallFields on EstimatedCall {
     ...situationFields
   }
 }
-`,
+`.trim(),
   variables: {
     walkSpeed: 1.3,
     minimumTransferTime: 120,
