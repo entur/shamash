@@ -44,10 +44,15 @@ function MapContent({ mapData }) {
       return;
     }
 
-    const multiLine = multiLineString(
-      mapData.map(({ legLine }) => legLine.geometry.coordinates).filter(Boolean)
-    );
+    const points = mapData
+      .map(({ legLine }) => legLine.geometry.coordinates)
+      .filter(Boolean);
 
+    if (!points.length) {
+      return;
+    }
+
+    const multiLine = multiLineString(points);
     const [minX, minY, maxX, maxY] = bbox(multiLine);
 
     const newBounds = Leaflet.latLngBounds(
