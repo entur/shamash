@@ -1,4 +1,10 @@
-import React, { useMemo, useState, useRef, useEffect } from 'react';
+import React, {
+  useMemo,
+  useCallback,
+  useState,
+  useRef,
+  useEffect
+} from 'react';
 import GraphiQL from 'graphiql';
 import GraphiQLExplorer from 'graphiql-explorer';
 import {
@@ -22,6 +28,8 @@ import explorerDarkColors from './DarkmodeExplorerColors';
 import 'graphiql/graphiql.css';
 import { print } from '../../utils/graphqlPrinter';
 
+import Map from '../Map';
+
 let logo;
 if (getPreferredTheme() === 'dark') {
   logo = require('static/images/entur-white.png');
@@ -36,6 +44,8 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
   const [showGeocoderModal, setShowGeocoderModal] = useState(false);
   const [schema, setSchema] = useState();
   const [showExplorer, setShowExplorer] = useState(false);
+  const [showMap, setShowMap] = useState(false);
+  const [response, setResponse] = useState();
 
   let graphiql = useRef(null);
 
@@ -137,6 +147,10 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
     setShowExplorer(prevShowExplorer => !prevShowExplorer);
   };
 
+  const toggleMap = () => {
+    setShowMap(prev => !prev);
+  };
+
   const renderExamplesMenu = () => {
     let queries;
 
@@ -180,6 +194,15 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
     operationName
   } = parameters;
 
+  const customFetcher = useCallback(
+    async (...args) => {
+      const res = await fetcher(...args);
+      setResponse(res);
+      return res;
+    },
+    [fetcher]
+  );
+
   return (
     <div className="App graphiql-container">
       <GraphiQLExplorer
@@ -205,7 +228,7 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
         </Helmet>
         <GraphiQL
           ref={graphiql}
-          fetcher={fetcher}
+          fetcher={customFetcher}
           query={query}
           variables={variables}
           operationName={operationName}
@@ -239,6 +262,8 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
               label="Explorer"
               title="Show Explorer"
             />
+
+            <GraphiQL.Button onClick={toggleMap} label="Map" title="Show Map" />
 
             <GraphiQL.Menu label="Service" title="Service">
               {services.map(service => (
@@ -309,6 +334,7 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
           <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
         ) : null}
       </div>
+      {showMap ? <Map response={response} /> : null}
     </div>
   );
 };
