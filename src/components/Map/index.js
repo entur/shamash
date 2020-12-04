@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Polyline, useMap } from 'react-leaflet';
+import React, { useState, useEffect, useMemo } from 'react';
+import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
 import Leaflet from 'leaflet';
 import bbox from '@turf/bbox';
-import { lineString, multiLineString } from '@turf/helpers';
-import { decode } from '@mapbox/polyline';
+import { lineString, featureCollection } from '@turf/helpers';
+import lineToPolygon from '@turf/line-to-polygon';
+import { toGeoJSON } from '@mapbox/polyline';
 import { colors } from '@entur/tokens';
 
 const DEFAULT_CENTER = [60, 10];
@@ -12,70 +13,92 @@ function getTransportColor(mode) {
   return colors.transport.default[mode] || colors.transport.default.walk;
 }
 
-function parsePointsOnLink(pointsOnLink) {
-  if (!pointsOnLink?.points) return;
-  return lineString(decode(pointsOnLink.points));
-}
-
-function getMapData(responseData) {
+// Returns an array of LineString GeoJSON features
+function getLegLines(responseData) {
   if (!responseData) return;
 
   const tripPatterns = responseData.data?.trip?.tripPatterns;
 
   if (!tripPatterns) {
-    return;
+    return [];
   }
 
   return tripPatterns
     .flatMap(({ legs }) => legs)
     .filter(leg => leg?.pointsOnLink?.points)
-    .map(leg => {
-      const polyline = parsePointsOnLink(leg.pointsOnLink);
+    .map(leg =>
+      lineString(toGeoJSON(leg.pointsOnLink.points).coordinates, {
+        color: getTransportColor(leg.mode)
+      })
+    );
+}
 
-      return { legLine: polyline, color: getTransportColor(leg.mode) };
+// Returns an array of Polygon GeoJSON features
+function getFlexibleAreas(responseData) {
+  if (!responseData) return;
+
+  const tripPatterns = responseData.data?.trip?.tripPatterns;
+
+  if (!tripPatterns) {
+    return [];
+  }
+
+  return tripPatterns
+    .flatMap(({ legs }) => legs)
+    .flatMap(leg => leg?.line?.quays || [])
+    .filter(quay => quay.flexibleArea)
+    .map(quay => {
+      console.log('quay.flexibleArea', quay.flexibleArea);
+      return lineToPolygon(lineString(quay.flexibleArea));
     });
+}
+
+function getMapData(responseData) {
+  if (!responseData) return;
+
+  return {
+    legLines: getLegLines(responseData),
+    flexibleAreas: getFlexibleAreas(responseData)
+  };
 }
 
 function MapContent({ mapData }) {
   const map = useMap();
 
+  const collection = useMemo(() => {
+    const { legLines, flexibleAreas } = mapData;
+    const allFeatures = [...legLines, ...flexibleAreas];
+    return allFeatures.length > 0 ? featureCollection(allFeatures) : null;
+  }, [mapData]);
+
   useEffect(() => {
-    if (!mapData) {
-      return;
-    }
-
-    const points = mapData
-      .map(({ legLine }) => legLine.geometry.coordinates)
-      .filter(Boolean);
-
-    if (!points.length) {
-      return;
-    }
-
-    const multiLine = multiLineString(points);
-    const [minX, minY, maxX, maxY] = bbox(multiLine);
+    if (!collection) return;
+    const [minX, minY, maxX, maxY] = bbox(collection);
 
     const newBounds = Leaflet.latLngBounds(
       {
-        lat: minX,
-        lng: minY
+        lat: minY,
+        lng: minX
       },
       {
-        lat: maxX,
-        lng: maxY
+        lat: maxY,
+        lng: maxX
       }
     );
 
     map.fitBounds(newBounds);
-  }, [map, mapData]);
+  }, [map, collection]);
 
-  return (mapData || []).map(({ color, legLine }, index) => (
-    <Polyline
-      key={index}
-      color={color}
-      positions={legLine.geometry.coordinates}
+  if (!collection) {
+    return null;
+  }
+
+  return (
+    <GeoJSON
+      data={collection}
+      style={feature => ({ color: feature.properties.color })}
     />
-  ));
+  );
 }
 
 export default function Map({ response }) {

@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^7.1.2",
     "@turf/bbox": "^6.0.1",
     "@turf/helpers": "^6.1.4",
+    "@turf/line-to-polygon": "^6.0.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "express": "^4.17.1",
