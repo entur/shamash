@@ -43,14 +43,19 @@ function getFlexibleAreas(responseData) {
     return [];
   }
 
-  return tripPatterns
+  const quayAreas = tripPatterns
     .flatMap(({ legs }) => legs)
     .flatMap(leg => leg?.line?.quays || [])
     .filter(quay => quay.flexibleArea)
-    .map(quay => {
-      console.log('quay.flexibleArea', quay.flexibleArea);
-      return lineToPolygon(lineString(quay.flexibleArea));
-    });
+    .map(quay => lineToPolygon(lineString(quay.flexibleArea)));
+
+  const fromPlaceAreas = tripPatterns
+    .flatMap(({ legs }) => legs)
+    .map(leg => leg?.fromPlace?.flexibleArea)
+    .filter(Boolean)
+    .map(area => lineToPolygon(lineString(area)));
+
+  return [...quayAreas, ...fromPlaceAreas];
 }
 
 function getMapData(responseData) {
