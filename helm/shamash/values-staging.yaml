@@ -24,5 +24,12 @@ config: |-
         "url": "https://api.staging.entur.io/journey-planner/v3/graphql",
         "queries": "journey-planner",
         "defaultQuery": "trip"
+      },
+      {
+        "id": "mobility",
+        "name": "Mobility",
+        "url": "https://api.staging.entur.io/mobility/v2/graphql",
+        "queries": "mobility",
+        "defaultQuery": "vehicles"
       }
     ]
