@@ -26,7 +26,7 @@ config: |-
       },
       {
         "id": "mobility",
-        "name": "Mobility",
+        "name": "mobility",
         "url": "https://api.entur.io/mobility/v2/graphql",
         "queries": "mobility",
         "defaultQuery": "vehicles"
