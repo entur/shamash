@@ -37,7 +37,7 @@ jobs:
   build:
     executor:
       name: node/default
-      tag: '10.13'
+      tag: '14.16'
     steps:
       - *attach_workspace
       - checkout
