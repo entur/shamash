@@ -129,7 +129,7 @@
   "prettier": {
     "singleQuote": true
   },
-  "homepage": ".",
+  "homepage": "/graphql-explorer",
   "devDependencies": {
     "eslint-plugin-prettier": "^3.1.2",
     "prettier": "^1.19.1"
