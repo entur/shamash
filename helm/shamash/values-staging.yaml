@@ -36,6 +36,7 @@ config: |-
         "id": "vehicles",
         "name": "vehicles",
         "url": "https://api.staging.entur.io/realtime/v1/vehicles/graphql",
+        "subscriptionsUrl": "wss://api.staging.entur.io/realtime/v1/vehicles/subscriptions",
         "queries": "vehicle-updates",
         "defaultQuery": "updates"
       }

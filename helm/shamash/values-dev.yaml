@@ -50,6 +50,7 @@ config: |-
         "id": "vehicles",
         "name": "vehicles",
         "url": "https://api.dev.entur.io/realtime/v1/vehicles/graphql",
+        "subscriptionsUrl": "wss://api.dev.entur.io/realtime/v1/vehicles/subscriptions",
         "queries": "vehicle-updates",
         "defaultQuery": "updates"
       }
