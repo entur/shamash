@@ -56,9 +56,10 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
     services.find(s => s.id === serviceName) ||
     services.find(s => s.id === DEFAULT_SERVICE_ID);
 
-  const fetcher = useMemo(() => graphQLFetcher(currentService.url), [
-    currentService.url
-  ]);
+  const fetcher = useMemo(
+    () => graphQLFetcher(currentService.url, currentService.subscriptionsUrl),
+    [currentService.url, currentService.subscriptionsUrl]
+  );
 
   useEffect(() => {
     fetcher({
@@ -342,7 +343,7 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
   );
 };
 
-export default () => {
+const ConnectedApp = () => {
   const [services, setServices] = useState(null);
   const [pathname, setPathname] = useState(history.location.pathname);
   const [parameters, setParameters] = useState(
@@ -379,3 +380,5 @@ export default () => {
     />
   );
 };
+
+export default ConnectedApp;

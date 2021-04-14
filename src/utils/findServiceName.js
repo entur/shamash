@@ -1,4 +1,4 @@
-export default (pathname, basePath) => {
+const findServiceName = (pathname, basePath) => {
   return pathname
     .split('/')
     .filter(Boolean)
@@ -6,3 +6,5 @@ export default (pathname, basePath) => {
       return `/${segment}` !== basePath;
     });
 };
+
+export default findServiceName;
