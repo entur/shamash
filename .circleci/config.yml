@@ -37,13 +37,13 @@ jobs:
   build:
     executor:
       name: node/default
-      tag: '14.16'
+      tag: '14.16.1'
     steps:
       - *attach_workspace
       - checkout
       - node/with-cache:
           cache-key: yarn.lock
-          cache-version: v2
+          cache-version: v4
           steps:
             - run: yarn
       - run:
