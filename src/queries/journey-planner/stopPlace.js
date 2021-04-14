@@ -1,4 +1,4 @@
-export default {
+const query = {
   query: `
 # Welcome to GraphiQL
 ##################
@@ -41,3 +41,5 @@ query ($id: String!) {
     id: 'NSR:StopPlace:337'
   }
 };
+
+export default query;

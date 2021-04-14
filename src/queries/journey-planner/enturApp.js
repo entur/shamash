@@ -1,6 +1,6 @@
 import { toISOStringWithTimezone } from '../../utils/time';
 
-export default {
+const query = {
   query: `
 query ($numTripPatterns: Int!, $from: Location!, $to: Location!, $dateTime: DateTime!, $arriveBy: Boolean!, $wheelchair: Boolean!, $modes: [Mode]!, $transportSubmodes: [TransportSubmodeFilter], $maxPreTransitWalkDistance: Float, $walkSpeed: Float, $minimumTransferTime: Int, $allowBikeRental: Boolean, $useFlex: Boolean, $banned: InputBanned, $whiteListed: InputWhiteListed) {
   trip(
@@ -290,3 +290,5 @@ fragment estimatedCallFields on EstimatedCall {
     numTripPatterns: 5
   }
 };
+
+export default query;

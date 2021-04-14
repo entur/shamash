@@ -1,6 +1,6 @@
 import { toISOStringWithTimezone } from '../../utils/time';
 
-export default {
+const query = {
   query: `
 # Welcome to GraphiQL
 ##################
@@ -57,3 +57,5 @@ export default {
 }
 `
 };
+
+export default query;

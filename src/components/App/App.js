@@ -343,7 +343,7 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
   );
 };
 
-export default () => {
+const ConnectedApp = () => {
   const [services, setServices] = useState(null);
   const [pathname, setPathname] = useState(history.location.pathname);
   const [parameters, setParameters] = useState(
@@ -380,3 +380,5 @@ export default () => {
     />
   );
 };
+
+export default ConnectedApp;

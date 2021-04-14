@@ -1,4 +1,4 @@
-export default {
+const query = {
   query: `
   # Welcome to GraphiQL
   ##################
@@ -29,3 +29,5 @@ subscription {
 `,
   variables: {}
 };
+
+export default query;
