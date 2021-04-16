@@ -1,4 +1,4 @@
-export default {
+const colors = {
   keyword: '#7cf3ff',
   // OperationName, FragmentName
   def: '#cc3932',
@@ -18,3 +18,5 @@ export default {
   // Type
   atom: '#CA9800'
 };
+
+export default colors;

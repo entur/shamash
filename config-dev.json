@@ -40,5 +40,13 @@
     "url": "https://api.dev.entur.io/mobility/v2/graphql",
     "queries": "mobility",
     "defaultQuery": "vehicles"
+  },
+  {
+    "id": "vehicles",
+    "name": "vehicles",
+    "url": "https://api.dev.entur.io/realtime/v1/vehicles/graphql",
+    "subscriptionsUrl": "wss://api.dev.entur.io/realtime/v1/vehicles/subscriptions",
+    "queries": "vehicle-updates",
+    "defaultQuery": "updates"
   }
 ]

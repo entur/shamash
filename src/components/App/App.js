@@ -20,6 +20,7 @@ import getPreferredTheme from 'utils/getPreferredTheme';
 import history from 'utils/history';
 import * as journeyplannerQueries from 'queries/journey-planner';
 import * as nsrQueries from 'queries/stop-places';
+import * as vehicleQueries from 'queries/vehicle-updates';
 import GeocoderModal from 'components/GeocoderModal';
 import './custom.css';
 import findServiceName from 'utils/findServiceName';
@@ -55,9 +56,10 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
     services.find(s => s.id === serviceName) ||
     services.find(s => s.id === DEFAULT_SERVICE_ID);
 
-  const fetcher = useMemo(() => graphQLFetcher(currentService.url), [
-    currentService.url
-  ]);
+  const fetcher = useMemo(
+    () => graphQLFetcher(currentService.url, currentService.subscriptionsUrl),
+    [currentService.url, currentService.subscriptionsUrl]
+  );
 
   useEffect(() => {
     fetcher({
@@ -158,6 +160,8 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
       queries = journeyplannerQueries;
     } else if (currentService.queries === 'stop-places') {
       queries = nsrQueries;
+    } else if (currentService.queries === 'vehicle-updates') {
+      queries = vehicleQueries;
     } else {
       return null;
     }
@@ -339,7 +343,7 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
   );
 };
 
-export default () => {
+const ConnectedApp = () => {
   const [services, setServices] = useState(null);
   const [pathname, setPathname] = useState(history.location.pathname);
   const [parameters, setParameters] = useState(
@@ -376,3 +380,5 @@ export default () => {
     />
   );
 };
+
+export default ConnectedApp;

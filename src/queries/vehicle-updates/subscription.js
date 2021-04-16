@@ -15,16 +15,19 @@ const query = {
   # will appear in the pane to the right.
   #
   #
-  ################### Example query - fetching the 25 nearest scooters within 500 meters
-  {
-    vehicles(lat:59.911491, lon:10.757933, range: 500, count: 25, formFactors: SCOOTER) {
-      lat
-      lon
-      pricingPlan { description }
-      system { name }
+  ################### Example subscription - subscribing to all vehicles within codespaceId="SKY"
+subscription {
+  vehicles(codespaceId:"SKY") {
+    line {lineRef}
+    lastUpdated
+    location {
+      latitude
+      longitude
     }
   }
-  `
+}
+`,
+  variables: {}
 };
 
 export default query;
