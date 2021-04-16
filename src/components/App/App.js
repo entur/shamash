@@ -31,12 +31,8 @@ import { print } from '../../utils/graphqlPrinter';
 
 import Map from '../Map';
 
-let logo;
-if (getPreferredTheme() === 'dark') {
-  logo = require('static/images/entur-white.png');
-} else {
-  logo = require('static/images/entur.png');
-}
+import whiteLogo from 'static/images/entur-white.png';
+import normalLogo from 'static/images/entur.png';
 
 const BASE_PATH = process.env.PUBLIC_URL || '';
 const DEFAULT_SERVICE_ID = 'journey-planner';
@@ -241,7 +237,11 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
           onEditOperationName={value => editParameter('operationName', value)}
         >
           <GraphiQL.Logo>
-            <img alt="logo" src={logo} className="logo" />
+            <img
+              alt="logo"
+              src={getPreferredTheme() === 'dark' ? whiteLogo : normalLogo}
+              className="logo"
+            />
           </GraphiQL.Logo>
           <GraphiQL.Toolbar>
             <GraphiQL.Button
