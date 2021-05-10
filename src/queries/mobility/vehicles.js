@@ -20,8 +20,8 @@ const query = {
     vehicles(lat:59.911491, lon:10.757933, range: 500, count: 25, formFactors: SCOOTER) {
       lat
       lon
-      pricingPlan { description }
-      system { name }
+      pricingPlan { description { translation { language value } } }
+      system { name { translation { language value } } }
     }
   }
   `

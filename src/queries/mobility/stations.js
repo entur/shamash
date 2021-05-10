@@ -25,7 +25,7 @@ const query = {
       capacity
       numBikesAvailable
       numDocksAvailable
-      system { name }
+      system { name { translation { language value } } }
     }
   }
   `
