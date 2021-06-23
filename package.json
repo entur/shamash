@@ -101,8 +101,8 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "lint": "eslint src && yarn format:check",
-    "format:check": "prettier --check '**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
-    "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
+    "format:check": "prettier --check .",
+    "format": "prettier --write ."
   },
   "browserslist": {
     "production": [
