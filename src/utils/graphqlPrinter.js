@@ -46,12 +46,12 @@ export function print(ast) {
 }
 
 const printDocASTReducer = {
-  Name: node => node.value,
-  Variable: node => '$' + node.name,
+  Name: (node) => node.value,
+  Variable: (node) => '$' + node.name,
 
   // Document
 
-  Document: node => join(node.definitions, '\n\n') + '\n',
+  Document: (node) => join(node.definitions, '\n\n') + '\n',
 
   OperationDefinition(node) {
     const op = node.operation;
@@ -81,7 +81,7 @@ const printDocASTReducer = {
           name +
           wrap('(\n', indent(join(args, ',\n')), '\n)'),
         join(directives, ' '),
-        selectionSet
+        selectionSet,
       ],
       ' '
     ),
@@ -104,7 +104,7 @@ const printDocASTReducer = {
     typeCondition,
     variableDefinitions,
     directives,
-    selectionSet
+    selectionSet,
   }) =>
     // Note: fragment variable definitions are experimental and may be changed
     // or removed in the future.
@@ -158,7 +158,7 @@ const printDocASTReducer = {
           name,
           wrap('implements ', join(interfaces, ' & ')),
           join(directives, ' '),
-          block(fields)
+          block(fields),
         ],
         ' '
       )
@@ -191,7 +191,7 @@ const printDocASTReducer = {
           name,
           wrap('implements ', join(interfaces, ' & ')),
           join(directives, ' '),
-          block(fields)
+          block(fields),
         ],
         ' '
       )
@@ -203,7 +203,7 @@ const printDocASTReducer = {
         'union',
         name,
         join(directives, ' '),
-        types && types.length !== 0 ? '= ' + join(types, ' | ') : ''
+        types && types.length !== 0 ? '= ' + join(types, ' | ') : '',
       ],
       ' '
     )
@@ -246,7 +246,7 @@ const printDocASTReducer = {
         name,
         wrap('implements ', join(interfaces, ' & ')),
         join(directives, ' '),
-        block(fields)
+        block(fields),
       ],
       ' '
     ),
@@ -258,7 +258,7 @@ const printDocASTReducer = {
         name,
         wrap('implements ', join(interfaces, ' & ')),
         join(directives, ' '),
-        block(fields)
+        block(fields),
       ],
       ' '
     ),
@@ -269,7 +269,7 @@ const printDocASTReducer = {
         'extend union',
         name,
         join(directives, ' '),
-        types && types.length !== 0 ? '= ' + join(types, ' | ') : ''
+        types && types.length !== 0 ? '= ' + join(types, ' | ') : '',
       ],
       ' '
     ),
@@ -278,11 +278,11 @@ const printDocASTReducer = {
     join(['extend enum', name, join(directives, ' '), block(values)], ' '),
 
   InputObjectTypeExtension: ({ name, directives, fields }) =>
-    join(['extend input', name, join(directives, ' '), block(fields)], ' ')
+    join(['extend input', name, join(directives, ' '), block(fields)], ' '),
 };
 
 function addDescription(cb) {
-  return node => join([node.description, cb(node)], '\n');
+  return (node) => join([node.description, cb(node)], '\n');
 }
 
 /**
@@ -290,7 +290,7 @@ function addDescription(cb) {
  * print all items together separated by separator if provided
  */
 function join(maybeArray, separator = '') {
-  return maybeArray?.filter(x => x).join(separator) ?? '';
+  return maybeArray?.filter((x) => x).join(separator) ?? '';
 }
 
 /**

@@ -27,7 +27,7 @@ subscription {
   }
 }
 `,
-  variables: {}
+  variables: {},
 };
 
 export default query;

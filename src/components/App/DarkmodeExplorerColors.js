@@ -16,7 +16,7 @@ const colors = {
   string2: '#0B7FC7',
   variable: '#a87f5b',
   // Type
-  atom: '#CA9800'
+  atom: '#CA9800',
 };
 
 export default colors;

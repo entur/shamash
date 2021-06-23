@@ -2,7 +2,7 @@ const findServiceName = (pathname, basePath) => {
   return pathname
     .split('/')
     .filter(Boolean)
-    .find(segment => {
+    .find((segment) => {
       return `/${segment}` !== basePath;
     });
 };

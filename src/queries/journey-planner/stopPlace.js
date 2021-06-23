@@ -38,8 +38,8 @@ query ($id: String!) {
 }
 `,
   variables: {
-    id: 'NSR:StopPlace:337'
-  }
+    id: 'NSR:StopPlace:337',
+  },
 };
 
 export default query;

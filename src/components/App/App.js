@@ -3,7 +3,7 @@ import React, {
   useCallback,
   useState,
   useRef,
-  useEffect
+  useEffect,
 } from 'react';
 import GraphiQL from 'graphiql';
 import GraphiQLExplorer from 'graphiql-explorer';
@@ -11,7 +11,7 @@ import {
   parse,
   getIntrospectionQuery,
   buildClientSchema,
-  stripIgnoredCharacters
+  stripIgnoredCharacters,
 } from 'graphql';
 import queryString from 'query-string';
 import Helmet from 'react-helmet';
@@ -49,8 +49,8 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
   const serviceName = findServiceName(pathname, BASE_PATH);
 
   const currentService =
-    services.find(s => s.id === serviceName) ||
-    services.find(s => s.id === DEFAULT_SERVICE_ID);
+    services.find((s) => s.id === serviceName) ||
+    services.find((s) => s.id === DEFAULT_SERVICE_ID);
 
   const fetcher = useMemo(
     () => graphQLFetcher(currentService.url, currentService.subscriptionsUrl),
@@ -59,31 +59,31 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
 
   useEffect(() => {
     fetcher({
-      query: getIntrospectionQuery()
-    }).then(result => {
+      query: getIntrospectionQuery(),
+    }).then((result) => {
       setSchema(buildClientSchema(result.data));
     });
   }, [fetcher]);
 
-  const handleServiceChange = id => {
+  const handleServiceChange = (id) => {
     history.push(`${BASE_PATH}/${id}`);
   };
 
   const editParameter = (key, value) => {
-    setParameters(prevParameters => ({
+    setParameters((prevParameters) => ({
       ...prevParameters,
-      [key]: value
+      [key]: value,
     }));
 
     history.replace({
       search: queryString.stringify({
         ...parameters,
-        [key]: value
-      })
+        [key]: value,
+      }),
     });
   };
 
-  const handleEnvironmentChange = env => {
+  const handleEnvironmentChange = (env) => {
     if (window.location.host.includes('localhost')) {
       return;
     }
@@ -97,7 +97,7 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
     }
   };
 
-  const handleThemeChange = theme => {
+  const handleThemeChange = (theme) => {
     window.localStorage.setItem('theme', theme);
     window.location.reload();
   };
@@ -137,16 +137,16 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
   const handleHistoryButton = () => {
     if (!graphiql) return;
     graphiql.current.setState({
-      historyPaneOpen: !graphiql.current.state.historyPaneOpen
+      historyPaneOpen: !graphiql.current.state.historyPaneOpen,
     });
   };
 
   const toggleExplorer = () => {
-    setShowExplorer(prevShowExplorer => !prevShowExplorer);
+    setShowExplorer((prevShowExplorer) => !prevShowExplorer);
   };
 
   const toggleMap = () => {
-    setShowMap(prev => !prev);
+    setShowMap((prev) => !prev);
   };
 
   const renderExamplesMenu = () => {
@@ -191,7 +191,7 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
           .default.query
       : '',
     variables,
-    operationName
+    operationName,
   } = parameters;
 
   const customFetcher = useCallback(
@@ -208,8 +208,8 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
       <GraphiQLExplorer
         schema={schema}
         query={query}
-        onEdit={value => editParameter('query', value)}
-        onRunOperation={operationName =>
+        onEdit={(value) => editParameter('query', value)}
+        onRunOperation={(operationName) =>
           graphiql.current.handleRunQuery(operationName)
         }
         explorerIsOpen={showExplorer}
@@ -232,9 +232,9 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
           query={query}
           variables={variables}
           operationName={operationName}
-          onEditQuery={value => editParameter('query', value)}
-          onEditVariables={value => editParameter('variables', value)}
-          onEditOperationName={value => editParameter('operationName', value)}
+          onEditQuery={(value) => editParameter('query', value)}
+          onEditVariables={(value) => editParameter('variables', value)}
+          onEditOperationName={(value) => editParameter('operationName', value)}
         >
           <GraphiQL.Logo>
             <img
@@ -270,7 +270,7 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
             <GraphiQL.Button onClick={toggleMap} label="Map" title="Show Map" />
 
             <GraphiQL.Menu label="Service" title="Service">
-              {services.map(service => (
+              {services.map((service) => (
                 <GraphiQL.MenuItem
                   key={service.id}
                   label={service.name}
@@ -359,7 +359,7 @@ const ConnectedApp = () => {
   }, []);
 
   useEffect(() => {
-    return history.listen(location => {
+    return history.listen((location) => {
       if (location.pathname !== pathname) {
         setPathname(location.pathname);
         setParameters(queryString.parse(location.search));

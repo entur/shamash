@@ -17,11 +17,11 @@ try {
 }
 
 const configureApp = (app, endpointBase = '/') => {
-  app.get(endpointBase + '_health', function(req, res) {
+  app.get(endpointBase + '_health', function (req, res) {
     res.sendStatus(200);
   });
 
-  app.get(endpointBase + 'config.json', function(req, res) {
+  app.get(endpointBase + 'config.json', function (req, res) {
     res.send(config);
   });
 
@@ -38,7 +38,7 @@ const configureApp = (app, endpointBase = '/') => {
     res.status(500);
     res.send({
       code: 'INTERNAL_ERROR',
-      message: 'Ooops. Something broke back here. Sorry!'
+      message: 'Ooops. Something broke back here. Sorry!',
     });
   });
 

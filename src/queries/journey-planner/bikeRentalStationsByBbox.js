@@ -32,7 +32,7 @@ const query = {
     spacesAvailable
   }
 }
-`
+`,
 };
 
 export default query;

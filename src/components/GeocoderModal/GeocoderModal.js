@@ -10,7 +10,7 @@ import {
   TableBody,
   TableRow,
   HeaderCell as TableHeaderCell,
-  DataCell as TableDataCell
+  DataCell as TableDataCell,
 } from '@entur/table';
 import { CloseIcon } from '@entur/icons';
 
@@ -26,7 +26,7 @@ const autocompleteSearch = debounce(
   (query, callback) =>
     service
       .getFeatures(query, undefined, {
-        limit: 8
+        limit: 8,
       })
       .then(callback),
   400
@@ -38,7 +38,7 @@ function GeocoderModal({ onDismiss }) {
   const modalRef = useRef(null);
   const [copiedPopupStyle, setCopiedPopupStyle] = useState({
     top: 10,
-    left: 10
+    left: 10,
   });
   const theme = getPreferredTheme();
 
@@ -54,17 +54,17 @@ function GeocoderModal({ onDismiss }) {
 
   const handleRowClick = (newClip, event) => {
     const { clientX, clientY } = event;
-    navigator.permissions.query({ name: 'clipboard-write' }).then(result => {
+    navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
       if (result.state === 'granted' || result.state === 'prompt') {
         navigator.clipboard.writeText(newClip).then(
-          function() {
+          function () {
             const { offsetLeft = 0, offsetTop = 0 } = modalRef
               ? modalRef.current
               : {};
             setCopiedPopupStyle({
               opacity: 1,
               left: clientX - offsetLeft,
-              top: clientY - offsetTop
+              top: clientY - offsetTop,
             });
             clearTimeout(popupTimeout);
             popupTimeout = setTimeout(
@@ -80,7 +80,7 @@ function GeocoderModal({ onDismiss }) {
     });
   };
 
-  const onOverlayClick = event => {
+  const onOverlayClick = (event) => {
     event.stopPropagation();
     onDismiss();
   };
@@ -102,7 +102,7 @@ function GeocoderModal({ onDismiss }) {
         </p>
         <TextField
           value={query}
-          onChange={e => setQuery(e.currentTarget.value)}
+          onChange={(e) => setQuery(e.currentTarget.value)}
           placeholder="Jernbanetorget"
           width="fluid"
           className={`geocoder-modal__input geocoder-modal__input--${theme}`}
@@ -132,13 +132,13 @@ function GeocoderModal({ onDismiss }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {results.map(feature => {
+            {results.map((feature) => {
               const { id, label, category } = feature.properties;
               return (
                 <TableRow
                   className={`geocoder-modal__table-row--${theme}`}
                   key={id}
-                  onClick={event => handleRowClick(id, event)}
+                  onClick={(event) => handleRowClick(id, event)}
                 >
                   <TableDataCell
                     className={`geocoder-modal__table-data--${theme}`}

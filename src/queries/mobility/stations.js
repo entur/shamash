@@ -28,7 +28,7 @@ const query = {
       system { name { translation { language value } } }
     }
   }
-  `
+  `,
 };
 
 export default query;
