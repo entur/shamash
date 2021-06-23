@@ -10,22 +10,25 @@ let config;
 try {
   config = JSON.parse(fs.readFileSync('/etc/config/config.json'));
 } catch {
-  console.warn("Could not read config from file system - using development config.");
+  console.warn(
+    'Could not read config from file system - using development config.'
+  );
   config = require('./config-dev.json');
 }
 
 const configureApp = (app, endpointBase = '/') => {
   app.get(endpointBase + '_health', function(req, res) {
-    res.sendStatus(200)
+    res.sendStatus(200);
   });
 
   app.get(endpointBase + 'config.json', function(req, res) {
     res.send(config);
   });
 
-  app.use(endpointBase, express.static(contentRoot))
+  app.use(endpointBase, express.static(contentRoot));
 
-  app.use(endpointBase, fallback('index.html', { root: contentRoot }))
+  app
+    .use(endpointBase, fallback('index.html', { root: contentRoot }))
     .use((err, req, res, next) => {
       console.log(`Request to ${req.url} failed: ${err.stack}`);
       next(err);
@@ -40,6 +43,6 @@ const configureApp = (app, endpointBase = '/') => {
   });
 
   return app;
-}
+};
 
 module.exports = { configureApp };

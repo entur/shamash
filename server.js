@@ -9,9 +9,9 @@ const init = async () => {
     if (error) {
       console.error(error);
     } else {
-      console.info("==> Listening on port %s.", port);
+      console.info('==> Listening on port %s.', port);
     }
   });
-}
+};
 
 init();

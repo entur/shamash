@@ -34,7 +34,7 @@ const moduleFileExtensions = [
   'tsx',
   'json',
   'web.jsx',
-  'jsx',
+  'jsx'
 ];
 
 // Resolve file paths in the same order as webpack
@@ -68,9 +68,9 @@ module.exports = {
   appNodeModules: resolveApp('node_modules'),
   swSrc: resolveModule(resolveApp, 'src/service-worker'),
   publicUrlOrPath,
-  graphqlLanguageServiceInterface: resolveApp('node_modules/graphql-language-service-interface'),
+  graphqlLanguageServiceInterface: resolveApp(
+    'node_modules/graphql-language-service-interface'
+  )
 };
-
-
 
 module.exports.moduleFileExtensions = moduleFileExtensions;
