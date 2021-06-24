@@ -1,2 +1,5 @@
-config
 helm
+
+# Don't run formatting on these folders that were generated from ejecting from create-react-app:
+config
+scripts
