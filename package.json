@@ -100,8 +100,9 @@
     "start:server": "node server.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "lint": "eslint src",
-    "format": "prettier --write src/**/*.{js,jsx,ts,tsx,json,css,scss,md}"
+    "lint": "eslint src && yarn format:check",
+    "format:check": "prettier --check .",
+    "format": "prettier --write ."
   },
   "browserslist": {
     "production": [
@@ -132,7 +133,7 @@
   "homepage": "/graphql-explorer",
   "devDependencies": {
     "eslint-plugin-prettier": "^3.1.2",
-    "prettier": "^1.19.1"
+    "prettier": "2.3.1"
   },
   "jest": {
     "roots": [

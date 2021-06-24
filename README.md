@@ -16,7 +16,6 @@ yarn build
 yarn start
 ```
 
-
 ## Configuration
 
 Configuration for shamash is served by the NodeJS proxy.

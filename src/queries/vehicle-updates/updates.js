@@ -27,7 +27,7 @@ const query = {
   }
 }
 `,
-  variables: {}
+  variables: {},
 };
 
 export default query;

@@ -3,35 +3,34 @@
 version: 2.1
 
 orbs:
-#  slack: circleci/slack@1.0.0
+  #  slack: circleci/slack@1.0.0
   docker-publish: circleci/docker-publish@0.1.7
   node: circleci/node@1.1.6
 
 references:
-  workspace_root: &workspace_root
-    /tmp/workspace
+  workspace_root: &workspace_root /tmp/workspace
   attach_workspace: &attach_workspace
     attach_workspace:
       at: *workspace_root
 
 aliases:
-- &create-image-version
-  name: Create new image version and store to env var and as file in workspace
-  command: |
-    echo "export VERSION=$CIRCLE_BRANCH-v$CIRCLE_BUILD_NUM-$(echo -n $CIRCLE_SHA1 | tail -c 8)"  >> $BASH_ENV
-    echo "$CIRCLE_BRANCH-v$CIRCLE_BUILD_NUM-$(echo -n $CIRCLE_SHA1 | tail -c 8)" > version
-    cp ./version /tmp/workspace
-- &read-image-version
-  name: Read new image version from workspace
-  command: |
-    echo "export VERSION=$(cat /tmp/workspace/version)" >> $BASH_ENV
-- &tag-git-version
-  name: Tag git commit with build version and push to github
-  command: |
-    git config --global user.email "circleci@entur.no"
-    git config --global user.name "circleci"
-    git tag $VERSION
-    git push origin $VERSION
+  - &create-image-version
+    name: Create new image version and store to env var and as file in workspace
+    command: |
+      echo "export VERSION=$CIRCLE_BRANCH-v$CIRCLE_BUILD_NUM-$(echo -n $CIRCLE_SHA1 | tail -c 8)"  >> $BASH_ENV
+      echo "$CIRCLE_BRANCH-v$CIRCLE_BUILD_NUM-$(echo -n $CIRCLE_SHA1 | tail -c 8)" > version
+      cp ./version /tmp/workspace
+  - &read-image-version
+    name: Read new image version from workspace
+    command: |
+      echo "export VERSION=$(cat /tmp/workspace/version)" >> $BASH_ENV
+  - &tag-git-version
+    name: Tag git commit with build version and push to github
+    command: |
+      git config --global user.email "circleci@entur.no"
+      git config --global user.name "circleci"
+      git tag $VERSION
+      git push origin $VERSION
 
 jobs:
   build:
@@ -47,13 +46,13 @@ jobs:
           steps:
             - run: yarn
       - run:
-          name: "Run tests"
+          name: 'Run tests'
           command: yarn test
       - run:
-          name: "Create production build"
+          name: 'Create production build'
           command: yarn build
       - run:
-          name: "Persist built files"
+          name: 'Persist built files'
           command: |
             set -exu
             mv build /tmp/workspace/
@@ -80,7 +79,7 @@ jobs:
             - ./version
 
 workflows:
-  "Build Pipeline":
+  'Build Pipeline':
     jobs:
       - build
       - tag:

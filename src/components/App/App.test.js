@@ -8,8 +8,8 @@ const services = [
     name: 'JourneyPlanner',
     url: 'http://fake.entur.local/journey-planner/v2/graphql',
     queries: 'journey-planner',
-    defaultQuery: 'trip'
-  }
+    defaultQuery: 'trip',
+  },
 ];
 
 const pathname = '/journey-planner';

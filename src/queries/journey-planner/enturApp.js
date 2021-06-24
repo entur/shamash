@@ -276,19 +276,19 @@ fragment estimatedCallFields on EstimatedCall {
     maxPreTransitWalkDistance: 2000,
     from: {
       name: 'Oslo S, Oslo',
-      place: 'NSR:StopPlace:59872'
+      place: 'NSR:StopPlace:59872',
     },
     to: {
       name: 'Kjelsås, Oslo',
-      place: 'NSR:StopPlace:59648'
+      place: 'NSR:StopPlace:59648',
     },
     dateTime: toISOStringWithTimezone(new Date()),
     arriveBy: false,
     modes: ['foot', 'coach', 'bus', 'tram', 'rail', 'metro', 'water'],
     transportSubmodes: [],
     wheelchair: false,
-    numTripPatterns: 5
-  }
+    numTripPatterns: 5,
+  },
 };
 
 export default query;

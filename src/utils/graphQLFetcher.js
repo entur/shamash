@@ -3,7 +3,7 @@ import uuid from 'uuid/v4';
 import { parse } from 'graphql';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 
-const hasSubscriptionOperation = graphQlParams => {
+const hasSubscriptionOperation = (graphQlParams) => {
   const queryDoc = parse(graphQlParams.query);
 
   for (let definition of queryDoc.definitions) {
@@ -25,11 +25,11 @@ const graphQLFetcher = (graphQLUrl, subscriptionsUrl) => {
 
   if (subscriptionsUrl) {
     subscriptionsClient = new SubscriptionClient(subscriptionsUrl, {
-      reconnect: true
+      reconnect: true,
     });
   }
 
-  return graphQLParams => {
+  return (graphQLParams) => {
     console.log(graphQLParams);
     if (hasSubscriptionOperation(graphQLParams)) {
       if (subscriptionsClient && activeSubscriptionId !== null) {
@@ -38,11 +38,11 @@ const graphQLFetcher = (graphQLUrl, subscriptionsUrl) => {
 
       if (subscriptionsClient) {
         return {
-          subscribe: observer => {
+          subscribe: (observer) => {
             activeSubscriptionId = subscriptionsClient
               .request(graphQLParams)
               .subscribe(observer);
-          }
+          },
         };
       }
     } else {
@@ -52,14 +52,14 @@ const graphQLFetcher = (graphQLUrl, subscriptionsUrl) => {
           accept: '*/*',
           'Content-Type': 'application/json',
           'ET-Client-Name': 'entur-shamash',
-          'X-Correlation-Id': uuid()
+          'X-Correlation-Id': uuid(),
         },
-        body: JSON.stringify(graphQLParams)
+        body: JSON.stringify(graphQLParams),
       })
-        .then(function(response) {
+        .then(function (response) {
           return response.text();
         })
-        .then(function(responseBody) {
+        .then(function (responseBody) {
           try {
             return JSON.parse(responseBody);
           } catch (error) {

@@ -25,10 +25,10 @@ function getLegLines(responseData) {
 
   return tripPatterns
     .flatMap(({ legs }) => legs)
-    .filter(leg => leg?.pointsOnLink?.points)
-    .map(leg =>
+    .filter((leg) => leg?.pointsOnLink?.points)
+    .map((leg) =>
       lineString(toGeoJSON(leg.pointsOnLink.points).coordinates, {
-        color: getTransportColor(leg.mode)
+        color: getTransportColor(leg.mode),
       })
     );
 }
@@ -45,15 +45,15 @@ function getFlexibleAreas(responseData) {
 
   const quayAreas = tripPatterns
     .flatMap(({ legs }) => legs)
-    .flatMap(leg => leg?.line?.quays || [])
-    .filter(quay => quay.flexibleArea)
-    .map(quay => lineToPolygon(lineString(quay.flexibleArea)));
+    .flatMap((leg) => leg?.line?.quays || [])
+    .filter((quay) => quay.flexibleArea)
+    .map((quay) => lineToPolygon(lineString(quay.flexibleArea)));
 
   const fromPlaceAreas = tripPatterns
     .flatMap(({ legs }) => legs)
-    .map(leg => leg?.fromPlace?.flexibleArea)
+    .map((leg) => leg?.fromPlace?.flexibleArea)
     .filter(Boolean)
-    .map(area => lineToPolygon(lineString(area)));
+    .map((area) => lineToPolygon(lineString(area)));
 
   return [...quayAreas, ...fromPlaceAreas];
 }
@@ -63,7 +63,7 @@ function getMapData(responseData) {
 
   return {
     legLines: getLegLines(responseData),
-    flexibleAreas: getFlexibleAreas(responseData)
+    flexibleAreas: getFlexibleAreas(responseData),
   };
 }
 
@@ -83,11 +83,11 @@ function MapContent({ mapData }) {
     const newBounds = Leaflet.latLngBounds(
       {
         lat: minY,
-        lng: minX
+        lng: minX,
       },
       {
         lat: maxY,
-        lng: maxX
+        lng: maxX,
       }
     );
 
@@ -101,7 +101,7 @@ function MapContent({ mapData }) {
   return (
     <GeoJSON
       data={collection}
-      style={feature => ({ color: feature.properties.color })}
+      style={(feature) => ({ color: feature.properties.color })}
     />
   );
 }
@@ -119,7 +119,7 @@ export default function Map({ response }) {
       zoom={10}
       style={{
         height: '100%',
-        width: '100%'
+        width: '100%',
       }}
       zoomControl={false}
       useFlyTo
@@ -127,7 +127,7 @@ export default function Map({ response }) {
         animate: true,
         duration: 2,
         paddingTopLeft: [40, 40],
-        paddingBottomRight: [40, 40]
+        paddingBottomRight: [40, 40],
       }}
     >
       <TileLayer
