@@ -1,6 +1,5 @@
 domain: .staging.entur.io
 environment: test
-loadBalancerIP: 35.233.47.68
 replicaCount: 1
 config: |-
     [

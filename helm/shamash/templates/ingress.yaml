@@ -4,9 +4,8 @@ metadata:
   name: {{ .Release.Name }}
   annotations:
       kubernetes.io/ingress.class: traefik
-      traefik.ingress.kubernetes.io/whitelist-source-range: {{ .Values.ingress.whitelist }}
-      external-dns.alpha.kubernetes.io/target: {{ .Values.loadBalancerIP }}
   labels:
+    traffic-type: api
     {{- include "common.labels" . | indent 4 }}
 spec:
     rules:
