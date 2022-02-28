@@ -14,14 +14,14 @@ config: |-
         "id": "journey-planner",
         "name": "journey-planner-v2",
         "url": "https://api.staging.entur.io/journey-planner/v2/graphql",
-        "queries": "journey-planner",
+        "queries": "journey-planner-v2",
         "defaultQuery": "trip"
       },
       {
         "id": "journey-planner-v3",
         "name": "journey-planner-v3",
         "url": "https://api.staging.entur.io/journey-planner/v3/graphql",
-        "queries": "journey-planner",
+        "queries": "journey-planner-v3",
         "defaultQuery": "trip"
       },
       {
