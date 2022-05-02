@@ -36,7 +36,7 @@ import whiteLogo from 'static/images/entur-white.png';
 import normalLogo from 'static/images/entur.png';
 
 const BASE_PATH = process.env.PUBLIC_URL || '';
-const DEFAULT_SERVICE_ID = 'journey-planner';
+const DEFAULT_SERVICE_ID = 'journey-planner-v3';
 
 export const App = ({ services, pathname, parameters, setParameters }) => {
   const [showGeocoderModal, setShowGeocoderModal] = useState(false);
