@@ -35,6 +35,8 @@ import Map from '../Map';
 import whiteLogo from 'static/images/entur-white.png';
 import normalLogo from 'static/images/entur.png';
 
+import { NotFound } from './404';
+
 const BASE_PATH = process.env.PUBLIC_URL || '';
 const DEFAULT_SERVICE_ID = 'journey-planner-v3';
 
@@ -49,21 +51,27 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
 
   const serviceName = findServiceName(pathname, BASE_PATH);
 
+  console.log(serviceName);
+
   const currentService =
-    services.find((s) => s.id === serviceName) ||
-    services.find((s) => s.id === DEFAULT_SERVICE_ID);
+    services.find((s) => s.id === serviceName) || serviceName === undefined
+      ? services.find((s) => s.id === DEFAULT_SERVICE_ID)
+      : null;
 
   const fetcher = useMemo(
-    () => graphQLFetcher(currentService.url, currentService.subscriptionsUrl),
-    [currentService.url, currentService.subscriptionsUrl]
+    () =>
+      currentService &&
+      graphQLFetcher(currentService.url, currentService.subscriptionsUrl),
+    [currentService]
   );
 
   useEffect(() => {
-    fetcher({
-      query: getIntrospectionQuery(),
-    }).then((result) => {
-      setSchema(buildClientSchema(result.data));
-    });
+    fetcher &&
+      fetcher({
+        query: getIntrospectionQuery(),
+      }).then((result) => {
+        setSchema(buildClientSchema(result.data));
+      });
   }, [fetcher]);
 
   const handleServiceChange = (id) => {
@@ -205,6 +213,10 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
     },
     [fetcher]
   );
+
+  if (currentService == null) {
+    return <NotFound />;
+  }
 
   return (
     <div className="App graphiql-container">
