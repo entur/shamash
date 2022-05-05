@@ -21,16 +21,9 @@
     "defaultQuery": "trip"
   },
   {
-    "id": "journey-planner-nl",
-    "name": "JourneyPlanner-nl",
-    "url": "https://api.dev.entur.io/journey-planner/v2/nl/graphql",
-    "queries": "journey-planner-v2",
-    "defaultQuery": "trip"
-  },
-  {
     "id": "journey-planner-nordic",
     "name": "JourneyPlanner-nordic",
-    "url": "https://api.dev.entur.io/journey-planner/v2/nordic/graphql",
+    "url": "https://api.dev.entur.io/journey-planner/v3/nordic/graphql",
     "queries": "journey-planner-v2",
     "defaultQuery": "trip"
   },
