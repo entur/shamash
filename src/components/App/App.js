@@ -53,10 +53,15 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
 
   console.log(serviceName);
 
-  const currentService =
-    services.find((s) => s.id === serviceName) || serviceName === undefined
-      ? services.find((s) => s.id === DEFAULT_SERVICE_ID)
-      : null;
+  let currentService = null;
+
+  if (!serviceName) {
+    currentService = services.find((s) => s.id === DEFAULT_SERVICE_ID);
+  } else {
+    currentService = services.find((s) => s.id === serviceName);
+  }
+
+  console.log(currentService);
 
   const fetcher = useMemo(
     () =>
