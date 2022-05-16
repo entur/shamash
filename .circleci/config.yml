@@ -83,7 +83,7 @@ workflows:
     jobs:
       - build
       - tag:
-          context: dev
+          context: global
           filters:
             branches:
               only: master
