@@ -3,7 +3,7 @@ app: {{ .Chart.Name }}
 team: {{ .Values.team }}
 slack: {{ .Values.slack }}
 type: {{ .Values.type }}
-environment: {{ .Release.Namespace }}
+environment: {{ .Values.environment }}
 chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
 release: {{ .Release.Name }}
 heritage: {{ .Release.Service }}
