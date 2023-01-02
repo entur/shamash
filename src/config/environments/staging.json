@@ -1,0 +1,38 @@
+[
+  {
+    "id": "stop-places",
+    "name": "stop-places",
+    "url": "https://api.staging.entur.io/stop-places/v1/graphql",
+    "queries": "stop-places",
+    "defaultQuery": "stopPlace"
+  },
+  {
+    "id": "journey-planner",
+    "name": "journey-planner-v2",
+    "url": "https://api.staging.entur.io/journey-planner/v2/graphql",
+    "queries": "journey-planner-v2",
+    "defaultQuery": "trip"
+  },
+  {
+    "id": "journey-planner-v3",
+    "name": "journey-planner-v3",
+    "url": "https://api.staging.entur.io/journey-planner/v3/graphql",
+    "queries": "journey-planner-v3",
+    "defaultQuery": "trip"
+  },
+  {
+    "id": "mobility",
+    "name": "mobility",
+    "url": "https://api.staging.entur.io/mobility/v2/graphql",
+    "queries": "mobility",
+    "defaultQuery": "vehicles"
+  },
+  {
+    "id": "vehicles",
+    "name": "vehicles",
+    "url": "https://api.staging.entur.io/realtime/v1/vehicles/graphql",
+    "subscriptionsUrl": "wss://api.staging.entur.io/realtime/v1/vehicles/subscriptions",
+    "queries": "vehicle-updates",
+    "defaultQuery": "updates"
+  }
+]

@@ -37,6 +37,8 @@ import normalLogo from 'static/images/entur.png';
 
 import { NotFound } from './404';
 
+import configreader from 'config/readConfig';
+
 const BASE_PATH = process.env.PUBLIC_URL || '';
 const DEFAULT_SERVICE_ID = 'journey-planner-v3';
 
@@ -50,8 +52,6 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
   let graphiql = useRef(null);
 
   const serviceName = findServiceName(pathname, BASE_PATH);
-
-  console.log(serviceName);
 
   let currentService = null;
 
@@ -372,8 +372,7 @@ const ConnectedApp = () => {
 
   useEffect(() => {
     const fetchServices = async () => {
-      const resp = await fetch(`${BASE_PATH}/config.json`);
-      setServices(await resp.json());
+      configreader.readConfig((config) => setServices(config));
     };
     fetchServices();
   }, []);
