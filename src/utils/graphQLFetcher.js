@@ -51,7 +51,7 @@ const graphQLFetcher = (graphQLUrl, subscriptionsUrl) => {
         headers: {
           accept: '*/*',
           'Content-Type': 'application/json',
-          'ET-Client-Name': 'entur-shamash',
+          'ET-Client-Name': 'entur-shamash2023',
           'X-Correlation-Id': uuid(),
         },
         body: JSON.stringify(graphQLParams),
