@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "ent-shamash-dev"
+    "dev": "ent-shamash-dev",
+    "staging": "ent-shamash-tst",
+    "prod": "ent-shamash-prd",
+    "default": "ent-shamash-prd"
   }
 }
