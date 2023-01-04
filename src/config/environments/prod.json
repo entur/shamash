@@ -1,44 +1,37 @@
 [
   {
     "id": "stop-places",
-    "name": "Stoppestedsregisteret",
+    "name": "stop-places",
     "url": "https://api.entur.io/stop-places/v1/graphql",
     "queries": "stop-places",
     "defaultQuery": "stopPlace"
   },
   {
     "id": "journey-planner",
-    "name": "JourneyPlanner",
+    "name": "journey-planner-v2",
     "url": "https://api.entur.io/journey-planner/v2/graphql",
     "queries": "journey-planner-v2",
     "defaultQuery": "trip"
   },
   {
     "id": "journey-planner-v3",
-    "name": "JourneyPlanner-v3",
-    "url": "https://api.dev.entur.io/journey-planner/v3/graphql",
+    "name": "journey-planner-v3",
+    "url": "https://api.entur.io/journey-planner/v3/graphql",
     "queries": "journey-planner-v3",
-    "defaultQuery": "trip"
-  },
-  {
-    "id": "journey-planner-nordic",
-    "name": "JourneyPlanner-nordic",
-    "url": "https://api.dev.entur.io/journey-planner/v3/nordic/graphql",
-    "queries": "journey-planner-v2",
     "defaultQuery": "trip"
   },
   {
     "id": "mobility",
     "name": "mobility",
-    "url": "https://api.dev.entur.io/mobility/v2/graphql",
+    "url": "https://api.entur.io/mobility/v2/graphql",
     "queries": "mobility",
     "defaultQuery": "vehicles"
   },
   {
     "id": "vehicles",
     "name": "vehicles",
-    "url": "https://api.dev.entur.io/realtime/v1/vehicles/graphql",
-    "subscriptionsUrl": "wss://api.dev.entur.io/realtime/v1/vehicles/subscriptions",
+    "url": "https://api.entur.io/realtime/v1/vehicles/graphql",
+    "subscriptionsUrl": "wss://api.entur.io/realtime/v1/vehicles/subscriptions",
     "queries": "vehicle-updates",
     "defaultQuery": "updates"
   }
