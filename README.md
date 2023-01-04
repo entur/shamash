@@ -15,9 +15,3 @@ yarn build
 ```
 yarn start
 ```
-
-## Configuration
-
-Configuration for shamash is served by the NodeJS proxy.
-
-For local deveopment, use `config-dev.json`. In gcp, configuration is loaded from the configmap called `shamash-server-config`. TODO: Use configmap and values from helm template.
