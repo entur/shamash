@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="override-content-encoding">
+    <DisplayName>Override content encoding</DisplayName>
+    <Set>
+        <Headers>
+            <Header name="Accept-Encoding">gzip,deflate</Header>
+        </Headers>
+    </Set>
+    <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>
