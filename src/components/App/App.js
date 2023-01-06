@@ -37,12 +37,13 @@ import normalLogo from 'static/images/entur.png';
 
 import { NotFound } from './404';
 
-import configreader from 'config/readConfig';
+import { ConfigContext, useConfig, useFetchConfig } from 'config/ConfigContext';
 
 const BASE_PATH = process.env.PUBLIC_URL || '';
 const DEFAULT_SERVICE_ID = 'journey-planner-v3';
 
-export const App = ({ services, pathname, parameters, setParameters }) => {
+export const App = ({ pathname, parameters, setParameters }) => {
+  const { services, enturClientName } = useConfig();
   const [showGeocoderModal, setShowGeocoderModal] = useState(false);
   const [schema, setSchema] = useState();
   const [showExplorer, setShowExplorer] = useState(false);
@@ -61,13 +62,15 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
     currentService = services.find((s) => s.id === serviceName);
   }
 
-  console.log(currentService);
-
   const fetcher = useMemo(
     () =>
       currentService &&
-      graphQLFetcher(currentService.url, currentService.subscriptionsUrl),
-    [currentService]
+      graphQLFetcher(
+        currentService.url,
+        currentService.subscriptionsUrl,
+        enturClientName
+      ),
+    [currentService, enturClientName]
   );
 
   useEffect(() => {
@@ -364,18 +367,11 @@ export const App = ({ services, pathname, parameters, setParameters }) => {
 };
 
 const ConnectedApp = () => {
-  const [services, setServices] = useState(null);
+  const config = useFetchConfig();
   const [pathname, setPathname] = useState(history.location.pathname);
   const [parameters, setParameters] = useState(
     queryString.parse(history.location.search)
   );
-
-  useEffect(() => {
-    const fetchServices = async () => {
-      configreader.readConfig((config) => setServices(config));
-    };
-    fetchServices();
-  }, []);
 
   useEffect(() => {
     return history.listen((location) => {
@@ -386,17 +382,18 @@ const ConnectedApp = () => {
     });
   }, [pathname]);
 
-  if (services === null) {
+  if (!config.services) {
     return null;
   }
 
   return (
-    <App
-      services={services}
-      pathname={pathname}
-      parameters={parameters}
-      setParameters={setParameters}
-    />
+    <ConfigContext.Provider value={config}>
+      <App
+        pathname={pathname}
+        parameters={parameters}
+        setParameters={setParameters}
+      />
+    </ConfigContext.Provider>
   );
 };
 

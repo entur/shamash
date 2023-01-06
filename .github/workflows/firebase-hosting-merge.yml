@@ -31,6 +31,7 @@ jobs:
       - run: yarn build
         env:
           REACT_APP_VERSION: ${{ github.sha }}
+          REACT_APP_ENTUR_CLIENT_NAME: entur-shamash2023
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:

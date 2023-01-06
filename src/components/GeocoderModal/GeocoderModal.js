@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import debounce from 'lodash.debounce';
 import EnturService from '@entur/sdk';
 import getPreferredTheme from 'utils/getPreferredTheme';
@@ -19,11 +19,10 @@ import '@entur/table/dist/styles.css';
 import '@entur/icons/dist/styles.css';
 
 import './styles.css';
-
-const service = new EnturService({ clientName: 'entur-shamash' });
+import { useConfig } from 'config/ConfigContext';
 
 const autocompleteSearch = debounce(
-  (query, callback) =>
+  (query, callback, service) =>
     service
       .getFeatures(query, undefined, {
         limit: 8,
@@ -33,6 +32,11 @@ const autocompleteSearch = debounce(
 );
 
 function GeocoderModal({ onDismiss }) {
+  const { enturClientName } = useConfig();
+  const service = useMemo(
+    () => new EnturService({ clientName: enturClientName }),
+    [enturClientName]
+  );
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const modalRef = useRef(null);
@@ -46,11 +50,11 @@ function GeocoderModal({ onDismiss }) {
 
   useEffect(() => {
     if (query) {
-      autocompleteSearch(query, setResults);
+      autocompleteSearch(query, setResults, service);
     } else {
       setResults([]);
     }
-  }, [query]);
+  }, [query, service]);
 
   const handleRowClick = (newClip, event) => {
     const { clientX, clientY } = event;

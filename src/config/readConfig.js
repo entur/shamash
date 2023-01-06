@@ -18,7 +18,10 @@ configreader.readConfig = (callback) => {
   const fetchEnvConfig = async () => {
     const env = getEnvironment();
     const { default: config } = await import(`./environments/${env}.json`);
-    callback(config);
+    callback({
+      enturClientName: process.env.REACT_APP_ENTUR_CLIENT_NAME || undefined,
+      ...config
+    });
   };
   fetchEnvConfig();
 };

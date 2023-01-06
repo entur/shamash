@@ -18,7 +18,7 @@ const hasSubscriptionOperation = (graphQlParams) => {
   return false;
 };
 
-const graphQLFetcher = (graphQLUrl, subscriptionsUrl) => {
+const graphQLFetcher = (graphQLUrl, subscriptionsUrl, enturClientName) => {
   let activeSubscriptionId = null;
 
   let subscriptionsClient;
@@ -51,7 +51,7 @@ const graphQLFetcher = (graphQLUrl, subscriptionsUrl) => {
         headers: {
           accept: '*/*',
           'Content-Type': 'application/json',
-          'ET-Client-Name': 'entur-shamash2023',
+          'ET-Client-Name': enturClientName,
           'X-Correlation-Id': uuid(),
         },
         body: JSON.stringify(graphQLParams),
