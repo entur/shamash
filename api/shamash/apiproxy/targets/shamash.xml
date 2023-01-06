@@ -17,6 +17,9 @@
             <Step>
                 <Name>flowCallout.replaceTargetUrl</Name>
             </Step>
+            <Step>
+                <Name>override-content-encoding</Name>
+            </Step>
         </Request>
         <Response>
             <Step>
