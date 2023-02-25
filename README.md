@@ -1,10 +1,17 @@
 # Shamash
 
-An in-browser IDE for exploring GraphQL.
+An in-browser IDE for exploring GraphQL – extended with a map, query selection, etc.
+
+
+## Install dependencies
+
+```sh
+yarn install
+```
 
 ## Build the app
 
-```
+```sh
 yarn build
 ```
 
@@ -12,6 +19,6 @@ yarn build
 
 ### Run build against localhost
 
-```
+```sh
 yarn start
 ```
