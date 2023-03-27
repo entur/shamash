@@ -5,9 +5,9 @@
   "dependencies": {
     "@apollo/client": "^3.3.15",
     "@babel/core": "7.20.12",
-    "@entur/form": "^3.4.4",
-    "@entur/icons": "^1.12.1",
-    "@entur/sdk": "^1.11.0",
+    "@entur/form": "^7.0.0",
+    "@entur/icons": "^6.0.0",
+    "@entur/sdk": "^5.0.0",
     "@entur/table": "^4.0.1",
     "@mapbox/polyline": "^1.1.1",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.10",
