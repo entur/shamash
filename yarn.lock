@@ -1417,7 +1417,7 @@
     classnames "^2.2.6"
     react-collapse "^5.0.0"
 
-"@entur/form@^3.4.4":
+"@entur/form@3.4.7":
   version "3.4.7"
   resolved "https://registry.yarnpkg.com/@entur/form/-/form-3.4.7.tgz#dffada651c13b8c98c23e7aba3f24bffdf689759"
   integrity sha512-YBAomeOsHKY0srbV3cfOI8UO3bKAtLEeWmW5YjPJT0Qt8hd4bTeErrLNfawtx8ZbZV3Yoiqg+wW00xvsPpcc2Q==
@@ -1441,7 +1441,7 @@
     "@entur/utils" "^0.4.1"
     classnames "^2.2.6"
 
-"@entur/icons@^1.12.1", "@entur/icons@^1.13.0", "@entur/icons@^1.20.0":
+"@entur/icons@1.20.0", "@entur/icons@^1.13.0", "@entur/icons@^1.20.0":
   version "1.20.0"
   resolved "https://registry.yarnpkg.com/@entur/icons/-/icons-1.20.0.tgz#b827a89452e39bfd9043d84fd8dc12bbdb2f230f"
   integrity sha512-Zs/e21lEQWxXRQ2M2UtNENlR7hQAMfg+5LNfBgq4YMEwUtTvODHzfCilHsXhDJnpiX3KoSTk5es0GWGL8t5tnQ==
@@ -1458,7 +1458,7 @@
     "@entur/utils" "^0.4.1"
     classnames "^2.2.6"
 
-"@entur/sdk@^1.11.0":
+"@entur/sdk@1.11.1":
   version "1.11.1"
   resolved "https://registry.yarnpkg.com/@entur/sdk/-/sdk-1.11.1.tgz#56472b0920c581d2e4527a4de762906bfc0acd0d"
   integrity sha512-itzqACftXHrzKWp9Ej3JUh09M9ch0niGjzEzDJj7028qOdPM1bO/hb26qWxRj+puETwXFUWugj+W5ffdT4TcrQ==
@@ -1473,7 +1473,7 @@
     qs "^6.9.4"
     regenerator-runtime "^0.13.7"
 
-"@entur/table@^4.0.1":
+"@entur/table@4.3.7":
   version "4.3.7"
   resolved "https://registry.yarnpkg.com/@entur/table/-/table-4.3.7.tgz#1415ad113d9f601a78e5682ac4182da8853b5527"
   integrity sha512-JFGqcAdkXSN8YdE1IQ5MAc3ZoPWOKI8o5cUEjBs/zoYQvQyhKCZQDuEuWGXFHRT2YHli60KnQEzl5UJy+xorQw==
