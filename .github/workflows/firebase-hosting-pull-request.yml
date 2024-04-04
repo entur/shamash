@@ -4,7 +4,7 @@
 name: Pull request build and deploy
 'on': pull_request
 jobs:
-  build_and_preview:
+  build:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     steps:
@@ -31,6 +31,20 @@ jobs:
         env:
           REACT_APP_VERSION: ${{ github.sha }}
           REACT_APP_ENTUR_CLIENT_NAME: entur-shamash2023
+      - name: Upload build files
+        uses: actions/upload-artifact@v4
+        with:
+          path: build
+  preview:
+    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Download build files
+        uses: actions/download-artifact@v4
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
