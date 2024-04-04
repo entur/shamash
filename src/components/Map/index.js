@@ -58,12 +58,33 @@ function getFlexibleAreas(responseData) {
   return [...quayAreas, ...fromPlaceAreas];
 }
 
+// Returns an array of LineString GeoJSON features
+function getServiceJourneyLines(responseData) {
+  if (!responseData) return;
+
+  const serviceJourney = responseData.data?.serviceJourney;
+
+  if (!serviceJourney?.pointsOnLink?.points) {
+    return [];
+  }
+
+  const polyline = lineString(
+    toGeoJSON(serviceJourney.pointsOnLink.points).coordinates,
+    {
+      color: getTransportColor(serviceJourney.transportMode),
+    }
+  );
+
+  return [polyline];
+}
+
 function getMapData(responseData) {
   if (!responseData) return;
 
   return {
     legLines: getLegLines(responseData),
     flexibleAreas: getFlexibleAreas(responseData),
+    serviceJourney: getServiceJourneyLines(responseData),
   };
 }
 
@@ -71,8 +92,8 @@ function MapContent({ mapData }) {
   const map = useMap();
 
   const collection = useMemo(() => {
-    const { legLines, flexibleAreas } = mapData;
-    const allFeatures = [...legLines, ...flexibleAreas];
+    const { legLines, flexibleAreas, serviceJourney } = mapData;
+    const allFeatures = [...legLines, ...flexibleAreas, ...serviceJourney];
     return allFeatures.length > 0 ? featureCollection(allFeatures) : null;
   }, [mapData]);
 
