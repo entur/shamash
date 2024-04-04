@@ -17,7 +17,7 @@
     "@testing-library/user-event": "^7.1.2",
     "@turf/bbox": "^6.0.1",
     "@turf/helpers": "^6.1.4",
-    "@turf/line-to-polygon": "^6.0.1",
+    "@turf/line-to-polygon": "^6.3.0",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
     "babel-eslint": "^10.1.0",
