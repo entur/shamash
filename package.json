@@ -16,7 +16,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@turf/bbox": "^6.0.1",
-    "@turf/helpers": "^6.1.4",
+    "@turf/helpers": "^6.3.0",
     "@turf/line-to-polygon": "^6.0.1",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
