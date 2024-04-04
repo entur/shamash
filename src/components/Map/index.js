@@ -64,7 +64,7 @@ function getServiceJourneyLines(responseData) {
 
   const serviceJourney = responseData.data?.serviceJourney;
 
-  if (!serviceJourney || !serviceJourney?.pointsOnLink?.points) {
+  if (!serviceJourney?.pointsOnLink?.points) {
     return [];
   }
 
