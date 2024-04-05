@@ -124,7 +124,7 @@
   },
   "devDependencies": {
     "eslint-plugin-prettier": "3.4.1",
-    "prettier": "2.8.4"
+    "prettier": "2.8.8"
   },
   "jest": {
     "roots": [
