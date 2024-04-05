@@ -14,7 +14,7 @@
     "@svgr/webpack": "5.5.0",
     "@testing-library/jest-dom": "4.2.4",
     "@testing-library/react": "9.5.0",
-    "@testing-library/user-event": "7.2.1",
+    "@testing-library/user-event": "14.5.2",
     "@turf/bbox": "6.5.0",
     "@turf/helpers": "6.5.0",
     "@turf/line-to-polygon": "6.5.0",
