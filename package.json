@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apollo/client": "3.9.10",
+    "@apollo/client": "3.9.11",
     "@babel/core": "7.24.4",
     "@entur/form": "3.4.7",
     "@entur/icons": "1.20.0",
