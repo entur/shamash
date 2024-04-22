@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
 import Leaflet from 'leaflet';
 import bbox from '@turf/bbox';
-import { lineString, featureCollection } from '@turf/helpers';
+import { lineString, featureCollection, point } from '@turf/helpers';
 import lineToPolygon from '@turf/line-to-polygon';
 import { toGeoJSON } from '@mapbox/polyline';
 import { colors } from '@entur/tokens';
@@ -85,15 +85,40 @@ function getMapData(responseData) {
     legLines: getLegLines(responseData),
     flexibleAreas: getFlexibleAreas(responseData),
     serviceJourney: getServiceJourneyLines(responseData),
+    vehiclePositions: getVehiclePositions(responseData),
   };
+}
+
+// Returns an array of LineString GeoJSON features
+function getVehiclePositions(responseData) {
+  if (!responseData) return;
+
+  const vehicles = responseData.data?.vehicles;
+
+  if (!vehicles) {
+    return [];
+  }
+
+  const vehiclePositions = vehicles
+    .map((vehicle) => vehicle?.location)
+    .filter(Boolean)
+    .map((location) => point([location.longitude, location.latitude]));
+
+  return vehiclePositions;
 }
 
 function MapContent({ mapData }) {
   const map = useMap();
 
   const collection = useMemo(() => {
-    const { legLines, flexibleAreas, serviceJourney } = mapData;
-    const allFeatures = [...legLines, ...flexibleAreas, ...serviceJourney];
+    const { legLines, flexibleAreas, serviceJourney, vehiclePositions } =
+      mapData;
+    const allFeatures = [
+      ...legLines,
+      ...flexibleAreas,
+      ...serviceJourney,
+      ...vehiclePositions,
+    ];
     return allFeatures.length > 0 ? featureCollection(allFeatures) : null;
   }, [mapData]);
 
