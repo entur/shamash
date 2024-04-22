@@ -89,7 +89,7 @@ function getMapData(responseData) {
   };
 }
 
-// Returns an array of LineString GeoJSON features
+// Returns an array of points
 function getVehiclePositions(responseData) {
   if (!responseData) return;
 
