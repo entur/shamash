@@ -18,9 +18,7 @@ import Helmet from 'react-helmet';
 import graphQLFetcher from 'utils/graphQLFetcher';
 import getPreferredTheme from 'utils/getPreferredTheme';
 import history from 'utils/history';
-import * as journeyplannerV2Queries from 'queries/journey-planner-v2';
 import * as journeyplannerV3Queries from 'queries/journey-planner-v3';
-import * as nsrQueries from 'queries/stop-places';
 import * as vehicleQueries from 'queries/vehicle-updates';
 import GeocoderModal from 'components/GeocoderModal';
 import './custom.css';
@@ -169,12 +167,8 @@ export const App = ({ pathname, parameters, setParameters }) => {
   const renderExamplesMenu = () => {
     let queries;
 
-    if (currentService.queries === 'journey-planner-v2') {
-      queries = journeyplannerV2Queries;
-    } else if (currentService.queries === 'journey-planner-v3') {
+    if (currentService.queries === 'journey-planner-v3') {
       queries = journeyplannerV3Queries;
-    } else if (currentService.queries === 'stop-places') {
-      queries = nsrQueries;
     } else if (currentService.queries === 'vehicle-updates') {
       queries = vehicleQueries;
     } else {

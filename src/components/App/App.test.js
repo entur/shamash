@@ -4,15 +4,15 @@ import App from './App';
 
 const services = [
   {
-    id: 'journey-planner',
+    id: 'journey-planner-v3',
     name: 'JourneyPlanner',
-    url: 'http://fake.entur.local/journey-planner/v2/graphql',
-    queries: 'journey-planner',
+    url: 'http://fake.entur.local/journey-planner/v3/graphql',
+    queries: 'journey-planner-v3',
     defaultQuery: 'trip',
   },
 ];
 
-const pathname = '/journey-planner';
+const pathname = '/journey-planner-v3';
 
 const parameters = {};
 
