@@ -54,7 +54,7 @@ export const App = ({ pathname, parameters, setParameters }) => {
 
   let currentService = null;
 
-  if (!serviceName) {
+  if (!serviceName || serviceName === 'journey-planner') {
     currentService = services.find((s) => s.id === DEFAULT_SERVICE_ID);
   } else {
     currentService = services.find((s) => s.id === serviceName);
