@@ -21,6 +21,13 @@
     "subscriptionsUrl": "wss://api.entur.io/realtime/v1/vehicles/subscriptions",
     "queries": "vehicle-updates",
     "defaultQuery": "updates"
+  },
+  {
+    "id": "estimated-timetables",
+    "name": "estimated-timetables",
+    "url": "https://api.entur.io/realtime/invalid-et/graphql",
+    "queries": "estimated-timetables",
+    "defaultQuery": "estimated-vehicle-journey"
   }
 ]
 }
