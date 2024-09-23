@@ -8,7 +8,7 @@
     "@entur/form": "3.4.7",
     "@entur/icons": "1.20.0",
     "@entur/sdk": "1.11.1",
-    "@entur/table": "4.8.7",
+    "@entur/table": "4.8.19",
     "@mapbox/polyline": "1.2.1",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.13",
     "@svgr/webpack": "5.5.0",
