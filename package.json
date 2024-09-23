@@ -10,7 +10,7 @@
     "@entur/sdk": "1.11.1",
     "@entur/table": "4.8.19",
     "@mapbox/polyline": "1.2.1",
-    "@pmmmwh/react-refresh-webpack-plugin": "0.5.13",
+    "@pmmmwh/react-refresh-webpack-plugin": "0.5.15",
     "@svgr/webpack": "5.5.0",
     "@testing-library/jest-dom": "4.2.4",
     "@testing-library/react": "9.5.0",
