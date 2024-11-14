@@ -30,7 +30,7 @@
     "case-sensitive-paths-webpack-plugin": "2.4.0",
     "css-loader": "4.3.0",
     "dotenv": "8.6.0",
-    "dotenv-expand": "5.1.0",
+    "dotenv-expand": "11.0.7",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.8",
     "eslint": "7.32.0",
