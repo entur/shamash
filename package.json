@@ -47,7 +47,7 @@
     "fs-extra": "9.1.0",
     "graphiql": "1.11.5",
     "graphiql-explorer": "0.9.0",
-    "graphql": "15.8.0",
+    "graphql": "15.9.0",
     "graphql-ws": "5.16.0",
     "history": "4.10.1",
     "html-webpack-plugin": "4.5.2",
