@@ -22,14 +22,6 @@
     "defaultQuery": "vehicles"
   },
   {
-    "id": "vehicles",
-    "name": "vehicles (deprecated)",
-    "url": "https://api.dev.entur.io/realtime/v1/vehicles/graphql",
-    "subscriptionsUrl": "wss://api.dev.entur.io/realtime/v1/vehicles/subscriptions",
-    "queries": "vehicle-updates",
-    "defaultQuery": "updates"
-  },
-  {
     "id": "vehicles-v2",
     "name": "vehicles-v2",
     "url": "https://api.dev.entur.io/realtime/v2/vehicles/graphql",
