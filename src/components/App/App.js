@@ -81,6 +81,9 @@ export const App = ({ pathname, parameters, setParameters }) => {
   }, [fetcher]);
 
   const handleServiceChange = (id) => {
+    console.log('Service change requested:', id);
+    console.log('Current BASE_PATH:', BASE_PATH);
+    console.log('New URL will be:', `${BASE_PATH}/${id}`);
     history.push(`${BASE_PATH}/${id}`);
   };
 
@@ -398,13 +401,14 @@ const ConnectedApp = () => {
   );
 
   useEffect(() => {
-    return history.listen((location) => {
-      if (location.pathname !== pathname) {
-        setPathname(location.pathname);
-        setParameters(queryString.parse(location.search));
-      }
+    const unlisten = history.listen((location) => {
+      setPathname(location.pathname);
+      setParameters(queryString.parse(location.search));
     });
-  }, [pathname]);
+
+    // Cleanup function to remove the listener
+    return unlisten;
+  }, []); // Remove pathname dependency to prevent re-creating the listener
 
   if (!config.services) {
     return null;
