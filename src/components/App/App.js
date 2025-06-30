@@ -81,27 +81,17 @@ export const App = ({ pathname, parameters, setParameters }) => {
   }, [fetcher]);
 
   const handleServiceChange = (id) => {
-    console.log('Service change requested:', id);
-    console.log('Current BASE_PATH:', BASE_PATH);
-    console.log('New URL will be:', `${BASE_PATH}/${id}`);
+    // Use window.history.pushState directly as a fallback
+    const newUrl = `${BASE_PATH}/${id}`;
+    window.history.pushState({}, '', newUrl);
 
-    // Clear the current query parameter when switching services
-    // so the new service's default query will be loaded
-    setParameters((prevParams) => {
-      const newParams = { ...prevParams };
-      delete newParams.query;
-      delete newParams.variables;
-      delete newParams.operationName;
-      return newParams;
-    });
-
-    history.push(`${BASE_PATH}/${id}`);
+    // Manually trigger a pathname update
+    setParameters({});
   };
 
   const editParameter = (key, value) => {
     // Don't update URL if we're just loading a default query (no existing query param)
     if (key === 'query' && !parameters.query) {
-      console.log('Skipping URL update for default query');
       return;
     }
 
@@ -252,13 +242,10 @@ export const App = ({ pathname, parameters, setParameters }) => {
 
   // Fix: Make query loading reactive to service changes
   const getDefaultQuery = useCallback(() => {
-    console.log('getDefaultQuery called with service:', currentService?.id, currentService?.queries, currentService?.defaultQuery);
     if (!currentService) return '';
     try {
-      const query = require(`queries/${currentService.queries}/${currentService.defaultQuery}`)
+      return require(`queries/${currentService.queries}/${currentService.defaultQuery}`)
         .default.query;
-      console.log('Loaded default query for', currentService.id, '- query starts with:', query.substring(0, 50));
-      return query;
     } catch (error) {
       console.warn(`Failed to load default query for ${currentService.id}:`, error);
       return '';
@@ -269,14 +256,6 @@ export const App = ({ pathname, parameters, setParameters }) => {
   const query = useMemo(() => {
     const urlQuery = parameters.query;
     const defaultQuery = getDefaultQuery();
-
-    console.log('Query calculation:', {
-      pathname,
-      serviceName,
-      currentServiceId: currentService?.id,
-      hasUrlQuery: !!urlQuery,
-      defaultQueryStart: defaultQuery.substring(0, 50)
-    });
 
     // Only return the default query if there's no URL query
     // Don't automatically add the default query to the URL
@@ -333,11 +312,7 @@ export const App = ({ pathname, parameters, setParameters }) => {
           query={query}
           variables={variables}
           operationName={operationName}
-          onEditQuery={(value) => {
-            console.log('GraphiQL onEditQuery called with:', value?.substring(0, 50));
-            console.log('Current service:', currentService?.id);
-            editParameter('query', value);
-          }}
+          onEditQuery={(value) => editParameter('query', value)}
           onEditVariables={(value) => editParameter('variables', value)}
           onEditOperationName={(value) => editParameter('operationName', value)}
         >
@@ -450,20 +425,49 @@ export const App = ({ pathname, parameters, setParameters }) => {
 
 const ConnectedApp = () => {
   const config = useFetchConfig();
-  const [pathname, setPathname] = useState(history.location.pathname);
+  const [pathname, setPathname] = useState(window.location.pathname);
   const [parameters, setParameters] = useState(
-    queryString.parse(history.location.search)
+    queryString.parse(window.location.search)
   );
 
   useEffect(() => {
-    const unlisten = history.listen((location) => {
-      setPathname(location.pathname);
-      setParameters(queryString.parse(location.search));
-    });
+    // Listen for popstate events (back/forward browser buttons)
+    const handlePopState = () => {
+      setPathname(window.location.pathname);
+      setParameters(queryString.parse(window.location.search));
+    };
 
-    // Cleanup function to remove the listener
-    return unlisten;
-  }, []); // Remove pathname dependency to prevent re-creating the listener
+    window.addEventListener('popstate', handlePopState);
+
+    // Check for path changes only when they actually change
+    let lastPath = window.location.pathname;
+    let lastSearch = window.location.search;
+
+    const checkForPathChanges = () => {
+      const currentPath = window.location.pathname;
+      const currentSearch = window.location.search;
+
+      // Only update state if something actually changed
+      if (currentPath !== lastPath) {
+        setPathname(currentPath);
+        lastPath = currentPath;
+      }
+
+      if (currentSearch !== lastSearch) {
+        setParameters(queryString.parse(currentSearch));
+        lastSearch = currentSearch;
+      }
+    };
+
+    // Check for path changes less frequently and only when needed
+    const interval = setInterval(checkForPathChanges, 500);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      clearInterval(interval);
+    };
+  }, []);
+
 
   if (!config.services) {
     return null;

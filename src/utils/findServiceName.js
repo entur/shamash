@@ -24,7 +24,9 @@ const findServiceName = (pathname, basePath = '') => {
   // Return the first path segment as the service name
   // e.g., "vehicles-v2" from "/vehicles-v2" or "vehicles-v2/something"
   const segments = path.split('/');
-  return segments[0] || null;
+  const serviceName = segments[0] || null;
+
+  return serviceName;
 };
 
 export default findServiceName;
