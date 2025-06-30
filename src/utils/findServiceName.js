@@ -12,7 +12,11 @@ const findServiceName = (pathname, basePath = '') => {
 
   // Remove the base path from the pathname if it exists
   let path = pathname;
-  if (basePath && typeof basePath === 'string' && pathname.startsWith(basePath)) {
+  if (
+    basePath &&
+    typeof basePath === 'string' &&
+    pathname.startsWith(basePath)
+  ) {
     path = pathname.substring(basePath.length);
   }
 

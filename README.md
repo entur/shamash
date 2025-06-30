@@ -2,7 +2,6 @@
 
 An in-browser IDE for exploring GraphQL – extended with a map, query selection, etc.
 
-
 ## Install dependencies
 
 ```sh

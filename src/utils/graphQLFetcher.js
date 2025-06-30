@@ -62,7 +62,7 @@ const graphQLFetcher = (graphQLUrl, subscriptionsUrl, enturClientName) => {
         .then(function (responseBody) {
           try {
             return JSON.parse(responseBody);
-          } catch (error) {
+          } catch {
             return responseBody;
           }
         });

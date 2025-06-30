@@ -134,6 +134,7 @@
     "singleQuote": true
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.27.5",
     "@testing-library/dom": "^10.4.0",
     "eslint-plugin-prettier": "3.4.1",
     "prettier": "2.8.8"

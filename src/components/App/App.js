@@ -167,9 +167,13 @@ export const App = ({ pathname, parameters, setParameters }) => {
         }
         if (variables) {
           try {
-            const prettyVariables = JSON.stringify(JSON.parse(variables), null, 2);
+            const prettyVariables = JSON.stringify(
+              JSON.parse(variables),
+              null,
+              2
+            );
             graphiql.current.setState({ variables: prettyVariables });
-          } catch (e) {
+          } catch {
             // Variables might not be valid JSON
           }
         }
@@ -247,7 +251,10 @@ export const App = ({ pathname, parameters, setParameters }) => {
       return require(`queries/${currentService.queries}/${currentService.defaultQuery}`)
         .default.query;
     } catch (error) {
-      console.warn(`Failed to load default query for ${currentService.id}:`, error);
+      console.warn(
+        `Failed to load default query for ${currentService.id}:`,
+        error
+      );
       return '';
     }
   }, [currentService]);
@@ -260,15 +267,15 @@ export const App = ({ pathname, parameters, setParameters }) => {
     // Only return the default query if there's no URL query
     // Don't automatically add the default query to the URL
     return urlQuery || defaultQuery;
-  }, [parameters.query, getDefaultQuery, pathname, serviceName, currentService?.id]);
+  }, [
+    parameters.query,
+    getDefaultQuery,
+    pathname,
+    serviceName,
+    currentService?.id,
+  ]);
 
-  // Prevent automatic URL updates when using default queries
-  const shouldUpdateUrl = parameters.query != null;
-
-  const {
-    variables,
-    operationName,
-  } = parameters;
+  const { variables, operationName } = parameters;
 
   const customFetcher = useCallback(
     async (...args) => {
@@ -467,7 +474,6 @@ const ConnectedApp = () => {
       clearInterval(interval);
     };
   }, []);
-
 
   if (!config.services) {
     return null;

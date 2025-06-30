@@ -720,8 +720,7 @@ module.exports = function (webpackEnv) {
           ],
           silent: true,
         }),
-      // Disable ESLint temporarily to resolve React 18 upgrade issues
-      false && !disableESLintPlugin &&
+      !disableESLintPlugin &&
         new ESLintPlugin({
           // Plugin options
           extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
@@ -737,15 +736,31 @@ module.exports = function (webpackEnv) {
           // ESLint class options
           cwd: paths.appPath,
           resolvePluginsRelativeTo: __dirname,
+          // Use minimal configuration to avoid conflicts
           baseConfig: {
-            extends: [require.resolve('eslint-config-react-app/base')],
+            parser: require.resolve('@babel/eslint-parser'),
+            parserOptions: {
+              requireConfigFile: false,
+              sourceType: 'module',
+              allowImportExportEverywhere: true,
+              ecmaFeatures: {
+                jsx: true,
+              },
+              babelOptions: {
+                presets: [require.resolve('babel-preset-react-app/prod')],
+              },
+            },
+            env: {
+              browser: true,
+              es6: true,
+              node: true,
+              jest: true,
+            },
+            extends: ['eslint:recommended'],
             rules: {
-              ...(!hasJsxRuntime && {
-                'react/react-in-jsx-scope': 'error',
-              }),
-              // Disable problematic flowtype rules for React 18 compatibility
-              'flowtype/define-flow-type': 'off',
-              'flowtype/use-flow-type': 'off',
+              // Disable problematic rules that cause conflicts
+              'no-unused-vars': 'off',
+              'no-undef': 'off',
             },
           },
         }),
