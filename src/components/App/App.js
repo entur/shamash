@@ -84,20 +84,39 @@ export const App = ({ pathname, parameters, setParameters }) => {
     console.log('Service change requested:', id);
     console.log('Current BASE_PATH:', BASE_PATH);
     console.log('New URL will be:', `${BASE_PATH}/${id}`);
+
+    // Clear the current query parameter when switching services
+    // so the new service's default query will be loaded
+    setParameters((prevParams) => {
+      const newParams = { ...prevParams };
+      delete newParams.query;
+      delete newParams.variables;
+      delete newParams.operationName;
+      return newParams;
+    });
+
     history.push(`${BASE_PATH}/${id}`);
   };
 
   const editParameter = (key, value) => {
-    setParameters((prevParameters) => ({
-      ...prevParameters,
-      [key]: value,
-    }));
+    // Don't update URL if we're just loading a default query (no existing query param)
+    if (key === 'query' && !parameters.query) {
+      console.log('Skipping URL update for default query');
+      return;
+    }
 
-    history.replace({
-      search: queryString.stringify({
-        ...parameters,
+    setParameters((prevParameters) => {
+      const newParameters = {
+        ...prevParameters,
         [key]: value,
-      }),
+      };
+
+      // Use the new parameters for the URL update to avoid stale closure
+      history.replace({
+        search: queryString.stringify(newParameters),
+      });
+
+      return newParameters;
     });
   };
 
@@ -231,11 +250,43 @@ export const App = ({ pathname, parameters, setParameters }) => {
     setShowGeocoderModal(!showGeocoderModal);
   };
 
+  // Fix: Make query loading reactive to service changes
+  const getDefaultQuery = useCallback(() => {
+    console.log('getDefaultQuery called with service:', currentService?.id, currentService?.queries, currentService?.defaultQuery);
+    if (!currentService) return '';
+    try {
+      const query = require(`queries/${currentService.queries}/${currentService.defaultQuery}`)
+        .default.query;
+      console.log('Loaded default query for', currentService.id, '- query starts with:', query.substring(0, 50));
+      return query;
+    } catch (error) {
+      console.warn(`Failed to load default query for ${currentService.id}:`, error);
+      return '';
+    }
+  }, [currentService]);
+
+  // Use useMemo to ensure query is reactive to service changes
+  const query = useMemo(() => {
+    const urlQuery = parameters.query;
+    const defaultQuery = getDefaultQuery();
+
+    console.log('Query calculation:', {
+      pathname,
+      serviceName,
+      currentServiceId: currentService?.id,
+      hasUrlQuery: !!urlQuery,
+      defaultQueryStart: defaultQuery.substring(0, 50)
+    });
+
+    // Only return the default query if there's no URL query
+    // Don't automatically add the default query to the URL
+    return urlQuery || defaultQuery;
+  }, [parameters.query, getDefaultQuery, pathname, serviceName, currentService?.id]);
+
+  // Prevent automatic URL updates when using default queries
+  const shouldUpdateUrl = parameters.query != null;
+
   const {
-    query = currentService
-      ? require(`queries/${currentService.queries}/${currentService.defaultQuery}`)
-          .default.query
-      : '',
     variables,
     operationName,
   } = parameters;
@@ -282,7 +333,11 @@ export const App = ({ pathname, parameters, setParameters }) => {
           query={query}
           variables={variables}
           operationName={operationName}
-          onEditQuery={(value) => editParameter('query', value)}
+          onEditQuery={(value) => {
+            console.log('GraphiQL onEditQuery called with:', value?.substring(0, 50));
+            console.log('Current service:', currentService?.id);
+            editParameter('query', value);
+          }}
           onEditVariables={(value) => editParameter('variables', value)}
           onEditOperationName={(value) => editParameter('operationName', value)}
         >
