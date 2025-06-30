@@ -12,6 +12,7 @@ import {
   getIntrospectionQuery,
   buildClientSchema,
   stripIgnoredCharacters,
+  print,
 } from 'graphql';
 import queryString from 'query-string';
 import Helmet from 'react-helmet';
@@ -26,7 +27,6 @@ import findServiceName from 'utils/findServiceName';
 
 import explorerDarkColors from './DarkmodeExplorerColors';
 import 'graphiql/graphiql.css';
-import { print } from '../../utils/graphqlPrinter';
 
 import Map from '../Map';
 
@@ -118,21 +118,51 @@ export const App = ({ pathname, parameters, setParameters }) => {
   };
 
   const handleClickPrettifyButton = () => {
-    if (!graphiql) return;
+    if (!graphiql || !graphiql.current) return;
 
-    const queryEditor = graphiql.current.getQueryEditor();
-    const currentQueryText = queryEditor.getValue();
-    const prettyQueryText = print(parse(currentQueryText));
-    queryEditor.setValue(prettyQueryText);
+    try {
+      // Try the GraphiQL v1.x API
+      const queryEditor = graphiql.current.getQueryEditor();
+      const variablesEditor = graphiql.current.getVariableEditor();
 
-    const variablesEditor = graphiql.current.getVariableEditor();
-    const currentVariablesText = variablesEditor.getValue();
-    const prettyVariablesText = JSON.stringify(
-      JSON.parse(currentVariablesText),
-      null,
-      2
-    );
-    variablesEditor.setValue(prettyVariablesText);
+      if (queryEditor) {
+        const currentQueryText = queryEditor.getValue();
+        if (currentQueryText) {
+          const prettyQueryText = print(parse(currentQueryText));
+          queryEditor.setValue(prettyQueryText);
+        }
+      }
+
+      if (variablesEditor) {
+        const currentVariablesText = variablesEditor.getValue();
+        if (currentVariablesText && currentVariablesText.trim() !== '') {
+          const prettyVariablesText = JSON.stringify(
+            JSON.parse(currentVariablesText),
+            null,
+            2
+          );
+          variablesEditor.setValue(prettyVariablesText);
+        }
+      }
+    } catch (error) {
+      console.warn('Prettify failed:', error);
+      // Fallback: try to access editors through state
+      if (graphiql.current.state) {
+        const { query, variables } = graphiql.current.state;
+        if (query) {
+          const prettyQuery = print(parse(query));
+          graphiql.current.setState({ query: prettyQuery });
+        }
+        if (variables) {
+          try {
+            const prettyVariables = JSON.stringify(JSON.parse(variables), null, 2);
+            graphiql.current.setState({ variables: prettyVariables });
+          } catch (e) {
+            // Variables might not be valid JSON
+          }
+        }
+      }
+    }
   };
 
   const handleClickMinifyButton = () => {
