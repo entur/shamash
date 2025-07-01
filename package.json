@@ -200,5 +200,9 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "engines": {
+    "node": ">=22.11.0",
+    "yarn": ">=1.22.0 <2.0.0"
   }
 }
