@@ -90,11 +90,6 @@ export const App = ({ pathname, parameters, setParameters }) => {
   };
 
   const editParameter = (key, value) => {
-    // Don't update URL if we're just loading a default query (no existing query param)
-    if (key === 'query' && !parameters.query) {
-      return;
-    }
-
     setParameters((prevParameters) => {
       const newParameters = {
         ...prevParameters,
