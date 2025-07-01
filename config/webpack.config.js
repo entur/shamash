@@ -344,9 +344,6 @@ module.exports = function (webpackEnv) {
         "tls": false
       },
     },
-    resolveLoader: {
-      // Remove PnP webpack plugin references as they're not needed in Webpack 5
-    },
     module: {
       strictExportPresence: true,
       rules: [

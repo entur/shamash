@@ -52,6 +52,20 @@ export const App = ({ pathname, parameters, setParameters }) => {
 
   const serviceName = findServiceName(pathname, BASE_PATH);
 
+  // Redirect to default service if no service is specified or if at root
+  useEffect(() => {
+    const isAtRoot =
+      pathname === BASE_PATH ||
+      pathname === `${BASE_PATH}/` ||
+      pathname === '/';
+    const hasNoService = !serviceName || serviceName === '';
+
+    if (isAtRoot || hasNoService) {
+      const newPath = `${BASE_PATH}/${DEFAULT_SERVICE_ID}`;
+      history.replace(newPath);
+    }
+  }, [pathname, serviceName]);
+
   let currentService = null;
 
   if (!serviceName || serviceName === 'journey-planner') {
@@ -81,12 +95,9 @@ export const App = ({ pathname, parameters, setParameters }) => {
   }, [fetcher]);
 
   const handleServiceChange = (id) => {
-    // Use window.history.pushState directly as a fallback
-    const newUrl = `${BASE_PATH}/${id}`;
-    window.history.pushState({}, '', newUrl);
-
-    // Manually trigger a pathname update
-    setParameters({});
+    // Use the proper history API to navigate to the new service
+    const newPath = `${BASE_PATH}/${id}`;
+    history.push(newPath);
   };
 
   const editParameter = (key, value) => {
