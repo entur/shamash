@@ -144,7 +144,6 @@ export const App = ({ pathname, parameters, setParameters }) => {
     if (!graphiql || !graphiql.current) return;
 
     try {
-      // Try the GraphiQL v1.x API
       const queryEditor = graphiql.current.getQueryEditor();
       const variablesEditor = graphiql.current.getVariableEditor();
 
@@ -169,26 +168,6 @@ export const App = ({ pathname, parameters, setParameters }) => {
       }
     } catch (error) {
       console.warn('Prettify failed:', error);
-      // Fallback: try to access editors through state
-      if (graphiql.current.state) {
-        const { query, variables } = graphiql.current.state;
-        if (query) {
-          const prettyQuery = print(parse(query));
-          graphiql.current.setState({ query: prettyQuery });
-        }
-        if (variables) {
-          try {
-            const prettyVariables = JSON.stringify(
-              JSON.parse(variables),
-              null,
-              2
-            );
-            graphiql.current.setState({ variables: prettyVariables });
-          } catch {
-            // Variables might not be valid JSON
-          }
-        }
-      }
     }
   };
 
