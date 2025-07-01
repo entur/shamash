@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import { parse } from 'graphql';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 
@@ -62,7 +62,7 @@ const graphQLFetcher = (graphQLUrl, subscriptionsUrl, enturClientName) => {
         .then(function (responseBody) {
           try {
             return JSON.parse(responseBody);
-          } catch (error) {
+          } catch {
             return responseBody;
           }
         });

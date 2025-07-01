@@ -12,6 +12,7 @@ import {
   getIntrospectionQuery,
   buildClientSchema,
   stripIgnoredCharacters,
+  print,
 } from 'graphql';
 import queryString from 'query-string';
 import Helmet from 'react-helmet';
@@ -26,7 +27,6 @@ import findServiceName from 'utils/findServiceName';
 
 import explorerDarkColors from './DarkmodeExplorerColors';
 import 'graphiql/graphiql.css';
-import { print } from '../../utils/graphqlPrinter';
 
 import Map from '../Map';
 
@@ -51,6 +51,20 @@ export const App = ({ pathname, parameters, setParameters }) => {
   let graphiql = useRef(null);
 
   const serviceName = findServiceName(pathname, BASE_PATH);
+
+  // Redirect to default service if no service is specified or if at root
+  useEffect(() => {
+    const isAtRoot =
+      pathname === BASE_PATH ||
+      pathname === `${BASE_PATH}/` ||
+      pathname === '/';
+    const hasNoService = !serviceName || serviceName === '';
+
+    if (isAtRoot || hasNoService) {
+      const newPath = `${BASE_PATH}/${DEFAULT_SERVICE_ID}`;
+      history.replace(newPath);
+    }
+  }, [pathname, serviceName]);
 
   let currentService = null;
 
@@ -81,35 +95,44 @@ export const App = ({ pathname, parameters, setParameters }) => {
   }, [fetcher]);
 
   const handleServiceChange = (id) => {
-    history.push(`${BASE_PATH}/${id}`);
+    // Use the proper history API to navigate to the new service
+    const newPath = `${BASE_PATH}/${id}`;
+    history.push(newPath);
   };
 
   const editParameter = (key, value) => {
-    setParameters((prevParameters) => ({
-      ...prevParameters,
-      [key]: value,
-    }));
-
-    history.replace({
-      search: queryString.stringify({
-        ...parameters,
+    setParameters((prevParameters) => {
+      const newParameters = {
+        ...prevParameters,
         [key]: value,
-      }),
+      };
+
+      // Use the new parameters for the URL update to avoid stale closure
+      history.replace({
+        search: queryString.stringify(newParameters),
+      });
+
+      return newParameters;
     });
   };
 
   const handleEnvironmentChange = (env) => {
     if (window.location.host.includes('localhost')) {
+      console.log('Running on localhost, not redirecting');
       return;
     }
 
     if (env === 'dev') {
-      window.location.host = 'api.dev.entur.io';
+      redirectHost('api.dev.entur.io');
     } else if (env === 'staging') {
-      window.location.host = 'api.staging.entur.io';
+      redirectHost('api.staging.entur.io');
     } else if (env === 'prod') {
-      window.location.host = 'api.entur.io';
+      redirectHost('api.entur.io');
     }
+  };
+
+  const redirectHost = (host) => {
+    window.location.href = `${window.location.protocol}//${host}${window.location.pathname}${window.location.search}`;
   };
 
   const handleThemeChange = (theme) => {
@@ -118,21 +141,34 @@ export const App = ({ pathname, parameters, setParameters }) => {
   };
 
   const handleClickPrettifyButton = () => {
-    if (!graphiql) return;
+    if (!graphiql || !graphiql.current) return;
 
-    const queryEditor = graphiql.current.getQueryEditor();
-    const currentQueryText = queryEditor.getValue();
-    const prettyQueryText = print(parse(currentQueryText));
-    queryEditor.setValue(prettyQueryText);
+    try {
+      const queryEditor = graphiql.current.getQueryEditor();
+      const variablesEditor = graphiql.current.getVariableEditor();
 
-    const variablesEditor = graphiql.current.getVariableEditor();
-    const currentVariablesText = variablesEditor.getValue();
-    const prettyVariablesText = JSON.stringify(
-      JSON.parse(currentVariablesText),
-      null,
-      2
-    );
-    variablesEditor.setValue(prettyVariablesText);
+      if (queryEditor) {
+        const currentQueryText = queryEditor.getValue();
+        if (currentQueryText) {
+          const prettyQueryText = print(parse(currentQueryText));
+          queryEditor.setValue(prettyQueryText);
+        }
+      }
+
+      if (variablesEditor) {
+        const currentVariablesText = variablesEditor.getValue();
+        if (currentVariablesText && currentVariablesText.trim() !== '') {
+          const prettyVariablesText = JSON.stringify(
+            JSON.parse(currentVariablesText),
+            null,
+            2
+          );
+          variablesEditor.setValue(prettyVariablesText);
+        }
+      }
+    } catch (error) {
+      console.warn('Prettify failed:', error);
+    }
   };
 
   const handleClickMinifyButton = () => {
@@ -198,14 +234,38 @@ export const App = ({ pathname, parameters, setParameters }) => {
     setShowGeocoderModal(!showGeocoderModal);
   };
 
-  const {
-    query = currentService
-      ? require(`queries/${currentService.queries}/${currentService.defaultQuery}`)
-          .default.query
-      : '',
-    variables,
-    operationName,
-  } = parameters;
+  // Fix: Make query loading reactive to service changes
+  const getDefaultQuery = useCallback(() => {
+    if (!currentService) return '';
+    try {
+      return require(`queries/${currentService.queries}/${currentService.defaultQuery}`)
+        .default.query;
+    } catch (error) {
+      console.warn(
+        `Failed to load default query for ${currentService.id}:`,
+        error
+      );
+      return '';
+    }
+  }, [currentService]);
+
+  // Use useMemo to ensure query is reactive to service changes
+  const query = useMemo(() => {
+    const urlQuery = parameters.query;
+    const defaultQuery = getDefaultQuery();
+
+    // Only return the default query if there's no URL query
+    // Don't automatically add the default query to the URL
+    return urlQuery || defaultQuery;
+  }, [
+    parameters.query,
+    getDefaultQuery,
+    pathname,
+    serviceName,
+    currentService?.id,
+  ]);
+
+  const { variables, operationName } = parameters;
 
   const customFetcher = useCallback(
     async (...args) => {
@@ -362,19 +422,48 @@ export const App = ({ pathname, parameters, setParameters }) => {
 
 const ConnectedApp = () => {
   const config = useFetchConfig();
-  const [pathname, setPathname] = useState(history.location.pathname);
+  const [pathname, setPathname] = useState(window.location.pathname);
   const [parameters, setParameters] = useState(
-    queryString.parse(history.location.search)
+    queryString.parse(window.location.search)
   );
 
   useEffect(() => {
-    return history.listen((location) => {
-      if (location.pathname !== pathname) {
-        setPathname(location.pathname);
-        setParameters(queryString.parse(location.search));
+    // Listen for popstate events (back/forward browser buttons)
+    const handlePopState = () => {
+      setPathname(window.location.pathname);
+      setParameters(queryString.parse(window.location.search));
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    // Check for path changes only when they actually change
+    let lastPath = window.location.pathname;
+    let lastSearch = window.location.search;
+
+    const checkForPathChanges = () => {
+      const currentPath = window.location.pathname;
+      const currentSearch = window.location.search;
+
+      // Only update state if something actually changed
+      if (currentPath !== lastPath) {
+        setPathname(currentPath);
+        lastPath = currentPath;
       }
-    });
-  }, [pathname]);
+
+      if (currentSearch !== lastSearch) {
+        setParameters(queryString.parse(currentSearch));
+        lastSearch = currentSearch;
+      }
+    };
+
+    // Check for path changes less frequently and only when needed
+    const interval = setInterval(checkForPathChanges, 500);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      clearInterval(interval);
+    };
+  }, []);
 
   if (!config.services) {
     return null;
