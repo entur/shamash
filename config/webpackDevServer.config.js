@@ -10,6 +10,7 @@ const paths = require('./paths');
 const getHttpsConfig = require('./getHttpsConfig');
 
 const host = process.env.HOST || '0.0.0.0';
+const port = parseInt(process.env.PORT, 10) || 3000;
 const sockHost = process.env.WDS_SOCKET_HOST;
 const sockPath = process.env.WDS_SOCKET_PATH; // default: '/sockjs-node'
 const sockPort = process.env.WDS_SOCKET_PORT;
@@ -51,6 +52,7 @@ module.exports = function (proxy, allowedHost) {
     server: getHttpsConfig() ? 'https' : 'http',
     // Host configuration
     host,
+    port,
     allowedHosts: allowedHost ? [allowedHost] : 'auto',
     // History API fallback
     historyApiFallback: {
