@@ -762,5 +762,8 @@ module.exports = function (webpackEnv) {
           },
         }),
     ].filter(Boolean),
+    // Turn off performance processing because we utilize
+    // our own hints via the FileSizeReporter
+    performance: false,
   };
 };
