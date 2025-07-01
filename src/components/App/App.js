@@ -112,16 +112,21 @@ export const App = ({ pathname, parameters, setParameters }) => {
 
   const handleEnvironmentChange = (env) => {
     if (window.location.host.includes('localhost')) {
+      console.log('Running on localhost, not redirecting');
       return;
     }
 
     if (env === 'dev') {
-      window.location.host = 'api.dev.entur.io';
+      redirectHost('api.dev.entur.io');
     } else if (env === 'staging') {
-      window.location.host = 'api.staging.entur.io';
+      redirectHost('api.staging.entur.io');
     } else if (env === 'prod') {
-      window.location.host = 'api.entur.io';
+      redirectHost('api.entur.io');
     }
+  };
+
+  const redirectHost = (host) => {
+    window.location.href = `${window.location.protocol}//${host}${window.location.pathname}${window.location.search}`;
   };
 
   const handleThemeChange = (theme) => {
