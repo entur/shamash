@@ -30,3 +30,14 @@ body {
   height: 20px;
   width: auto;
 }
+
+.topBarWrap div.topBar {
+  height: 48px;
+}
+div.toolbar > .toolbar-button {
+  font-weight: 400;
+  padding: 3px 10px 3px 10px;
+}
+.toolbar-menu-items > li {
+  margin: -2px;
+}
