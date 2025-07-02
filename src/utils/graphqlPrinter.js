@@ -321,3 +321,5 @@ function isMultiline(str) {
 function hasMultilineItems(maybeArray) {
   return maybeArray != null && maybeArray.some(isMultiline);
 }
+
+export { print };
