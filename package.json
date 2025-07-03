@@ -5,7 +5,7 @@
   "homepage": "/graphql-explorer",
   "type": "module",
   "dependencies": {
-    "@apollo/client": "3.11.8",
+    "@apollo/client": "3.13.8",
     "@babel/core": "7.28.0",
     "@entur/form": "3.4.7",
     "@entur/icons": "1.20.0",
