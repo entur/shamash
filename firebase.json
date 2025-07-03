@@ -4,8 +4,8 @@
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
-        "source": "**",
-        "destination": "/index.html"
+        "source": "/graphql-explorer/**",
+        "destination": "/graphql-explorer/index.html"
       }
     ]
   }
