@@ -1,6 +1,5 @@
-
 import { createContext, useContext, useEffect, useState } from "react";
-import configreader from "./readConfig";
+import configreader from "./readConfig.js";
 
 const defaultConfig = {
   services: [],
