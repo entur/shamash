@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import debounce from 'lodash.debounce';
 import EnturService from '@entur/sdk';
-import getPreferredTheme from 'utils/getPreferredTheme';
+import getPreferredTheme from '../../utils/getPreferredTheme.js';
 
 import { TextField } from '@entur/form';
 import {
@@ -19,7 +19,7 @@ import '@entur/table/dist/styles.css';
 import '@entur/icons/dist/styles.css';
 
 import './styles.css';
-import { useConfig } from 'config/ConfigContext';
+import { useConfig } from '../../config/ConfigContext.js';
 
 const autocompleteSearch = debounce(
   (query, callback, service) =>

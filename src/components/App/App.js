@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from 'react';
 import GraphiQL from 'graphiql';
-import GraphiQLExplorer from 'graphiql-explorer';
+import { Explorer as GraphiQLExplorer } from 'graphiql-explorer';
 import {
   parse,
   getIntrospectionQuery,
@@ -16,26 +16,30 @@ import {
 } from 'graphql';
 import queryString from 'query-string';
 import Helmet from 'react-helmet';
-import graphQLFetcher from 'utils/graphQLFetcher';
-import getPreferredTheme from 'utils/getPreferredTheme';
-import history from 'utils/history';
-import * as journeyplannerV3Queries from 'queries/journey-planner-v3';
-import * as vehicleQueries from 'queries/vehicle-updates';
-import GeocoderModal from 'components/GeocoderModal';
+import graphQLFetcher from '../../utils/graphQLFetcher.js';
+import getPreferredTheme from '../../utils/getPreferredTheme.js';
+import history from '../../utils/history.js';
+import * as journeyplannerV3Queries from '../../queries/journey-planner-v3/index.js';
+import * as vehicleQueries from '../../queries/vehicle-updates/index.js';
+import GeocoderModal from '../GeocoderModal/index.js';
 import './custom.css';
-import findServiceName from 'utils/findServiceName';
+import findServiceName from '../../utils/findServiceName.js';
 
-import explorerDarkColors from './DarkmodeExplorerColors';
+import explorerDarkColors from './DarkmodeExplorerColors.js';
 import 'graphiql/graphiql.css';
 
-import Map from '../Map';
+import Map from '../Map/index.js';
 
-import whiteLogo from 'static/images/entur-white.png';
-import normalLogo from 'static/images/entur.png';
+import whiteLogo from '../../static/images/entur-white.png';
+import normalLogo from '../../static/images/entur.png';
 
-import { NotFound } from './404';
+import { NotFound } from './404.js';
 
-import { ConfigContext, useConfig, useFetchConfig } from 'config/ConfigContext';
+import {
+  ConfigContext,
+  useConfig,
+  useFetchConfig,
+} from '../../config/ConfigContext.js';
 
 const BASE_PATH = process.env.PUBLIC_URL || '';
 const DEFAULT_SERVICE_ID = 'journey-planner-v3';
@@ -234,36 +238,30 @@ export const App = ({ pathname, parameters, setParameters }) => {
     setShowGeocoderModal(!showGeocoderModal);
   };
 
-  // Fix: Make query loading reactive to service changes
-  const getDefaultQuery = useCallback(() => {
-    if (!currentService) return '';
-    try {
-      return require(`queries/${currentService.queries}/${currentService.defaultQuery}`)
-        .default.query;
-    } catch (error) {
-      console.warn(
-        `Failed to load default query for ${currentService.id}:`,
-        error
-      );
-      return '';
-    }
-  }, [currentService]);
+  const [query, setQuery] = useState('');
 
-  // Use useMemo to ensure query is reactive to service changes
-  const query = useMemo(() => {
-    const urlQuery = parameters.query;
-    const defaultQuery = getDefaultQuery();
-
-    // Only return the default query if there's no URL query
-    // Don't automatically add the default query to the URL
-    return urlQuery || defaultQuery;
-  }, [
-    parameters.query,
-    getDefaultQuery,
-    pathname,
-    serviceName,
-    currentService?.id,
-  ]);
+  useEffect(() => {
+    const setInitialQuery = async () => {
+      const urlQuery = parameters.query;
+      if (urlQuery) {
+        setQuery(urlQuery);
+      } else if (currentService) {
+        try {
+          const module = await import(
+            `../../queries/${currentService.queries}/${currentService.defaultQuery}.js`
+          );
+          setQuery(module.default.query);
+        } catch (error) {
+          console.warn(
+            `Failed to load default query for ${currentService.id}:`,
+            error
+          );
+          setQuery('');
+        }
+      }
+    };
+    setInitialQuery();
+  }, [parameters.query, currentService]);
 
   const { variables, operationName } = parameters;
 
@@ -291,7 +289,7 @@ export const App = ({ pathname, parameters, setParameters }) => {
         }
         explorerIsOpen={showExplorer}
         onToggleExplorer={toggleExplorer}
-        colors={getPreferredTheme() === 'dark' && explorerDarkColors}
+        colors={getPreferredTheme() === 'dark' ? explorerDarkColors : undefined}
       />
       <div style={{ flex: 1 }}>
         <Helmet>

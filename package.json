@@ -2,6 +2,7 @@
   "name": "shamash",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@apollo/client": "3.11.8",
     "@babel/core": "7.25.7",
@@ -30,7 +31,6 @@
     "bfj": "9.0.2",
     "browserslist": "^4.23.1",
     "buffer": "^6.0.3",
-    "camelcase": "8.0.0",
     "case-sensitive-paths-webpack-plugin": "2.4.0",
     "crypto-browserify": "^3.12.1",
     "css-loader": "7.1.2",
@@ -110,10 +110,10 @@
     "workbox-webpack-plugin": "7.3.0"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "start": "node scripts/start.cjs",
     "start:server": "node server.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js",
+    "build": "node scripts/build.cjs",
+    "test": "node scripts/test.cjs",
     "lint": "eslint src && yarn format:check",
     "format:check": "prettier --check .",
     "format": "prettier --write ."
@@ -140,6 +140,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.27.5",
     "@testing-library/dom": "^10.4.0",
+    "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-prettier": "3.4.1",
     "prettier": "2.8.8"
   },
@@ -164,9 +165,9 @@
     "testEnvironment": "jsdom",
     "testRunner": "<rootDir>/node_modules/jest-circus/runner.js",
     "transform": {
-      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.cjs",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.cjs",
+      "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.cjs"
     },
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\](?!(graphiql|@graphiql|graphql-language-service|vscode-languageserver-types|meros|query-string|decode-uri-component|split-on-first|filter-obj|react-leaflet|@react-leaflet|@turf)).+\\.(js|jsx|mjs|cjs|ts|tsx)$",
