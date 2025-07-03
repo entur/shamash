@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "3.11.8",
-    "@babel/core": "7.25.7",
+    "@babel/core": "7.28.0",
     "@entur/form": "3.4.7",
     "@entur/icons": "1.20.0",
     "@entur/sdk": "1.11.1",
@@ -138,7 +138,7 @@
     "singleQuote": true
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.27.5",
+    "@babel/eslint-parser": "^7.28.0",
     "@testing-library/dom": "^10.4.0",
     "eslint-plugin-prettier": "3.4.1",
     "prettier": "2.8.8"
