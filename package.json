@@ -2,6 +2,7 @@
   "name": "shamash",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "type": "module",
   "dependencies": {
     "@apollo/client": "3.11.8",
