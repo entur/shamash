@@ -36,8 +36,11 @@ body {
 }
 div.toolbar > .toolbar-button {
   font-weight: 400;
-  padding: 3px 10px 3px 10px;
+  padding: 2px 11px 2px 11px;
 }
 .toolbar-menu-items > li {
   margin: -2px;
+}
+.CodeMirror-code pre.CodeMirror-line {
+  line-height: 1.1rem;
 }

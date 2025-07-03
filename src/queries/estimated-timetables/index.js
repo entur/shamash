@@ -1,1 +1,1 @@
-export { default as estimatedVehicleJourney } from './estimated-vehicle-journey';
+export { default as estimatedVehicleJourney } from './estimated-vehicle-journey.js';

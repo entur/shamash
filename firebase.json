@@ -5,7 +5,7 @@
     "rewrites": [
       {
         "source": "**",
-        "destination": "/graphql-explorer/index.html"
+        "destination": "/index.html"
       }
     ]
   }
