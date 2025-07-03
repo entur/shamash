@@ -1,4 +1,4 @@
-import { toISOStringWithTimezone } from '../../utils/time.js';
+import { toISOStringWithTimezone } from '../../utils/time';
 
 const query = {
   query: `

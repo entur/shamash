@@ -57,12 +57,12 @@ module.exports = {
               })
             };
           }),
-        };`,
+        };`
       };
     }
 
     return {
-      code: `module.exports = ${assetFilename};`,
+      code: `module.exports = ${assetFilename};`
     };
   },
 };

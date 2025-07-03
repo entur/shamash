@@ -18,9 +18,9 @@ const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent')
 const ESLintPlugin = require('eslint-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const safePostCssParser = require('postcss-safe-parser');
-const paths = require('./paths.cjs');
-const modules = require('./modules.cjs');
-const getClientEnvironment = require('./env.cjs');
+const paths = require('./paths');
+const modules = require('./modules');
+const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 

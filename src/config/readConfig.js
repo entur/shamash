@@ -10,19 +10,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { getEnvironment } from "./getEnvironment.js";
+import { getEnvironment } from "./getEnvironment";
 
-const readConfig = async (callback) => {
-  const env = getEnvironment();
-  const { default: config } = await import(`./environments/${env}.json`);
-  callback({
-    services: config.services,
-    enturClientName: config.enturClientName,
-  });
-};
+var configreader = {};
 
-const configreader = {
-  readConfig,
+configreader.readConfig = (callback) => {
+  const fetchEnvConfig = async () => {
+    const env = getEnvironment();
+    const { default: config } = await import(`./environments/${env}.json`);
+    callback({
+      enturClientName: process.env.REACT_APP_ENTUR_CLIENT_NAME || undefined,
+      ...config
+    });
+  };
+  fetchEnvConfig();
 };
 
 export default configreader;

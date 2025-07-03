@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import App from './App';
 
 const services = [
@@ -16,10 +16,10 @@ const pathname = '/journey-planner-v3';
 
 const parameters = {};
 
-test('App renders', async () => {
+test('App renders', () => {
   render(
     <App services={services} pathname={pathname} parameters={parameters} />
   );
   // Add a basic assertion to verify the app renders
-  await waitFor(() => expect(document.body).toBeInTheDocument());
+  expect(document.body).toBeInTheDocument();
 });

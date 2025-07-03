@@ -1,2 +1,2 @@
-export { default as vehiclesQuery } from './vehicles.js';
-export { default as stationsQuery } from './stations.js';
+export { default as vehiclesQuery } from './vehicles';
+export { default as stationsQuery } from './stations';

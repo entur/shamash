@@ -9,7 +9,7 @@ const colors = {
   // ArgumentName and ObjectFieldName
   attribute: '#b58860',
   number: '#2882F9',
-  string: '#97be7b',
+  string: '##97be7b',
   // Boolean
   builtin: '#D47509',
   // Enum

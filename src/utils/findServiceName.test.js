@@ -1,4 +1,4 @@
-import findServiceName from './findServiceName.js';
+import findServiceName from './findServiceName';
 
 describe('findServiceName', () => {
   describe('with empty base path', () => {
