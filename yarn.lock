@@ -2790,10 +2790,10 @@
     markdown-it "^12.2.0"
     set-value "^4.1.0"
 
-"@graphiql/react@^0.35.0":
-  version "0.35.1"
-  resolved "https://registry.yarnpkg.com/@graphiql/react/-/react-0.35.1.tgz#1da3af64bd4267e0b7ebd3de5cc2146c2073801b"
-  integrity sha512-Uj21BRm2JJ/G5GuyJcU+3qIZ3shmMQiZI6yrm3GoXIAa6o4ssduPHi9EKJk/kGU+VgLggB5PYTgAOLTLbyPoSw==
+"@graphiql/react@^0.35.1":
+  version "0.35.4"
+  resolved "https://registry.yarnpkg.com/@graphiql/react/-/react-0.35.4.tgz#d44f7e1fec6b9d84bc8e8c1596ada49dc09328b5"
+  integrity sha512-CKdPJClbkEtKR9/ECyme5LoSmKcOowMMiiL6orPNUAzNUrWgH5uViWAcoagJcp7zLNKQMo1IPspVwGokFfpngw==
   dependencies:
     "@graphiql/toolkit" "^0.11.3"
     "@radix-ui/react-dialog" "^1.1"
@@ -2813,15 +2813,7 @@
     set-value "^4.1.0"
     zustand "^5"
 
-"@graphiql/toolkit@0.8.4":
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/@graphiql/toolkit/-/toolkit-0.8.4.tgz#8b697d140a3e96a6702428cbb8da4e8eb29162b3"
-  integrity sha512-cFUGqh3Dau+SD3Vq9EFlZrhzYfaHKyOJveFtaCR+U5Cn/S68p7oy+vQBIdwtO6J2J58FncnwBbVRfr+IvVfZqQ==
-  dependencies:
-    "@n1ru4l/push-pull-async-iterable-iterator" "^3.1.0"
-    meros "^1.1.4"
-
-"@graphiql/toolkit@^0.11.3":
+"@graphiql/toolkit@0.11.3", "@graphiql/toolkit@^0.11.3":
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/@graphiql/toolkit/-/toolkit-0.11.3.tgz#7f08352779b316fc6436820e11329ac3e6af9f9c"
   integrity sha512-Glf0fK1cdHLNq52UWPzfSrYIJuNxy8h4451Pw1ZVpJ7dtU+tm7GVVC64UjEDQ/v2j3fnG4cX8jvR75IvfL6nzQ==
