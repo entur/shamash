@@ -1,1 +1,2 @@
-export { default } from './GeocoderModal.js';
+export { default } from './GeocoderModal.jsx';
+

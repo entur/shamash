@@ -4,6 +4,15 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 
+// Setup for Vitest
+import { expect, afterEach } from 'vitest';
+import { cleanup } from '@testing-library/react';
+
+// Cleanup after each test
+afterEach(() => {
+  cleanup();
+});
+
 // Add polyfills for browser APIs required by GraphiQL and React 18
 import { TextEncoder, TextDecoder } from 'util';
 

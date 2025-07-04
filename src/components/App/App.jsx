@@ -28,12 +28,12 @@ import findServiceName from '../../utils/findServiceName.js';
 import explorerDarkColors from './DarkmodeExplorerColors.js';
 import 'graphiql/graphiql.css';
 
-import Map from '../Map/index.js';
+import Map from '../Map/index.jsx';
 
 import whiteLogo from '../../static/images/entur-white.png';
 import normalLogo from '../../static/images/entur.png';
 
-import { NotFound } from './404.js';
+import { NotFound } from './404.jsx';
 
 import {
   ConfigContext,
