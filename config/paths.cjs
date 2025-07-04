@@ -9,6 +9,30 @@ const getPublicUrlOrPath = require('react-dev-utils/getPublicUrlOrPath');
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 
+// Load .env files in the correct order
+const NODE_ENV = process.env.NODE_ENV;
+const dotenvFiles = [
+  `${resolveApp('.')}/.env.${NODE_ENV}.local`,
+  // Don't include `.env.local` for `test` environment
+  // since normally you expect tests to produce the same
+  // results for everyone
+  NODE_ENV !== 'test' && `${resolveApp('.')}/.env.local`,
+  `${resolveApp('.')}/.env.${NODE_ENV}`,
+  resolveApp('.env'),
+].filter(Boolean);
+
+dotenvFiles.forEach(dotenvFile => {
+  if (fs.existsSync(dotenvFile)) {
+    const dotenvExpand = require('dotenv-expand');
+    const dotenv = require('dotenv');
+    dotenvExpand.expand(
+      dotenv.config({
+        path: dotenvFile,
+      })
+    );
+  }
+});
+
 // We use `PUBLIC_URL` environment variable or "homepage" field to infer
 // "public path" at which the app is served.
 // webpack needs to know it to put the right <script> hrefs into HTML even in

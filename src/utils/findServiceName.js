@@ -1,10 +1,4 @@
-/**
- * Extract service name from the URL pathname
- * @param {string} pathname - The current pathname (e.g., "/vehicles-v2")
- * @param {string} basePath - The base path (e.g., "" for root or "/subpath")
- * @returns {string|null} - The service name or null if not found
- */
-const findServiceName = (pathname, basePath = '') => {
+const findServiceName = (pathname, basePath) => {
   // Handle null/undefined pathname
   if (!pathname || typeof pathname !== 'string') {
     return null;
@@ -26,11 +20,8 @@ const findServiceName = (pathname, basePath = '') => {
   }
 
   // Return the first path segment as the service name
-  // e.g., "vehicles-v2" from "/vehicles-v2" or "vehicles-v2/something"
   const segments = path.split('/');
-  const serviceName = segments[0] || null;
-
-  return serviceName;
+  return segments[0] || null;
 };
 
 export default findServiceName;
