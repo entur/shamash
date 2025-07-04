@@ -60,10 +60,19 @@ export const App = ({ pathname, parameters, setParameters }) => {
 
   const serviceName = findServiceName(pathname, BASE_PATH);
 
-  // Load dark theme CSS dynamically based on user preference
+  // Load dark theme CSS dynamically when dark theme is selected
   useEffect(() => {
-    if (getPreferredTheme() === 'dark') {
+    const isDarkTheme = getPreferredTheme() === 'dark';
+
+    if (isDarkTheme) {
+      // Import the dark theme CSS
       import('../../darktheme.css');
+    } else {
+      // Remove dark theme CSS if it was previously loaded
+      const existingLink = document.querySelector('link[href*="darktheme"]');
+      if (existingLink) {
+        existingLink.remove();
+      }
     }
   }, []);
 
