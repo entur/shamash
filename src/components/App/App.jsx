@@ -65,8 +65,10 @@ export const App = ({ pathname, parameters, setParameters }) => {
     const hasNoService = !serviceName || serviceName === '';
 
     if (isAtRoot || hasNoService) {
-      const newPath = `${BASE_PATH}/${DEFAULT_SERVICE_ID}`;
-      history.replace(newPath);
+      // Use window.location instead of history.replace for initial redirect
+      // This avoids the SecurityError with malformed URLs
+      const newPath = `/${DEFAULT_SERVICE_ID}`;
+      window.location.replace(newPath);
     }
   }, [pathname, serviceName]);
 
