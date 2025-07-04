@@ -25,11 +25,6 @@ import findServiceName from '../../utils/findServiceName.js';
 import explorerDarkColors from './DarkmodeExplorerColors.js';
 import 'graphiql/graphiql.css';
 
-// Conditionally import dark theme CSS based on user preference
-// if (getPreferredTheme() === 'dark') {
-//   import('../../darktheme.css');
-// }
-
 import Map from '../Map/index.jsx';
 
 import whiteLogo from '../../static/images/entur-white.png';
