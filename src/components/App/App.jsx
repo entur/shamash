@@ -15,7 +15,6 @@ import {
   print,
 } from 'graphql';
 import queryString from 'query-string';
-import Helmet from 'react-helmet';
 import graphQLFetcher from '../../utils/graphQLFetcher.js';
 import getPreferredTheme from '../../utils/getPreferredTheme.js';
 import history from '../../utils/history.js';
@@ -27,6 +26,11 @@ import findServiceName from '../../utils/findServiceName.js';
 
 import explorerDarkColors from './DarkmodeExplorerColors.js';
 import 'graphiql/graphiql.css';
+
+// Conditionally import dark theme CSS based on user preference
+// if (getPreferredTheme() === 'dark') {
+//   import('../../darktheme.css');
+// }
 
 import Map from '../Map/index.jsx';
 
@@ -55,6 +59,13 @@ export const App = ({ pathname, parameters, setParameters }) => {
   let graphiql = useRef(null);
 
   const serviceName = findServiceName(pathname, BASE_PATH);
+
+  // Load dark theme CSS dynamically based on user preference
+  useEffect(() => {
+    if (getPreferredTheme() === 'dark') {
+      import('../../darktheme.css');
+    }
+  }, []);
 
   // Redirect to default service if no service is specified or if at root
   useEffect(() => {
@@ -298,15 +309,6 @@ export const App = ({ pathname, parameters, setParameters }) => {
         colors={getPreferredTheme() === 'dark' ? explorerDarkColors : undefined}
       />
       <div style={{ flex: 1 }}>
-        <Helmet>
-          {getPreferredTheme() === 'dark' && (
-            <link
-              rel="stylesheet"
-              type="text/css"
-              href={`${BASE_PATH}/darktheme.css`}
-            />
-          )}
-        </Helmet>
         <GraphiQL
           ref={graphiql}
           fetcher={customFetcher}

@@ -34,7 +34,10 @@
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
-    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ],
     "import/no-unresolved": "off",
     "testing-library/no-debugging-utils": "warn"
   },
@@ -68,4 +71,3 @@
     }
   ]
 }
-

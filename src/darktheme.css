@@ -1,0 +1,222 @@
+/* GraphiQL One Dark Alt (Dark Mode) theme by Ben Keating[1], with some alterations
+* https://gist.github.com/bkeating/cfe0d5e72bd3f9f1f77e1a2ff2309972
+*
+*/
+
+.CodeMirror {
+  background: #282d34 !important;
+}
+
+.CodeMirror div.CodeMirror-cursor {
+  border-color: white;
+}
+
+.graphiql-container .doc-explorer-contents,
+.graphiql-container .history-contents {
+  background-color: #21262b;
+  border-top: 1px solid #181a1f;
+}
+
+.graphiql-container .toolbar-button {
+  background: #1c2125 !important;
+  box-shadow: none !important;
+  color: #aaaaaa !important;
+  border: 1px solid #181a1f !important;
+}
+
+.graphiql-container .result-window .CodeMirror-gutters {
+  background: #21262b;
+  border-right: 1px solid #181a1f !important;
+}
+
+.graphiql-container .resultWrap {
+  border-left: solid 1px #181a1f;
+}
+
+.graphiql-container .variable-editor-title {
+  background: #21262b;
+  border-bottom: 1px solid #181a1f;
+  border-top: 1px solid #181a1f;
+  color: #cacdd3;
+}
+
+.graphiql-container .topBar {
+  background: #21262b;
+  border-color: #181a1f;
+}
+
+.graphiql-container .footer,
+.graphiql-container .footer:before {
+  background: #21262b;
+  color: #cacdd3;
+  border-color: #181a1f;
+}
+
+.graphiql-container .docExplorerHide {
+  color: #606671;
+}
+
+.graphiql-container .doc-explorer-title,
+.graphiql-container .history-title,
+.doc-explorer-back {
+  color: #cacdd3 !important;
+}
+
+.graphiql-container .doc-explorer {
+  background: #21262b;
+}
+
+.graphiql-container .docExplorerWrap,
+.graphiql-container .historyPaneWrap {
+  box-shadow: none;
+}
+
+.graphiql-container .docExplorerShow {
+  border-left: none;
+}
+
+.graphiql-container .docExplorerShow,
+.graphiql-container .historyShow {
+  background: #21262b;
+  border-bottom: 1px solid #181a1e;
+  color: #cacdd3;
+}
+
+.graphiql-container .docExplorerShow:before,
+.graphiql-container .doc-explorer-back:before {
+  border-color: #cacdd3;
+}
+
+.graphiql-container .search-box {
+  margin: auto auto 10px auto;
+  border: none;
+}
+.graphiql-container .search-box input {
+  background: #1e2127;
+  padding-left: 28px;
+}
+
+.graphiql-container .search-box:before {
+  color: #c1c4ca;
+  font-size: 21px;
+  left: 8px;
+}
+
+.graphiql-container,
+.graphiql-container button,
+.graphiql-container input,
+.graphiql-container select {
+  color: #9299a7;
+  background-color: #21262b;
+}
+
+.CodeMirror-gutters {
+  border: none !important;
+  background-color: #282d33;
+}
+
+.graphiql-container .execute-button {
+  background: #21262b;
+  border: 1px solid rgb(91, 98, 107);
+  box-shadow: none !important;
+  fill: #c9ccd2;
+}
+
+.graphiql-container .history-contents p {
+  border: none;
+}
+
+.graphiql-container .historyPaneWrap {
+  background: #21262b;
+}
+
+.graphiql-container .execute-options > li.selected,
+.graphiql-container .toolbar-menu-items > li.hover,
+.graphiql-container .toolbar-menu-items > li:active,
+.graphiql-container .toolbar-menu-items > li:hover,
+.graphiql-container .toolbar-select-options > li.hover,
+.graphiql-container .toolbar-select-options > li:active,
+.graphiql-container .toolbar-select-options > li:hover,
+.graphiql-container .history-contents > p:hover,
+.graphiql-container .history-contents > p:active {
+  background: #383c41;
+}
+
+.graphiql-container .toolbar-menu-items > li {
+  color: #383c41;
+}
+
+.graphiql-container .doc-category-title {
+  border-bottom: 1px solid #181a1f;
+  color: #cacdd3;
+}
+
+.graphiql-container .field-name {
+  color: #9ca3ac;
+}
+
+.graphiql-container .type-name {
+  color: #95be76;
+}
+
+.cm-property {
+  color: #a5acb8;
+}
+
+.cm-punctuation {
+  color: #acacac;
+}
+
+.cm-ws {
+  color: #acacac;
+}
+
+.graphiql-container div.CodeMirror span.CodeMirror-matchingbracket {
+  color: #acacac;
+  text-decoration: underline;
+}
+
+.cm-string {
+  color: #97be7b;
+}
+
+.cm-variable {
+  color: #a87f5b;
+}
+
+.cm-attribute {
+  color: #b58860;
+}
+
+.cm-def {
+  color: #cc3932;
+}
+
+.cm-keyword {
+  color: #7cf3ff;
+}
+
+.graphiql-container .keyword {
+  color: #9ea5b0;
+}
+
+.graphiql-container .arg-name {
+  color: #b5875d;
+}
+
+.graphiql-container .doc-category-item {
+  color: #bc6069;
+}
+
+a {
+  color: #7b9ad4;
+}
+
+.CodeMirror-lint-tooltip {
+  background: #1a1e22 !important;
+  color: #acacac !important;
+}
+
+.graphiql-container .doc-explorer-title-bar {
+  background: #21262b;
+}
