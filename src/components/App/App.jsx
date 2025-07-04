@@ -99,9 +99,13 @@ export const App = ({ pathname, parameters, setParameters }) => {
   }, [fetcher]);
 
   const handleServiceChange = (id) => {
-    // Use the proper history API to navigate to the new service
-    const newPath = `${BASE_PATH}/${id}`;
-    history.push(newPath);
+    // For development with Vite, use simple relative paths
+    // For production, handle base path correctly
+    const basePath = import.meta.env.BASE_URL || '/';
+    const newPath = basePath === '/' ? `/${id}` : `${basePath}${id}`;
+
+    // Use window.location for proper navigation instead of custom history
+    window.location.href = newPath;
   };
 
   const editParameter = (key, value) => {
