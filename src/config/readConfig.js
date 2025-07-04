@@ -17,7 +17,7 @@ const readConfig = async (callback) => {
   const { default: config } = await import(`./environments/${env}.json`);
   callback({
     services: config.services,
-    enturClientName: config.enturClientName,
+    enturClientName: process.env.REACT_APP_ENTUR_CLIENT_NAME || 'shamash-web',
   });
 };
 

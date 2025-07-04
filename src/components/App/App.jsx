@@ -15,12 +15,9 @@ import {
   print,
 } from 'graphql';
 import queryString from 'query-string';
-import Helmet from 'react-helmet';
 import graphQLFetcher from '../../utils/graphQLFetcher.js';
 import getPreferredTheme from '../../utils/getPreferredTheme.js';
 import history from '../../utils/history.js';
-import * as journeyplannerV3Queries from '../../queries/journey-planner-v3/index.js';
-import * as vehicleQueries from '../../queries/vehicle-updates/index.js';
 import GeocoderModal from '../GeocoderModal/index.js';
 import './custom.css';
 import findServiceName from '../../utils/findServiceName.js';
@@ -28,12 +25,12 @@ import findServiceName from '../../utils/findServiceName.js';
 import explorerDarkColors from './DarkmodeExplorerColors.js';
 import 'graphiql/graphiql.css';
 
-import Map from '../Map/index.js';
+import Map from '../Map/index.jsx';
 
 import whiteLogo from '../../static/images/entur-white.png';
 import normalLogo from '../../static/images/entur.png';
 
-import { NotFound } from './404.js';
+import { NotFound } from './404.jsx';
 
 import {
   ConfigContext,
@@ -56,6 +53,22 @@ export const App = ({ pathname, parameters, setParameters }) => {
 
   const serviceName = findServiceName(pathname, BASE_PATH);
 
+  // Load dark theme CSS dynamically when dark theme is selected
+  useEffect(() => {
+    const isDarkTheme = getPreferredTheme() === 'dark';
+
+    if (isDarkTheme) {
+      // Import the dark theme CSS
+      import('../../darktheme.css');
+    } else {
+      // Remove dark theme CSS if it was previously loaded
+      const existingLink = document.querySelector('link[href*="darktheme"]');
+      if (existingLink) {
+        existingLink.remove();
+      }
+    }
+  }, []);
+
   // Redirect to default service if no service is specified or if at root
   useEffect(() => {
     const isAtRoot =
@@ -65,8 +78,11 @@ export const App = ({ pathname, parameters, setParameters }) => {
     const hasNoService = !serviceName || serviceName === '';
 
     if (isAtRoot || hasNoService) {
-      const newPath = `${BASE_PATH}/${DEFAULT_SERVICE_ID}`;
-      history.replace(newPath);
+      // Use window.location instead of history.replace for initial redirect
+      // This avoids the SecurityError with malformed URLs
+      const basePath = import.meta.env.BASE_URL || '/';
+      const newPath = basePath === '/' ? `/${DEFAULT_SERVICE_ID}` : `${basePath}${DEFAULT_SERVICE_ID}`;
+      window.location.replace(newPath);
     }
   }, [pathname, serviceName]);
 
@@ -99,9 +115,13 @@ export const App = ({ pathname, parameters, setParameters }) => {
   }, [fetcher]);
 
   const handleServiceChange = (id) => {
-    // Use the proper history API to navigate to the new service
-    const newPath = `${BASE_PATH}/${id}`;
-    history.push(newPath);
+    // For development with Vite, use simple relative paths
+    // For production, handle base path correctly
+    const basePath = import.meta.env.BASE_URL || '/';
+    const newPath = basePath === '/' ? `/${id}` : `${basePath}${id}`;
+
+    // Use window.location for proper navigation instead of custom history
+    window.location.href = newPath;
   };
 
   const editParameter = (key, value) => {
@@ -204,20 +224,38 @@ export const App = ({ pathname, parameters, setParameters }) => {
     setShowMap((prev) => !prev);
   };
 
-  const renderExamplesMenu = () => {
-    let queries;
+  const [exampleQueries, setExampleQueries] = useState({});
 
-    if (currentService.queries === 'journey-planner-v3') {
-      queries = journeyplannerV3Queries;
-    } else if (currentService.queries === 'vehicle-updates') {
-      queries = vehicleQueries;
-    } else {
+  // Load example queries dynamically when service changes
+  useEffect(() => {
+    const loadExampleQueries = async () => {
+      if (!currentService?.queries) return;
+
+      try {
+        const module = await import(
+          `../../queries/${currentService.queries}/index.js`
+        );
+        setExampleQueries(module);
+      } catch (error) {
+        console.warn(
+          `Failed to load example queries for ${currentService.queries}:`,
+          error
+        );
+        setExampleQueries({});
+      }
+    };
+
+    loadExampleQueries();
+  }, [currentService]);
+
+  const renderExamplesMenu = () => {
+    if (!exampleQueries || Object.keys(exampleQueries).length === 0) {
       return null;
     }
 
     return (
       <GraphiQL.Menu label="Examples" title="Examples">
-        {Object.entries(queries).map(([key, { query, variables }]) => (
+        {Object.entries(exampleQueries).map(([key, { query, variables }]) => (
           <GraphiQL.MenuItem
             key={key}
             label={key}
@@ -292,15 +330,6 @@ export const App = ({ pathname, parameters, setParameters }) => {
         colors={getPreferredTheme() === 'dark' ? explorerDarkColors : undefined}
       />
       <div style={{ flex: 1 }}>
-        <Helmet>
-          {getPreferredTheme() === 'dark' && (
-            <link
-              rel="stylesheet"
-              type="text/css"
-              href={`${BASE_PATH}/darktheme.css`}
-            />
-          )}
-        </Helmet>
         <GraphiQL
           ref={graphiql}
           fetcher={customFetcher}

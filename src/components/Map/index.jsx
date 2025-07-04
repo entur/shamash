@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
 import Leaflet from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import bbox from '@turf/bbox';
 import { lineString, featureCollection, point } from '@turf/helpers';
 import lineToPolygon from '@turf/line-to-polygon';
@@ -164,7 +165,6 @@ export default function Map({ response }) {
       center={DEFAULT_CENTER}
       zoom={10}
       style={{
-        height: '100%',
         width: '100%',
       }}
       zoomControl={false}

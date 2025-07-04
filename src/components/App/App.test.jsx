@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import App from './App';
+import { App } from './App';
 
 const services = [
   {
     id: 'journey-planner-v3',
     name: 'JourneyPlanner',
-    url: 'http://fake.entur.local/journey-planner/v3/graphql',
+    url: 'https://fake.entur.local/journey-planner/v3/graphql',
     queries: 'journey-planner-v3',
     defaultQuery: 'trip',
   },
