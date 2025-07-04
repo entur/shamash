@@ -8,15 +8,21 @@ export default defineConfig(({ command, mode }) => {
   // Load env file based on `mode` in the current working directory.
   const env = loadEnv(mode, process.cwd(), '');
 
+  // Determine base path based on environment
+  const base = mode === 'production' ? '/graphql-explorer/' : '/';
+
   return {
     plugins: [react()],
+
+    // Set base path for deployment
+    base,
 
     // Define environment variables
     define: {
       // Make process.env available in browser
       'process.env': JSON.stringify({
         NODE_ENV: mode,
-        PUBLIC_URL: env.PUBLIC_URL || '',
+        PUBLIC_URL: env.PUBLIC_URL || base.slice(0, -1), // Remove trailing slash
         // Include all REACT_APP_ prefixed variables
         ...Object.keys(env).reduce((prev, key) => {
           if (key.startsWith('REACT_APP_')) {
@@ -56,7 +62,7 @@ export default defineConfig(({ command, mode }) => {
 
     // Build configuration
     build: {
-      outDir: 'build',
+      outDir: mode === 'production' ? 'build/graphql-explorer' : 'build',
       sourcemap: true,
       rollupOptions: {
         output: {

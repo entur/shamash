@@ -85,7 +85,8 @@ export const App = ({ pathname, parameters, setParameters }) => {
     if (isAtRoot || hasNoService) {
       // Use window.location instead of history.replace for initial redirect
       // This avoids the SecurityError with malformed URLs
-      const newPath = `/${DEFAULT_SERVICE_ID}`;
+      const basePath = import.meta.env.BASE_URL || '/';
+      const newPath = basePath === '/' ? `/${DEFAULT_SERVICE_ID}` : `${basePath}${DEFAULT_SERVICE_ID}`;
       window.location.replace(newPath);
     }
   }, [pathname, serviceName]);
