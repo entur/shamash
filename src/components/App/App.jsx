@@ -18,8 +18,6 @@ import queryString from 'query-string';
 import graphQLFetcher from '../../utils/graphQLFetcher.js';
 import getPreferredTheme from '../../utils/getPreferredTheme.js';
 import history from '../../utils/history.js';
-import * as journeyplannerV3Queries from '../../queries/journey-planner-v3/index.js';
-import * as vehicleQueries from '../../queries/vehicle-updates/index.js';
 import GeocoderModal from '../GeocoderModal/index.js';
 import './custom.css';
 import findServiceName from '../../utils/findServiceName.js';
@@ -230,20 +228,38 @@ export const App = ({ pathname, parameters, setParameters }) => {
     setShowMap((prev) => !prev);
   };
 
-  const renderExamplesMenu = () => {
-    let queries;
+  const [exampleQueries, setExampleQueries] = useState({});
 
-    if (currentService.queries === 'journey-planner-v3') {
-      queries = journeyplannerV3Queries;
-    } else if (currentService.queries === 'vehicle-updates') {
-      queries = vehicleQueries;
-    } else {
+  // Load example queries dynamically when service changes
+  useEffect(() => {
+    const loadExampleQueries = async () => {
+      if (!currentService?.queries) return;
+
+      try {
+        const module = await import(
+          `../../queries/${currentService.queries}/index.js`
+        );
+        setExampleQueries(module);
+      } catch (error) {
+        console.warn(
+          `Failed to load example queries for ${currentService.queries}:`,
+          error
+        );
+        setExampleQueries({});
+      }
+    };
+
+    loadExampleQueries();
+  }, [currentService]);
+
+  const renderExamplesMenu = () => {
+    if (!exampleQueries || Object.keys(exampleQueries).length === 0) {
       return null;
     }
 
     return (
       <GraphiQL.Menu label="Examples" title="Examples">
-        {Object.entries(queries).map(([key, { query, variables }]) => (
+        {Object.entries(exampleQueries).map(([key, { query, variables }]) => (
           <GraphiQL.MenuItem
             key={key}
             label={key}
