@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
-import Leaflet from 'leaflet';
+import Leaflet, { LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import bbox from '@turf/bbox';
 import { lineString, featureCollection, point } from '@turf/helpers';
@@ -8,7 +8,7 @@ import lineToPolygon from '@turf/line-to-polygon';
 import { toGeoJSON } from '@mapbox/polyline';
 import { colors } from '@entur/tokens';
 
-const DEFAULT_CENTER = [60, 10];
+const DEFAULT_CENTER: LatLngTuple = [60, 10];
 
 function getTransportColor(mode) {
   return colors.transport.default[mode] || colors.transport.default.walk;
