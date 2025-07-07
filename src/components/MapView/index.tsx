@@ -153,7 +153,7 @@ function MapContent({ mapData }) {
   );
 }
 
-export default function Map({ response }) {
+export default function MapView({ response }) {
   const [mapData, setMapData] = useState(getMapData(response));
 
   useEffect(() => {

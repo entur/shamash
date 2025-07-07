@@ -26,7 +26,7 @@ import findServiceName from '../../utils/findServiceName';
 import explorerDarkColors from './DarkmodeExplorerColors';
 import 'graphiql/graphiql.css';
 
-import Map from '../Map';
+import MapView from '../MapView';
 
 import whiteLogo from '../../static/images/entur-white.png';
 import normalLogo from '../../static/images/entur.png';
@@ -463,7 +463,7 @@ export const App: React.FC<AppProps> = ({
           <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
         ) : null}
       </div>
-      {showMap ? <Map response={response} /> : null}
+      {showMap ? <MapView response={response} /> : null}
     </div>
   );
 };
