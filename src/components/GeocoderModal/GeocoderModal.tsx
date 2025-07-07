@@ -34,7 +34,7 @@ const autocompleteSearch = debounce(
 function GeocoderModal({ onDismiss }) {
   const { enturClientName } = useConfig();
   const service = useMemo(
-    () => new EnturService({ clientName: enturClientName }),
+    () => EnturService({ clientName: enturClientName }),
     [enturClientName]
   );
   const [query, setQuery] = useState('');
