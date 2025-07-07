@@ -1,4 +1,6 @@
 import React, {
+  Suspense,
+  lazy,
   useCallback,
   useEffect,
   useMemo,
@@ -19,7 +21,7 @@ import queryString from 'query-string';
 import graphQLFetcher from '../../utils/graphQLFetcher';
 import getPreferredTheme from '../../utils/getPreferredTheme';
 import history from '../../utils/history';
-import GeocoderModal from '../GeocoderModal';
+const GeocoderModal = lazy(() => import('../GeocoderModal'));
 import './custom.css';
 import findServiceName from '../../utils/findServiceName';
 
@@ -460,7 +462,9 @@ export const App: React.FC<AppProps> = ({
           </GraphiQL.Footer>
         </GraphiQL>
         {showGeocoderModal ? (
-          <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
+          </Suspense>
         ) : null}
       </div>
       {showMap ? <MapView response={response} /> : null}
