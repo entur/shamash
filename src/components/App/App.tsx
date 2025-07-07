@@ -1,55 +1,72 @@
 import React, {
-  useMemo,
+  Suspense,
+  lazy,
   useCallback,
-  useState,
-  useRef,
   useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from 'react';
 import GraphiQL from 'graphiql';
 import { Explorer as GraphiQLExplorer } from 'graphiql-explorer';
 import {
-  parse,
-  getIntrospectionQuery,
   buildClientSchema,
-  stripIgnoredCharacters,
+  getIntrospectionQuery,
+  GraphQLSchema,
+  parse,
   print,
+  stripIgnoredCharacters,
 } from 'graphql';
 import queryString from 'query-string';
-import graphQLFetcher from '../../utils/graphQLFetcher.js';
-import getPreferredTheme from '../../utils/getPreferredTheme.js';
-import history from '../../utils/history.js';
-import GeocoderModal from '../GeocoderModal/index.js';
+import graphQLFetcher from '../../utils/graphQLFetcher';
+import getPreferredTheme from '../../utils/getPreferredTheme';
+import history from '../../utils/history';
+const GeocoderModal = lazy(() => import('../GeocoderModal'));
 import './custom.css';
-import findServiceName from '../../utils/findServiceName.js';
+import findServiceName from '../../utils/findServiceName';
 
-import explorerDarkColors from './DarkmodeExplorerColors.js';
+import explorerDarkColors from './DarkmodeExplorerColors';
 import 'graphiql/graphiql.css';
 
-import Map from '../Map/index.jsx';
+import MapView from '../MapView';
 
 import whiteLogo from '../../static/images/entur-white.png';
 import normalLogo from '../../static/images/entur.png';
 
-import { NotFound } from './404.jsx';
+import { NotFound } from './404';
 
 import {
   ConfigContext,
   useConfig,
   useFetchConfig,
-} from '../../config/ConfigContext.js';
+} from '../../config/ConfigContext';
 
 const BASE_PATH = process.env.PUBLIC_URL || '';
 const DEFAULT_SERVICE_ID = 'journey-planner-v3';
 
-export const App = ({ pathname, parameters, setParameters }) => {
-  const { services, enturClientName } = useConfig();
-  const [showGeocoderModal, setShowGeocoderModal] = useState(false);
-  const [schema, setSchema] = useState();
-  const [showExplorer, setShowExplorer] = useState(false);
-  const [showMap, setShowMap] = useState(false);
-  const [response, setResponse] = useState();
+interface AppProps {
+  pathname: string;
+  parameters: Record<string, any>;
+  setParameters: (
+    params:
+      | Record<string, any>
+      | ((prev: Record<string, any>) => Record<string, any>)
+  ) => void;
+}
 
-  let graphiql = useRef(null);
+export const App: React.FC<AppProps> = ({
+  pathname,
+  parameters,
+  setParameters,
+}) => {
+  const { services, enturClientName } = useConfig();
+  const [showGeocoderModal, setShowGeocoderModal] = useState<boolean>(false);
+  const [schema, setSchema] = useState<GraphQLSchema | undefined>();
+  const [showExplorer, setShowExplorer] = useState<boolean>(false);
+  const [showMap, setShowMap] = useState<boolean>(false);
+  const [response, setResponse] = useState<any>();
+
+  let graphiql = useRef<any>(null);
 
   const serviceName = findServiceName(pathname, BASE_PATH);
 
@@ -81,7 +98,10 @@ export const App = ({ pathname, parameters, setParameters }) => {
       // Use window.location instead of history.replace for initial redirect
       // This avoids the SecurityError with malformed URLs
       const basePath = import.meta.env.BASE_URL || '/';
-      const newPath = basePath === '/' ? `/${DEFAULT_SERVICE_ID}` : `${basePath}${DEFAULT_SERVICE_ID}`;
+      const newPath =
+        basePath === '/'
+          ? `/${DEFAULT_SERVICE_ID}`
+          : `${basePath}${DEFAULT_SERVICE_ID}`;
       window.location.replace(newPath);
     }
   }, [pathname, serviceName]);
@@ -114,18 +134,17 @@ export const App = ({ pathname, parameters, setParameters }) => {
       });
   }, [fetcher]);
 
-  const handleServiceChange = (id) => {
+  const handleServiceChange = (id: string) => {
     // For development with Vite, use simple relative paths
     // For production, handle base path correctly
     const basePath = import.meta.env.BASE_URL || '/';
-    const newPath = basePath === '/' ? `/${id}` : `${basePath}${id}`;
 
     // Use window.location for proper navigation instead of custom history
-    window.location.href = newPath;
+    window.location.href = basePath === '/' ? `/${id}` : `${basePath}${id}`;
   };
 
-  const editParameter = (key, value) => {
-    setParameters((prevParameters) => {
+  const editParameter = (key: string, value: any) => {
+    setParameters((prevParameters: Record<string, any>) => {
       const newParameters = {
         ...prevParameters,
         [key]: value,
@@ -140,7 +159,7 @@ export const App = ({ pathname, parameters, setParameters }) => {
     });
   };
 
-  const handleEnvironmentChange = (env) => {
+  const handleEnvironmentChange = (env: string) => {
     if (window.location.host.includes('localhost')) {
       console.log('Running on localhost, not redirecting');
       return;
@@ -155,11 +174,11 @@ export const App = ({ pathname, parameters, setParameters }) => {
     }
   };
 
-  const redirectHost = (host) => {
+  const redirectHost = (host: string) => {
     window.location.href = `${window.location.protocol}//${host}${window.location.pathname}${window.location.search}`;
   };
 
-  const handleThemeChange = (theme) => {
+  const handleThemeChange = (theme: string) => {
     window.localStorage.setItem('theme', theme);
     window.location.reload();
   };
@@ -232,9 +251,10 @@ export const App = ({ pathname, parameters, setParameters }) => {
       if (!currentService?.queries) return;
 
       try {
-        const module = await import(
-          `../../queries/${currentService.queries}/index.js`
-        );
+        let module;
+        const modules = await import.meta.glob('../../queries/**/index.ts');
+        const path = `../../queries/${currentService.queries}/index.ts`;
+        module = await modules[path]();
         setExampleQueries(module);
       } catch (error) {
         console.warn(
@@ -255,7 +275,9 @@ export const App = ({ pathname, parameters, setParameters }) => {
 
     return (
       <GraphiQL.Menu label="Examples" title="Examples">
-        {Object.entries(exampleQueries).map(([key, { query, variables }]) => (
+        {Object.entries(
+          exampleQueries as Record<string, { query: string; variables?: any }>
+        ).map(([key, { query, variables }]) => (
           <GraphiQL.MenuItem
             key={key}
             label={key}
@@ -285,9 +307,10 @@ export const App = ({ pathname, parameters, setParameters }) => {
         setQuery(urlQuery);
       } else if (currentService) {
         try {
-          const module = await import(
-            `../../queries/${currentService.queries}/${currentService.defaultQuery}.js`
-          );
+          let module;
+          const modules = await import.meta.glob('../../queries/**/*.ts');
+          const path = `../../queries/${currentService.queries}/${currentService.defaultQuery}.ts`;
+          module = await modules[path]();
           setQuery(module.default.query);
         } catch (error) {
           console.warn(
@@ -304,7 +327,7 @@ export const App = ({ pathname, parameters, setParameters }) => {
   const { variables, operationName } = parameters;
 
   const customFetcher = useCallback(
-    async (...args) => {
+    async (...args: any[]) => {
       const res = await fetcher(...args);
       setResponse(res);
       return res;
@@ -439,10 +462,12 @@ export const App = ({ pathname, parameters, setParameters }) => {
           </GraphiQL.Footer>
         </GraphiQL>
         {showGeocoderModal ? (
-          <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
+          </Suspense>
         ) : null}
       </div>
-      {showMap ? <Map response={response} /> : null}
+      {showMap ? <MapView response={response} /> : null}
     </div>
   );
 };

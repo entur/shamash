@@ -21,3 +21,10 @@ yarn build
 ```sh
 yarn start
 ```
+
+## Deploy to dev (for quick testing)
+
+Deployment to dev is (done automatically)[.github/workflows/firebase-hosting-merge.yml] when a PR is merged (or push to master), but sometimes you need to test quickly:
+```sh
+firebase -P dev deploy --only hosting
+```

@@ -16,8 +16,8 @@ afterEach(() => {
 // Add polyfills for browser APIs required by GraphiQL and React 18
 import { TextEncoder, TextDecoder } from 'util';
 
-global.TextEncoder = TextEncoder;
-global.TextDecoder = TextDecoder;
+(global as any).TextEncoder = TextEncoder;
+(global as any).TextDecoder = TextDecoder;
 
 // Mock fetch if not available
 if (!global.fetch) {
