@@ -1,19 +1,19 @@
 import React, {
-  useMemo,
   useCallback,
-  useState,
-  useRef,
   useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from 'react';
 import GraphiQL from 'graphiql';
 import { Explorer as GraphiQLExplorer } from 'graphiql-explorer';
 import {
-  parse,
-  getIntrospectionQuery,
   buildClientSchema,
-  stripIgnoredCharacters,
-  print,
+  getIntrospectionQuery,
   GraphQLSchema,
+  parse,
+  print,
+  stripIgnoredCharacters,
 } from 'graphql';
 import queryString from 'query-string';
 import graphQLFetcher from '../../utils/graphQLFetcher';
@@ -45,10 +45,18 @@ const DEFAULT_SERVICE_ID = 'journey-planner-v3';
 interface AppProps {
   pathname: string;
   parameters: Record<string, any>;
-  setParameters: (params: Record<string, any> | ((prev: Record<string, any>) => Record<string, any>)) => void;
+  setParameters: (
+    params:
+      | Record<string, any>
+      | ((prev: Record<string, any>) => Record<string, any>)
+  ) => void;
 }
 
-export const App: React.FC<AppProps> = ({ pathname, parameters, setParameters }) => {
+export const App: React.FC<AppProps> = ({
+  pathname,
+  parameters,
+  setParameters,
+}) => {
   const { services, enturClientName } = useConfig();
   const [showGeocoderModal, setShowGeocoderModal] = useState<boolean>(false);
   const [schema, setSchema] = useState<GraphQLSchema | undefined>();
@@ -88,7 +96,10 @@ export const App: React.FC<AppProps> = ({ pathname, parameters, setParameters })
       // Use window.location instead of history.replace for initial redirect
       // This avoids the SecurityError with malformed URLs
       const basePath = import.meta.env.BASE_URL || '/';
-      const newPath = basePath === '/' ? `/${DEFAULT_SERVICE_ID}` : `${basePath}${DEFAULT_SERVICE_ID}`;
+      const newPath =
+        basePath === '/'
+          ? `/${DEFAULT_SERVICE_ID}`
+          : `${basePath}${DEFAULT_SERVICE_ID}`;
       window.location.replace(newPath);
     }
   }, [pathname, serviceName]);
@@ -239,17 +250,9 @@ export const App: React.FC<AppProps> = ({ pathname, parameters, setParameters })
 
       try {
         let module;
-//        if (import.meta.env.PROD) {
-          const modules = await import.meta.glob(
-            '../../queries/**/index.ts'
-          );
-          const path = `../../queries/${currentService.queries}/index.ts`;
-          module = await modules[path]();
-//        } else {
-//          module = await import(
-//            /* @vite-ignore */ `../../queries/${currentService.queries}/index.ts`
-//          );
-//        }
+        const modules = await import.meta.glob('../../queries/**/index.ts');
+        const path = `../../queries/${currentService.queries}/index.ts`;
+        module = await modules[path]();
         setExampleQueries(module);
       } catch (error) {
         console.warn(
@@ -270,7 +273,9 @@ export const App: React.FC<AppProps> = ({ pathname, parameters, setParameters })
 
     return (
       <GraphiQL.Menu label="Examples" title="Examples">
-        {Object.entries(exampleQueries as Record<string, { query: string; variables?: any }>).map(([key, { query, variables }]) => (
+        {Object.entries(
+          exampleQueries as Record<string, { query: string; variables?: any }>
+        ).map(([key, { query, variables }]) => (
           <GraphiQL.MenuItem
             key={key}
             label={key}
@@ -301,17 +306,9 @@ export const App: React.FC<AppProps> = ({ pathname, parameters, setParameters })
       } else if (currentService) {
         try {
           let module;
-//          if (import.meta.env.PROD) {
-            const modules = await import.meta.glob(
-              '../../queries/**/*.ts'
-            );
-            const path = `../../queries/${currentService.queries}/${currentService.defaultQuery}.ts`;
-            module = await modules[path]();
- //         } else {
- //           module = await import(
- //             `../../queries/${currentService.queries}/${currentService.defaultQuery}.ts`
- //           );
- //         }
+          const modules = await import.meta.glob('../../queries/**/*.ts');
+          const path = `../../queries/${currentService.queries}/${currentService.defaultQuery}.ts`;
+          module = await modules[path]();
           setQuery(module.default.query);
         } catch (error) {
           console.warn(

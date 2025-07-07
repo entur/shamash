@@ -144,7 +144,8 @@ const printDocASTReducer = {
     join(['schema', join(directives, ' '), block(operationTypes)], ' ')
   ),
 
-  OperationTypeDefinition: ({ operation, type }: any) => operation + ': ' + type,
+  OperationTypeDefinition: ({ operation, type }: any) =>
+    operation + ': ' + type,
 
   ScalarTypeDefinition: addDescription(({ name, directives }: any) =>
     join(['scalar', name, join(directives, ' ')], ' ')
@@ -217,8 +218,9 @@ const printDocASTReducer = {
     join([name, join(directives, ' ')], ' ')
   ),
 
-  InputObjectTypeDefinition: addDescription(({ name, directives, fields }: any) =>
-    join(['input', name, join(directives, ' '), block(fields)], ' ')
+  InputObjectTypeDefinition: addDescription(
+    ({ name, directives, fields }: any) =>
+      join(['input', name, join(directives, ' '), block(fields)], ' ')
   ),
 
   DirectiveDefinition: addDescription(
@@ -289,7 +291,10 @@ function addDescription(cb: (node: any) => string) {
  * Given maybeArray, print an empty string if it is null or empty, otherwise
  * print all items together separated by separator if provided
  */
-function join(maybeArray: any[] | null | undefined, separator: string = ''): string {
+function join(
+  maybeArray: any[] | null | undefined,
+  separator: string = ''
+): string {
   return maybeArray?.filter((x) => x).join(separator) ?? '';
 }
 
@@ -304,7 +309,11 @@ function block(array: any[]): string {
 /**
  * If maybeString is not null or empty, then wrap with start and end, otherwise print an empty string.
  */
-function wrap(start: string, maybeString: string | null | undefined, end: string = ''): string {
+function wrap(
+  start: string,
+  maybeString: string | null | undefined,
+  end: string = ''
+): string {
   return maybeString != null && maybeString !== ''
     ? start + maybeString + end
     : '';
