@@ -40,9 +40,10 @@ function GeocoderModal({ onDismiss }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const modalRef = useRef(null);
-  const [copiedPopupStyle, setCopiedPopupStyle] = useState({
+  const [copiedPopupStyle, setCopiedPopupStyle] = useState<React.CSSProperties>({
     top: 10,
     left: 10,
+    opacity: 0,
   });
   const theme = getPreferredTheme();
 
@@ -89,10 +90,26 @@ function GeocoderModal({ onDismiss }) {
     onDismiss();
   };
 
+  const escapeToClose = (event) => {
+    if (event.key === 'Escape') {
+      onDismiss();
+    }
+  };
+
   return (
     <>
-      <div className="geocoder-modal-overlay" onClick={onOverlayClick} />
-      <div className={`geocoder-modal geocoder-modal--${theme}`} ref={modalRef}>
+      <div
+        className="geocoder-modal-overlay"
+        onClick={onOverlayClick}
+        onKeyDown={escapeToClose}
+        role="button"
+        tabIndex={0}
+      />
+      <div
+        className={`geocoder-modal geocoder-modal--${theme}`}
+        ref={modalRef}
+        onKeyDown={escapeToClose}
+      >
         <button
           className={`geocoder-modal__close-button close-button--${theme}`}
           onClick={onDismiss}
