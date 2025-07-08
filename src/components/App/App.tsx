@@ -12,6 +12,9 @@ import {
   buildClientSchema,
   getIntrospectionQuery,
   GraphQLSchema,
+  parse,
+  print,
+  stripIgnoredCharacters,
 } from 'graphql';
 import queryString from 'query-string';
 import graphQLFetcher from '../../utils/graphQLFetcher';
@@ -25,6 +28,8 @@ import 'graphiql/graphiql.css';
 
 import MapView from '../MapView';
 
+import whiteLogo from '../../static/images/entur-white.png';
+import normalLogo from '../../static/images/entur.png';
 
 import { NotFound } from './404';
 
@@ -181,12 +186,209 @@ export const App: React.FC<AppProps> = ({
   // Configure the explorer plugin
   const explorer = useMemo(() => explorerPlugin(), []);
 
+  const handleServiceChange = (id: string) => {
+    const basePath = import.meta.env.BASE_URL || '/';
+    window.location.href = basePath === '/' ? `/${id}` : `${basePath}${id}`;
+  };
+
+  const handleEnvironmentChange = (env: string) => {
+    if (window.location.host.includes('localhost')) {
+      console.log('Running on localhost, not redirecting');
+      return;
+    }
+
+    if (env === 'dev') {
+      redirectHost('api.dev.entur.io');
+    } else if (env === 'staging') {
+      redirectHost('api.staging.entur.io');
+    } else if (env === 'prod') {
+      redirectHost('api.entur.io');
+    }
+  };
+
+  const redirectHost = (host: string) => {
+    window.location.href = `${window.location.protocol}//${host}${window.location.pathname}${window.location.search}`;
+  };
+
+  const handleThemeChange = (theme: string) => {
+    window.localStorage.setItem('theme', theme);
+    window.location.reload();
+  };
+
+  const handleClickPrettifyButton = () => {
+    try {
+      const currentQueryText = query;
+      if (currentQueryText) {
+        const prettyQueryText = print(parse(currentQueryText));
+        editParameter('query', prettyQueryText);
+      }
+
+      if (variables && variables.trim() !== '') {
+        const prettyVariablesText = JSON.stringify(
+          JSON.parse(variables),
+          null,
+          2
+        );
+        editParameter('variables', prettyVariablesText);
+      }
+    } catch (error) {
+      console.warn('Prettify failed:', error);
+    }
+  };
+
+  const handleClickMinifyButton = () => {
+    try {
+      const currentQueryText = query;
+      if (currentQueryText) {
+        const uglyQueryText = stripIgnoredCharacters(currentQueryText);
+        editParameter('query', uglyQueryText);
+      }
+
+      if (variables && variables.trim() !== '') {
+        const uglyVariablesText = JSON.stringify(JSON.parse(variables));
+        editParameter('variables', uglyVariablesText);
+      }
+    } catch (error) {
+      console.warn('Minify failed:', error);
+    }
+  };
+
+  const toggleMap = () => {
+    setShowMap((prev) => !prev);
+  };
+
+  const searchForId = () => {
+    setShowGeocoderModal(!showGeocoderModal);
+  };
+
+  const [exampleQueries, setExampleQueries] = useState({});
+
+  // Load example queries dynamically when service changes
+  useEffect(() => {
+    const loadExampleQueries = async () => {
+      if (!currentService?.queries) return;
+
+      try {
+        let module;
+        const modules = await import.meta.glob('../../queries/**/index.ts');
+        const path = `../../queries/${currentService.queries}/index.ts`;
+        module = await modules[path]();
+        setExampleQueries(module);
+      } catch (error) {
+        console.warn(
+          `Failed to load example queries for ${currentService.queries}:`,
+          error
+        );
+        setExampleQueries({});
+      }
+    };
+
+    loadExampleQueries();
+  }, [currentService]);
+
+  // Custom toolbar component
+  const CustomToolbar = () => {
+    return (
+      <div className="graphiql-toolbar">
+        <button
+          className="graphiql-toolbar-button"
+          onClick={handleClickPrettifyButton}
+          title="Prettify Query (Shift-Ctrl-P)"
+        >
+          Prettify
+        </button>
+        <button
+          className="graphiql-toolbar-button"
+          onClick={handleClickMinifyButton}
+          title="Minify Query"
+        >
+          Minify
+        </button>
+        <button
+          className="graphiql-toolbar-button"
+          onClick={toggleMap}
+          title="Show Map"
+        >
+          Map
+        </button>
+
+        <div className="graphiql-toolbar-select">
+          <label>Service:</label>
+          <select
+            value={currentService?.id || ''}
+            onChange={(e) => handleServiceChange(e.target.value)}
+          >
+            {services.map((service) => (
+              <option key={service.id} value={service.id}>
+                {service.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="graphiql-toolbar-select">
+          <label>Environment:</label>
+          <select onChange={(e) => handleEnvironmentChange(e.target.value)}>
+            <option value="">Select...</option>
+            <option value="prod">Prod</option>
+            <option value="staging">Staging</option>
+            <option value="dev">Dev</option>
+          </select>
+        </div>
+
+        {Object.keys(exampleQueries).length > 0 && (
+          <div className="graphiql-toolbar-select">
+            <label>Examples:</label>
+            <select
+              onChange={(e) => {
+                const key = e.target.value;
+                if (key && exampleQueries[key]) {
+                  const { query: exampleQuery, variables: exampleVars } =
+                    exampleQueries[key];
+                  editParameter('query', exampleQuery);
+                  if (exampleVars) {
+                    editParameter('variables', JSON.stringify(exampleVars, null, 2));
+                  }
+                }
+              }}
+            >
+              <option value="">Select example...</option>
+              {Object.keys(exampleQueries).map((key) => (
+                <option key={key} value={key}>
+                  {key}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        <div className="graphiql-toolbar-select">
+          <label>Theme:</label>
+          <select onChange={(e) => handleThemeChange(e.target.value)}>
+            <option value="">Select...</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </div>
+
+        <button
+          className="graphiql-toolbar-button"
+          onClick={searchForId}
+          title="Search for ID"
+        >
+          Search for ID
+        </button>
+      </div>
+    );
+  };
+
   if (currentService == null) {
     return <NotFound />;
   }
 
   return (
     <div className="App graphiql-container">
+      <CustomToolbar />
       <GraphiQL
         fetcher={customFetcher}
         query={query}
@@ -197,7 +399,15 @@ export const App: React.FC<AppProps> = ({
         onEditOperationName={(value) => editParameter('operationName', value)}
         plugins={[explorer]}
         schema={schema}
-      />
+      >
+        <GraphiQL.Logo>
+          <img
+            alt="logo"
+            src={getPreferredTheme() === 'dark' ? whiteLogo : normalLogo}
+            className="logo"
+          />
+        </GraphiQL.Logo>
+      </GraphiQL>
       {showGeocoderModal ? (
         <Suspense fallback={<div>Loading...</div>}>
           <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />

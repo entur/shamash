@@ -44,3 +44,84 @@ div.toolbar > .toolbar-button {
 .CodeMirror-code pre.CodeMirror-line {
   line-height: 1.1rem;
 }
+
+/* Custom toolbar styles */
+.graphiql-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #e0e0e0;
+  flex-wrap: wrap;
+}
+
+.graphiql-toolbar-button {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.graphiql-toolbar-button:hover {
+  background-color: #f0f0f0;
+}
+
+.graphiql-toolbar-select {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.graphiql-toolbar-select label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.graphiql-toolbar-select select {
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+}
+
+/* Dark theme styles */
+.graphiql-container[data-theme="dark"] .graphiql-toolbar {
+  background-color: #1a1a1a;
+  border-bottom-color: #333;
+}
+
+.graphiql-container[data-theme="dark"] .graphiql-toolbar-button {
+  background-color: #2a2a2a;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+.graphiql-container[data-theme="dark"] .graphiql-toolbar-button:hover {
+  background-color: #3a3a3a;
+}
+
+.graphiql-container[data-theme="dark"] .graphiql-toolbar-select label {
+  color: #e0e0e0;
+}
+
+.graphiql-container[data-theme="dark"] .graphiql-toolbar-select select {
+  background-color: #2a2a2a;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+/* Ensure GraphiQL container takes remaining space */
+.App.graphiql-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.App.graphiql-container > .graphiql-container {
+  flex: 1;
+}
