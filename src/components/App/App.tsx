@@ -73,10 +73,8 @@ export const App: React.FC<AppProps> = ({
     const isDarkTheme = getPreferredTheme() === 'dark';
 
     if (isDarkTheme) {
-      // Import the dark theme CSS
       import('../../darktheme.css');
     } else {
-      // Remove dark theme CSS if it was previously loaded
       const existingLink = document.querySelector('link[href*="darktheme"]');
       if (existingLink) {
         existingLink.remove();
@@ -93,8 +91,6 @@ export const App: React.FC<AppProps> = ({
     const hasNoService = !serviceName || serviceName === '';
 
     if (isAtRoot || hasNoService) {
-      // Use window.location instead of history.replace for initial redirect
-      // This avoids the SecurityError with malformed URLs
       const basePath = import.meta.env.BASE_URL || '/';
       const newPath =
         basePath === '/'
@@ -140,7 +136,6 @@ export const App: React.FC<AppProps> = ({
         [key]: value,
       };
 
-      // Use the new parameters for the URL update to avoid stale closure
       history.replace({
         search: queryString.stringify(newParameters),
       });
