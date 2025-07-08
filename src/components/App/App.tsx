@@ -40,6 +40,7 @@ import {
   useFetchConfig,
 } from '../../config/ConfigContext';
 import ReactDOM from 'react-dom';
+import ServiceDropdown from './ServiceDropdown';
 
 const BASE_PATH = process.env.PUBLIC_URL || '';
 const DEFAULT_SERVICE_ID = 'journey-planner-v3';
@@ -375,17 +376,22 @@ export const App: React.FC<AppProps> = ({
           customButtonsContainer.appendChild(button);
         });
 
+        // Replace the Service dropdown with the custom ServiceDropdown component
+        const serviceOptions = services.map((s) => ({ value: s.id, label: s.name }));
+        const serviceDropdown = document.createElement('div');
+        serviceDropdown.className = 'custom-service-dropdown-wrapper';
+        customButtonsContainer.appendChild(serviceDropdown);
+        ReactDOM.render(
+          <ServiceDropdown
+            options={serviceOptions}
+            selected={serviceName || currentService?.id || ''}
+            onChange={handleServiceChange}
+          />,
+          serviceDropdown
+        );
+
         // Create dropdowns
         const dropdowns = [
-          {
-            options: [
-              { value: '', label: 'Service', disabled: true },
-              ...services.map((s) => ({ value: s.id, label: s.name })),
-            ],
-            value: '', // Always show the header, never the selected service
-            onChange: handleServiceChange,
-            title: 'Select Service',
-          },
           {
             options: [
               { value: '', label: 'Environment' },
@@ -432,17 +438,17 @@ export const App: React.FC<AppProps> = ({
             if (option.disabled) optionEl.disabled = true;
             select.appendChild(optionEl);
           });
-          // Set the value to the selected service so the checkmark is correct
+          // For Service dropdown, always show the header when closed
           if (title === 'Select Service') {
-            select.value = serviceName || currentService?.id || '';
+            select.value = '';
           } else {
             select.value = value;
           }
           select.addEventListener('change', (e) => {
             const target = e.target as HTMLSelectElement;
             if (target.value) onChange(target.value);
-            // Reset to header after selection
-            if (title === 'Select Service') select.value = serviceName || currentService?.id || '';
+            // Always reset to header after selection for Service dropdown
+            if (title === 'Select Service') select.value = '';
             else select.value = '';
           });
 
