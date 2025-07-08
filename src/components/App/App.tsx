@@ -534,20 +534,19 @@ export const App: React.FC<AppProps> = ({
           <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
         </Suspense>
       ) : null}
-      {showMap ? (
+
+      {showMap && (
         <div style={{
           position: 'fixed',
-          top: '60px',
-          right: '10px',
+          top: 0,
+          right: 0,
           width: '400px',
-          height: '300px',
+          height: '100vh',
           backgroundColor: 'white',
-          border: '2px solid #333',
-          borderRadius: '8px',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-          zIndex: 1000,
+          borderLeft: '1px solid #ccc',
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          zIndex: 10
         }}>
           <div style={{
             padding: '8px 16px',
@@ -579,7 +578,7 @@ export const App: React.FC<AppProps> = ({
             )}
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 };
