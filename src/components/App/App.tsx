@@ -379,7 +379,7 @@ export const App: React.FC<AppProps> = ({
         const dropdowns = [
           {
             options: services.map((s) => ({ value: s.id, label: s.name })),
-            value: currentService?.id || '',
+            value: serviceName || currentService?.id || '',
             onChange: handleServiceChange,
             title: 'Select Service',
           },
@@ -408,7 +408,14 @@ export const App: React.FC<AppProps> = ({
           const select = document.createElement('select');
           select.className = 'custom-topbar-select';
           select.title = title;
-          if (value) select.value = value;
+          // Always set the value after all options are added
+          options.forEach((option) => {
+            const optionEl = document.createElement('option');
+            optionEl.value = option.value;
+            optionEl.textContent = option.label;
+            select.appendChild(optionEl);
+          });
+          select.value = value;
           select.addEventListener('change', (e) => {
             const target = e.target as HTMLSelectElement;
             onChange(target.value);
@@ -423,13 +430,6 @@ export const App: React.FC<AppProps> = ({
             font-family: inherit;
             cursor: pointer;
           `;
-
-          options.forEach((option) => {
-            const optionEl = document.createElement('option');
-            optionEl.value = option.value;
-            optionEl.textContent = option.label;
-            select.appendChild(optionEl);
-          });
 
           customButtonsContainer.appendChild(select);
         });
