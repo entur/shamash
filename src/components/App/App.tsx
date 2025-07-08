@@ -413,31 +413,20 @@ export const App: React.FC<AppProps> = ({
           examplesDropdown.className = 'custom-examples-dropdown-wrapper';
           customButtonsContainer.appendChild(examplesDropdown);
           createRoot(examplesDropdown).render(
-            <select
-              className="custom-topbar-select"
-              title="Examples"
-              style={{
-                padding: '6px 8px',
-                marginRight: 8,
-                border: '1px solid #ccc',
-                borderRadius: 4,
-                fontSize: 14,
-                background: 'white',
-                fontFamily: 'inherit',
-                cursor: 'pointer',
+            <CustomDropdown
+              options={Object.keys(exampleQueries).map((key) => ({ value: key, label: key }))}
+              selected={''}
+              onChange={(value: string) => {
+                if (value && exampleQueries[value]) {
+                  const { query: exampleQuery, variables: exampleVars } = exampleQueries[value];
+                  editParameter('query', exampleQuery);
+                  if (exampleVars) {
+                    editParameter('variables', JSON.stringify(exampleVars, null, 2));
+                  }
+                }
               }}
-              defaultValue=""
-              onChange={handleExampleSelect}
-            >
-              <option value="" disabled>
-                Examples
-              </option>
-              {Object.keys(exampleQueries).map((key) => (
-                <option key={key} value={key}>
-                  {key}
-                </option>
-              ))}
-            </select>
+              label="Examples"
+            />
           );
         }
 
