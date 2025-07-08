@@ -38,6 +38,7 @@ import {
   useConfig,
   useFetchConfig,
 } from '../../config/ConfigContext';
+import ReactDOM from 'react-dom';
 
 const BASE_PATH = process.env.PUBLIC_URL || '';
 const DEFAULT_SERVICE_ID = 'journey-planner-v3';
@@ -528,57 +529,55 @@ export const App: React.FC<AppProps> = ({
           </GraphiQL.Logo>
         </GraphiQL>
       </div>
-
       {showGeocoderModal ? (
         <Suspense fallback={<div>Loading...</div>}>
           <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
         </Suspense>
       ) : null}
-
-      {showMap && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          width: '400px',
-          height: '100vh',
-          backgroundColor: 'white',
-          borderLeft: '1px solid #ccc',
-          display: 'flex',
-          flexDirection: 'column',
-          zIndex: 10
-        }}>
-          <div style={{
-            padding: '8px 16px',
-            backgroundColor: '#f0f0f0',
-            borderBottom: '1px solid #ccc',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
-            <h3 style={{ margin: 0 }}>Map View</h3>
-            <button
-              onClick={() => setShowMap(false)}
-              style={{
-                background: 'none',
-                border: 'none',
-                fontSize: '18px',
-                cursor: 'pointer'
-              }}
-            >
-              ×
-            </button>
-          </div>
-          <div style={{ flex: 1, padding: '16px' }}>
-            {console.log('Rendering MapView, response:', response)}
-            {response ? (
-              <MapView response={response} />
-            ) : (
-              <p>No map data available. Please run a GraphQL query that returns geographic data (like journeys, stops, or routes) to see the map visualization.</p>
-            )}
-          </div>
-        </div>
-      )}
+      {showMap && typeof window !== 'undefined' && document.querySelector('#graphiql-session')
+        ? ReactDOM.createPortal(
+            <div style={{
+              width: '400px',
+              borderLeft: '1px solid #ccc',
+              display: 'flex',
+              flexDirection: 'column',
+              backgroundColor: 'white',
+              height: '100%',
+              minWidth: 0,
+              zIndex: 1
+            }}>
+              <div style={{
+                padding: '8px 16px',
+                backgroundColor: '#f0f0f0',
+                borderBottom: '1px solid #ccc',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+                <h3 style={{ margin: 0 }}>Map View</h3>
+                <button
+                  onClick={() => setShowMap(false)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    fontSize: '18px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+              <div style={{ flex: 1, padding: '16px', minWidth: 0 }}>
+                {response ? (
+                  <MapView response={response} />
+                ) : (
+                  <p>No map data available. Please run a GraphQL query that returns geographic data (like journeys, stops, or routes) to see the map visualization.</p>
+                )}
+              </div>
+            </div>,
+            document.querySelector('#graphiql-session')
+          )
+        : null}
     </div>
   );
 };
