@@ -286,128 +286,120 @@ export const App: React.FC<AppProps> = ({
     loadExampleQueries();
   }, [currentService]);
 
-  // Custom toolbar component
-  const CustomToolbar = () => {
-    return (
-      <div className="graphiql-toolbar">
-        <button
-          className="graphiql-toolbar-button"
-          onClick={handleClickPrettifyButton}
-          title="Prettify Query (Shift-Ctrl-P)"
-        >
-          Prettify
-        </button>
-        <button
-          className="graphiql-toolbar-button"
-          onClick={handleClickMinifyButton}
-          title="Minify Query"
-        >
-          Minify
-        </button>
-        <button
-          className="graphiql-toolbar-button"
-          onClick={toggleMap}
-          title="Show Map"
-        >
-          Map
-        </button>
-
-        <div className="graphiql-toolbar-select">
-          <label>Service:</label>
-          <select
-            value={currentService?.id || ''}
-            onChange={(e) => handleServiceChange(e.target.value)}
-          >
-            {services.map((service) => (
-              <option key={service.id} value={service.id}>
-                {service.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="graphiql-toolbar-select">
-          <label>Environment:</label>
-          <select onChange={(e) => handleEnvironmentChange(e.target.value)}>
-            <option value="">Select...</option>
-            <option value="prod">Prod</option>
-            <option value="staging">Staging</option>
-            <option value="dev">Dev</option>
-          </select>
-        </div>
-
-        {Object.keys(exampleQueries).length > 0 && (
-          <div className="graphiql-toolbar-select">
-            <label>Examples:</label>
-            <select
-              onChange={(e) => {
-                const key = e.target.value;
-                if (key && exampleQueries[key]) {
-                  const { query: exampleQuery, variables: exampleVars } =
-                    exampleQueries[key];
-                  editParameter('query', exampleQuery);
-                  if (exampleVars) {
-                    editParameter('variables', JSON.stringify(exampleVars, null, 2));
-                  }
-                }
-              }}
-            >
-              <option value="">Select example...</option>
-              {Object.keys(exampleQueries).map((key) => (
-                <option key={key} value={key}>
-                  {key}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-
-        <div className="graphiql-toolbar-select">
-          <label>Theme:</label>
-          <select onChange={(e) => handleThemeChange(e.target.value)}>
-            <option value="">Select...</option>
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-          </select>
-        </div>
-
-        <button
-          className="graphiql-toolbar-button"
-          onClick={searchForId}
-          title="Search for ID"
-        >
-          Search for ID
-        </button>
-      </div>
-    );
-  };
-
   if (currentService == null) {
     return <NotFound />;
   }
 
   return (
-    <div className="App graphiql-container">
-      <CustomToolbar />
-      <GraphiQL
-        fetcher={customFetcher}
-        query={query}
-        variables={variables}
-        operationName={operationName}
-        onEditQuery={(value) => editParameter('query', value)}
-        onEditVariables={(value) => editParameter('variables', value)}
-        onEditOperationName={(value) => editParameter('operationName', value)}
-        plugins={[explorer]}
-        schema={schema}
-      >
-        <GraphiQL.Logo>
-          <img
-            alt="logo"
-            src={getPreferredTheme() === 'dark' ? whiteLogo : normalLogo}
-            className="logo"
-          />
-        </GraphiQL.Logo>
-      </GraphiQL>
+    <div className="App">
+      <div className="graphiql-wrapper">
+        <GraphiQL
+          fetcher={customFetcher}
+          query={query}
+          variables={variables}
+          operationName={operationName}
+          onEditQuery={(value) => editParameter('query', value)}
+          onEditVariables={(value) => editParameter('variables', value)}
+          onEditOperationName={(value) => editParameter('operationName', value)}
+          plugins={[explorer]}
+          schema={schema}
+          defaultEditorToolsVisibility={false}
+          defaultTabs={[]}
+          showPersistHeadersSettings={false}
+        >
+          <GraphiQL.Logo>
+            <img
+              alt="EnTur logo"
+              src={getPreferredTheme() === 'dark' ? whiteLogo : normalLogo}
+              className="logo"
+            />
+          </GraphiQL.Logo>
+          <GraphiQL.Toolbar>
+            <button
+              className="graphiql-toolbar-button"
+              onClick={handleClickMinifyButton}
+              title="Minify Query"
+            >
+              Minify
+            </button>
+            <button
+              className="graphiql-toolbar-button"
+              onClick={toggleMap}
+              title="Show Map"
+            >
+              Map
+            </button>
+
+            <select
+              className="graphiql-toolbar-select"
+              value={currentService?.id || ''}
+              onChange={(e) => handleServiceChange(e.target.value)}
+              title="Select Service"
+            >
+              {services.map((service) => (
+                <option key={service.id} value={service.id}>
+                  {service.name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              className="graphiql-toolbar-select"
+              onChange={(e) => handleEnvironmentChange(e.target.value)}
+              title="Environment"
+            >
+              <option value="">Environment</option>
+              <option value="prod">Prod</option>
+              <option value="staging">Staging</option>
+              <option value="dev">Dev</option>
+            </select>
+
+            {Object.keys(exampleQueries).length > 0 && (
+              <select
+                className="graphiql-toolbar-select"
+                onChange={(e) => {
+                  const key = e.target.value;
+                  if (key && exampleQueries[key]) {
+                    const { query: exampleQuery, variables: exampleVars } =
+                      exampleQueries[key];
+                    editParameter('query', exampleQuery);
+                    if (exampleVars) {
+                      editParameter('variables', JSON.stringify(exampleVars, null, 2));
+                    }
+                  }
+                }}
+                title="Examples"
+              >
+                <option value="">Examples</option>
+                {Object.keys(exampleQueries).map((key) => (
+                  <option key={key} value={key}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            )}
+
+            <select
+              className="graphiql-toolbar-select"
+              onChange={(e) => handleThemeChange(e.target.value)}
+              title="Theme"
+            >
+              <option value="">Theme</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+
+            <button
+              className="graphiql-toolbar-button"
+              onClick={searchForId}
+              title="Search for ID"
+            >
+              Search for ID
+            </button>
+          </GraphiQL.Toolbar>
+        </GraphiQL>
+      </div>
+
       {showGeocoderModal ? (
         <Suspense fallback={<div>Loading...</div>}>
           <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />

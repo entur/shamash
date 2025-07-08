@@ -45,48 +45,59 @@ div.toolbar > .toolbar-button {
   line-height: 1.1rem;
 }
 
-/* Custom toolbar styles */
-.graphiql-toolbar {
+/* Simple custom toolbar styles */
+.custom-toolbar {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   padding: 8px 16px;
-  background-color: #f7f7f7;
+  background: #f7f7f7;
   border-bottom: 1px solid #e0e0e0;
   flex-wrap: wrap;
+  font-family: 'Fira Code', 'Consolas', 'Inconsolata', 'Droid Sans Mono', 'Monaco', monospace;
 }
 
-.graphiql-toolbar-button {
+.custom-toolbar button {
   padding: 6px 12px;
   border: 1px solid #ccc;
   background: white;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
-  transition: background-color 0.2s;
+  font-family: inherit;
 }
 
-.graphiql-toolbar-button:hover {
+.custom-toolbar button:hover {
   background-color: #f0f0f0;
 }
 
-.graphiql-toolbar-select {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.graphiql-toolbar-select label {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.graphiql-toolbar-select select {
-  padding: 4px 8px;
+.custom-toolbar select {
+  padding: 6px 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
   background: white;
+  font-family: inherit;
+}
+
+.custom-toolbar select:hover {
+  background-color: #f0f0f0;
+}
+
+/* Layout styles */
+.App {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.graphiql-wrapper {
+  flex: 1;
+  height: calc(100vh - 48px); /* Subtract toolbar height */
+}
+
+.graphiql-wrapper .graphiql-container {
+  height: 100%;
 }
 
 /* Dark theme styles */
