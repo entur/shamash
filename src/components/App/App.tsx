@@ -39,8 +39,8 @@ import {
   useConfig,
   useFetchConfig,
 } from '../../config/ConfigContext';
-import ReactDOM from 'react-dom';
-import ServiceDropdown from './ServiceDropdown';
+import { createRoot } from 'react-dom/client';
+import CustomDropdown from './CustomDropdown';
 
 const BASE_PATH = process.env.PUBLIC_URL || '';
 const DEFAULT_SERVICE_ID = 'journey-planner-v3';
@@ -381,71 +381,64 @@ export const App: React.FC<AppProps> = ({
         const serviceDropdown = document.createElement('div');
         serviceDropdown.className = 'custom-service-dropdown-wrapper';
         customButtonsContainer.appendChild(serviceDropdown);
-        ReactDOM.render(
-          <ServiceDropdown
+        createRoot(serviceDropdown).render(
+          <CustomDropdown
             options={serviceOptions}
             selected={serviceName || currentService?.id || ''}
             onChange={handleServiceChange}
+            label="Service"
           />,
-          serviceDropdown
         );
 
-        // Create dropdowns
-        const dropdowns = [
-          {
-            options: [
-              { value: '', label: 'Environment' },
-              { value: 'prod', label: 'Prod' },
-              { value: 'staging', label: 'Staging' },
-              { value: 'dev', label: 'Dev' },
-            ],
-            onChange: handleEnvironmentChange,
-            title: 'Environment',
-          },
-          {
-            options: [
-              { value: '', label: 'Theme' },
-              { value: 'light', label: 'Light' },
-              { value: 'dark', label: 'Dark' },
-            ],
-            onChange: handleThemeChange,
-            title: 'Theme',
-          },
+        // Replace the Environment dropdown with the custom CustomDropdown component
+        const environmentOptions = [
+          { value: 'prod', label: 'Prod' },
+          { value: 'staging', label: 'Staging' },
+          { value: 'dev', label: 'Dev' },
         ];
+        const environmentDropdown = document.createElement('div');
+        environmentDropdown.className = 'custom-environment-dropdown-wrapper';
+        customButtonsContainer.appendChild(environmentDropdown);
+        createRoot(environmentDropdown).render(
+          <CustomDropdown
+            options={environmentOptions}
+            selected={''}
+            onChange={handleEnvironmentChange}
+            label="Environment"
+          />,
+        );
 
-        dropdowns.forEach(({ options, value, onChange, title }) => {
-          const select = document.createElement('select');
-          select.className = 'custom-topbar-select';
-          select.title = title;
-          select.style.cssText = `
-            padding: 6px 8px;
-            margin-right: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-            background: white;
-            font-family: inherit;
-            cursor: pointer;
-            width: auto;
-            min-width: 0;
-            max-width: 80px;
-          `;
-          options.forEach((option) => {
-            const optionEl = document.createElement('option');
-            optionEl.value = option.value;
-            optionEl.textContent = option.label;
-            if (option.disabled) optionEl.disabled = true;
-            select.appendChild(optionEl);
-          });
-          select.value = value || '';
-          select.addEventListener('change', (e) => {
-            const target = e.target as HTMLSelectElement;
-            if (target.value) onChange(target.value);
-            select.value = '';
-          });
-
-          customButtonsContainer.appendChild(select);
+        // Create theme dropdown as native select (unchanged)
+        const themeOptions = [
+          { value: '', label: 'Theme' },
+          { value: 'light', label: 'Light' },
+          { value: 'dark', label: 'Dark' },
+        ];
+        const themeSelect = document.createElement('select');
+        themeSelect.className = 'custom-topbar-select';
+        themeSelect.title = 'Theme';
+        themeSelect.style.cssText = `
+          padding: 6px 8px;
+          margin-right: 8px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: 14px;
+          background: white;
+          font-family: inherit;
+          cursor: pointer;
+        `;
+        themeOptions.forEach((option) => {
+          const optionEl = document.createElement('option');
+          optionEl.value = option.value;
+          optionEl.textContent = option.label;
+          themeSelect.appendChild(optionEl);
         });
+        themeSelect.addEventListener('change', (e) => {
+          const target = e.target as HTMLSelectElement;
+          if (target.value) handleThemeChange(target.value);
+          themeSelect.value = '';
+        });
+        customButtonsContainer.appendChild(themeSelect);
 
         // Add examples dropdown if available
         if (Object.keys(exampleQueries).length > 0) {

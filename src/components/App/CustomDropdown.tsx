@@ -1,18 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styles from './ServiceDropdown.module.css';
+import styles from './CustomDropdown.module.css';
 
-interface ServiceOption {
+export interface DropdownOption {
   value: string;
   label: string;
 }
 
-interface ServiceDropdownProps {
-  options: ServiceOption[];
+interface CustomDropdownProps {
+  options: DropdownOption[];
   selected: string;
   onChange: (value: string) => void;
+  label: string;
 }
 
-const ServiceDropdown: React.FC<ServiceDropdownProps> = ({ options, selected, onChange }) => {
+const CustomDropdown: React.FC<CustomDropdownProps> = ({ options, selected, onChange, label }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -39,7 +40,7 @@ const ServiceDropdown: React.FC<ServiceDropdownProps> = ({ options, selected, on
         aria-expanded={open}
         type="button"
       >
-        Service
+        {label}
         <svg width="14" height="8"><path fill="#666" d="M 5 1.5 L 14 1.5 L 9.5 7 z"></path></svg>
       </button>
       {open && (
@@ -65,5 +66,4 @@ const ServiceDropdown: React.FC<ServiceDropdownProps> = ({ options, selected, on
   );
 };
 
-export default ServiceDropdown;
-
+export default CustomDropdown;
