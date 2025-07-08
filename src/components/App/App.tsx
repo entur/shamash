@@ -430,7 +430,6 @@ export const App: React.FC<AppProps> = ({
             min-width: 0;
             max-width: 80px;
           `;
-          // Always set the value after all options are added
           options.forEach((option) => {
             const optionEl = document.createElement('option');
             optionEl.value = option.value;
@@ -438,18 +437,11 @@ export const App: React.FC<AppProps> = ({
             if (option.disabled) optionEl.disabled = true;
             select.appendChild(optionEl);
           });
-          // For Service dropdown, always show the header when closed
-          if (title === 'Select Service') {
-            select.value = '';
-          } else {
-            select.value = value;
-          }
+          select.value = value || '';
           select.addEventListener('change', (e) => {
             const target = e.target as HTMLSelectElement;
             if (target.value) onChange(target.value);
-            // Always reset to header after selection for Service dropdown
-            if (title === 'Select Service') select.value = '';
-            else select.value = '';
+            select.value = '';
           });
 
           customButtonsContainer.appendChild(select);
