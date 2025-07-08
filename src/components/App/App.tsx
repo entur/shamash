@@ -12,8 +12,6 @@ import {
   buildClientSchema,
   getIntrospectionQuery,
   GraphQLSchema,
-  parse,
-  print,
   stripIgnoredCharacters,
 } from 'graphql';
 import queryString from 'query-string';
@@ -262,8 +260,6 @@ export const App: React.FC<AppProps> = ({
 
         const customButtonsContainer = document.createElement('div');
         customButtonsContainer.className = 'custom-buttons-injected';
-        customButtonsContainer.style.cssText =
-          'display: flex; align-items: center; gap: 8px;';
 
         // Create buttons with proper styling
         const buttons = [
@@ -294,16 +290,6 @@ export const App: React.FC<AppProps> = ({
             e.stopPropagation();
             onClick();
           });
-          button.style.cssText = `
-            padding: 6px 12px;
-            margin-right: 8px;
-            border: 1px solid #ccc;
-            background: white;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            font-family: inherit;
-          `;
           customButtonsContainer.appendChild(button);
         });
 

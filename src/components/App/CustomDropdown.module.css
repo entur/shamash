@@ -10,6 +10,7 @@
   font-family: inherit;
   cursor: pointer;
   min-width: 110px;
+  background-color: #f8f8f8;
   max-width: 180px;
   display: flex;
   align-items: center;

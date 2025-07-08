@@ -41,8 +41,9 @@ div.toolbar > .toolbar-button {
 .toolbar-menu-items > li {
   margin: -2px;
 }
-.CodeMirror-code pre.CodeMirror-line {
-  line-height: 1.1rem;
+.CodeMirror-code{
+  line-height: 0.9rem;
+    font-size: 0.8rem;
 }
 
 /* Simple custom toolbar styles */
@@ -60,7 +61,6 @@ div.toolbar > .toolbar-button {
 .custom-toolbar button {
   padding: 6px 12px;
   border: 1px solid #ccc;
-  background: white;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
@@ -76,12 +76,32 @@ div.toolbar > .toolbar-button {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
-  background: white;
   font-family: inherit;
 }
 
 .custom-toolbar select:hover {
   background-color: #f0f0f0;
+}
+
+.custom-buttons-injected {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.custom-topbar-button, .custom-dropdown-wrapper button {
+  padding: 6px 12px;
+  margin-right: 8px;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.custom-topbar-button:last-child {
+  margin-right: 0;
 }
 
 /* Layout styles */
