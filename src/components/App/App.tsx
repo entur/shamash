@@ -544,29 +544,32 @@ export const App: React.FC<AppProps> = ({
               backgroundColor: 'white',
               height: '100%',
               minWidth: 0,
-              zIndex: 1
+              zIndex: 1,
+              position: 'relative',
             }}>
-              <div style={{
-                padding: '8px 16px',
-                backgroundColor: '#f0f0f0',
-                borderBottom: '1px solid #ccc',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
-                <h3 style={{ margin: 0 }}>Map View</h3>
-                <button
-                  onClick={() => setShowMap(false)}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    fontSize: '18px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  ×
-                </button>
-              </div>
+              <button
+                onClick={() => setShowMap(false)}
+                style={{
+                  position: 'absolute',
+                  top: 8,
+                  right: 8,
+                  background: 'rgba(255,255,255,0.85)',
+                  border: 'none',
+                  fontSize: '22px',
+                  cursor: 'pointer',
+                  zIndex: 2,
+                  borderRadius: '50%',
+                  width: 32,
+                  height: 32,
+                  lineHeight: '32px',
+                  textAlign: 'center',
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.08)'
+                }}
+                aria-label="Close map"
+                title="Close map"
+              >
+                ×
+              </button>
               <div style={{ flex: 1, padding: '16px', minWidth: 0 }}>
                 {response ? (
                   <MapView response={response} />
