@@ -216,11 +216,6 @@ export const App: React.FC<AppProps> = ({
     window.location.href = `${window.location.protocol}//${host}${window.location.pathname}${window.location.search}`;
   };
 
-  const handleThemeChange = (theme: string) => {
-    window.localStorage.setItem('theme', theme);
-    window.location.reload();
-  };
-
   const handleClickPrettifyButton = () => {
     try {
       const currentQueryText = query;
@@ -408,37 +403,7 @@ export const App: React.FC<AppProps> = ({
           />,
         );
 
-        // Create theme dropdown as native select (unchanged)
-        const themeOptions = [
-          { value: '', label: 'Theme' },
-          { value: 'light', label: 'Light' },
-          { value: 'dark', label: 'Dark' },
-        ];
-        const themeSelect = document.createElement('select');
-        themeSelect.className = 'custom-topbar-select';
-        themeSelect.title = 'Theme';
-        themeSelect.style.cssText = `
-          padding: 6px 8px;
-          margin-right: 8px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          font-size: 14px;
-          background: white;
-          font-family: inherit;
-          cursor: pointer;
-        `;
-        themeOptions.forEach((option) => {
-          const optionEl = document.createElement('option');
-          optionEl.value = option.value;
-          optionEl.textContent = option.label;
-          themeSelect.appendChild(optionEl);
-        });
-        themeSelect.addEventListener('change', (e) => {
-          const target = e.target as HTMLSelectElement;
-          if (target.value) handleThemeChange(target.value);
-          themeSelect.value = '';
-        });
-        customButtonsContainer.appendChild(themeSelect);
+        // Remove theme dropdown creation (Theme button) since it is now managed by GraphiQL
 
         // Add examples dropdown if available
         if (Object.keys(exampleQueries).length > 0) {
@@ -501,7 +466,6 @@ export const App: React.FC<AppProps> = ({
     searchForId,
     handleServiceChange,
     handleEnvironmentChange,
-    handleThemeChange,
   ]);
 
   if (currentService == null) {
