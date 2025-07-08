@@ -177,7 +177,10 @@ export const App: React.FC<AppProps> = ({
   const customFetcher = useCallback(
     async (params: any) => {
       const res = await fetcher(params);
-      setResponse(res);
+      // Only set response for non-introspection queries that might have map data
+      if (!params.query?.includes('__schema') && !params.query?.includes('IntrospectionQuery')) {
+        setResponse(res);
+      }
       return res;
     },
     [fetcher]
@@ -254,7 +257,12 @@ export const App: React.FC<AppProps> = ({
   };
 
   const toggleMap = () => {
-    setShowMap((prev) => !prev);
+    console.log('Map button clicked, current showMap:', showMap);
+    setShowMap((prev) => {
+      const newValue = !prev;
+      console.log('Setting showMap from', prev, 'to', newValue);
+      return newValue;
+    });
   };
 
   const searchForId = () => {
@@ -332,13 +340,17 @@ export const App: React.FC<AppProps> = ({
         const buttons = [
           {
             text: 'Minify',
-            onClick: handleClickMinifyButton,
+            onClick: () => handleClickMinifyButton(),
             title: 'Minify Query',
           },
-          { text: 'Map', onClick: toggleMap, title: 'Show Map' },
+          {
+            text: 'Map',
+            onClick: () => toggleMap(),
+            title: 'Show Map'
+          },
           {
             text: 'Search for ID',
-            onClick: searchForId,
+            onClick: () => searchForId(),
             title: 'Search for ID',
           },
         ];
@@ -348,7 +360,11 @@ export const App: React.FC<AppProps> = ({
           button.className = 'custom-topbar-button';
           button.textContent = text;
           button.title = title;
-          button.onclick = onClick;
+          button.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onClick();
+          });
           button.style.cssText = `
             padding: 6px 12px;
             margin-right: 8px;
@@ -367,7 +383,7 @@ export const App: React.FC<AppProps> = ({
           {
             options: services.map((s) => ({ value: s.id, label: s.name })),
             value: currentService?.id || '',
-            onChange: handleServiceChange,
+            onChange: (value: string) => handleServiceChange(value),
             title: 'Select Service',
           },
           {
@@ -377,7 +393,7 @@ export const App: React.FC<AppProps> = ({
               { value: 'staging', label: 'Staging' },
               { value: 'dev', label: 'Dev' },
             ],
-            onChange: handleEnvironmentChange,
+            onChange: (value: string) => handleEnvironmentChange(value),
             title: 'Environment',
           },
           {
@@ -386,7 +402,7 @@ export const App: React.FC<AppProps> = ({
               { value: 'light', label: 'Light' },
               { value: 'dark', label: 'Dark' },
             ],
-            onChange: handleThemeChange,
+            onChange: (value: string) => handleThemeChange(value),
             title: 'Theme',
           },
         ];
@@ -396,8 +412,10 @@ export const App: React.FC<AppProps> = ({
           select.className = 'custom-topbar-select';
           select.title = title;
           if (value) select.value = value;
-          select.onchange = (e) =>
-            onChange((e.target as HTMLSelectElement).value);
+          select.addEventListener('change', (e) => {
+            const target = e.target as HTMLSelectElement;
+            onChange(target.value);
+          });
           select.style.cssText = `
             padding: 6px 8px;
             margin-right: 8px;
@@ -434,8 +452,9 @@ export const App: React.FC<AppProps> = ({
             font-family: inherit;
             cursor: pointer;
           `;
-          examplesSelect.onchange = (e) => {
-            const key = (e.target as HTMLSelectElement).value;
+          examplesSelect.addEventListener('change', (e) => {
+            const target = e.target as HTMLSelectElement;
+            const key = target.value;
             if (key && exampleQueries[key]) {
               const { query: exampleQuery, variables: exampleVars } =
                 exampleQueries[key];
@@ -444,7 +463,7 @@ export const App: React.FC<AppProps> = ({
                 editParameter('variables', JSON.stringify(exampleVars, null, 2));
               }
             }
-          };
+          });
 
           const defaultOption = document.createElement('option');
           defaultOption.value = '';
@@ -515,7 +534,52 @@ export const App: React.FC<AppProps> = ({
           <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
         </Suspense>
       ) : null}
-      {showMap ? <MapView response={response} /> : null}
+      {showMap ? (
+        <div style={{
+          position: 'fixed',
+          top: '60px',
+          right: '10px',
+          width: '400px',
+          height: '300px',
+          backgroundColor: 'white',
+          border: '2px solid #333',
+          borderRadius: '8px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+          zIndex: 1000,
+          display: 'flex',
+          flexDirection: 'column'
+        }}>
+          <div style={{
+            padding: '8px 16px',
+            backgroundColor: '#f0f0f0',
+            borderBottom: '1px solid #ccc',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <h3 style={{ margin: 0 }}>Map View</h3>
+            <button
+              onClick={() => setShowMap(false)}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontSize: '18px',
+                cursor: 'pointer'
+              }}
+            >
+              ×
+            </button>
+          </div>
+          <div style={{ flex: 1, padding: '16px' }}>
+            {console.log('Rendering MapView, response:', response)}
+            {response ? (
+              <MapView response={response} />
+            ) : (
+              <p>No map data available. Please run a GraphQL query that returns geographic data (like journeys, stops, or routes) to see the map visualization.</p>
+            )}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };

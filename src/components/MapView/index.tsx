@@ -100,12 +100,10 @@ function getVehiclePositions(responseData) {
     return [];
   }
 
-  const vehiclePositions = vehicles
+  return vehicles
     .map((vehicle) => vehicle?.location)
     .filter(Boolean)
     .map((location) => point([location.longitude, location.latitude]));
-
-  return vehiclePositions;
 }
 
 function MapContent({ mapData }) {
@@ -166,9 +164,9 @@ export default function MapView({ response }) {
       zoom={10}
       style={{
         width: '100%',
+        height: '100%',
       }}
       zoomControl={false}
-      useFlyTo
       boundsOptions={{
         animate: true,
         duration: 2,
