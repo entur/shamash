@@ -153,10 +153,9 @@ export const App: React.FC<AppProps> = ({
         setQuery(urlQuery);
       } else if (currentService) {
         try {
-          let module;
           const modules = await import.meta.glob('../../queries/**/*.ts');
           const path = `../../queries/${currentService.queries}/${currentService.defaultQuery}.ts`;
-          module = await modules[path]();
+          let module = await modules[path]();
           setQuery(module.default.query);
         } catch (error) {
           console.warn(
@@ -211,27 +210,6 @@ export const App: React.FC<AppProps> = ({
     window.location.href = `${window.location.protocol}//${host}${window.location.pathname}${window.location.search}`;
   };
 
-  const handleClickPrettifyButton = () => {
-    try {
-      const currentQueryText = query;
-      if (currentQueryText) {
-        const prettyQueryText = print(parse(currentQueryText));
-        editParameter('query', prettyQueryText);
-      }
-
-      if (variables && variables.trim() !== '') {
-        const prettyVariablesText = JSON.stringify(
-          JSON.parse(variables),
-          null,
-          2
-        );
-        editParameter('variables', prettyVariablesText);
-      }
-    } catch (error) {
-      console.warn('Prettify failed:', error);
-    }
-  };
-
   const handleClickMinifyButton = () => {
     try {
       const currentQueryText = query;
@@ -257,34 +235,23 @@ export const App: React.FC<AppProps> = ({
     setShowGeocoderModal(!showGeocoderModal);
   };
 
-  const [exampleQueries, setExampleQueries] = useState({});
-
-  // Load example queries dynamically when service changes
-  useEffect(() => {
-    const loadExampleQueries = async () => {
-      if (!currentService?.queries) return;
-
-      try {
-        let module;
-        const modules = await import.meta.glob('../../queries/**/index.ts');
-        const path = `../../queries/${currentService.queries}/index.ts`;
-        module = await modules[path]();
-        setExampleQueries(module);
-      } catch (error) {
-        console.warn(
-          `Failed to load example queries for ${currentService.queries}:`,
-          error
-        );
-        setExampleQueries({});
-      }
-    };
-
-    loadExampleQueries();
-  }, [currentService]);
-
   // Use useEffect to hide unwanted UI elements and inject custom buttons
   useEffect(() => {
-    const addCustomTopbarButtons = () => {
+    const addCustomTopbarButtons = async () => {
+      // Load example queries dynamically when service changes
+      let loadedExampleQueries = {};
+      if (currentService?.queries) {
+        try {
+          const modules = await import.meta.glob('../../queries/**/index.ts');
+          const path = `../../queries/${currentService.queries}/index.ts`;
+          loadedExampleQueries = await modules[path]();
+        } catch (error) {
+          console.warn(
+            `Failed to load example queries for ${currentService.queries}:`,
+            error
+          );
+        }
+      }
 
       const topbar = document.querySelector('.graphiql-session-header-right');
 
@@ -292,7 +259,6 @@ export const App: React.FC<AppProps> = ({
         // Remove any previously injected container
         const prev = topbar.querySelector('.custom-buttons-injected');
         if (prev) prev.remove();
-
 
         const customButtonsContainer = document.createElement('div');
         customButtonsContainer.className = 'custom-buttons-injected';
@@ -374,17 +340,17 @@ export const App: React.FC<AppProps> = ({
         );
 
         // Add Examples dropdown if available
-        if (Object.keys(exampleQueries).length > 0) {
+        if (Object.keys(loadedExampleQueries).length > 0) {
           const examplesDropdown = document.createElement('div');
           examplesDropdown.className = 'custom-examples-dropdown-wrapper';
           customButtonsContainer.appendChild(examplesDropdown);
           createRoot(examplesDropdown).render(
             <CustomDropdown
-              options={Object.keys(exampleQueries).map((key) => ({ value: key, label: key }))}
+              options={Object.keys(loadedExampleQueries).map((key) => ({ value: key, label: key }))}
               selected={''}
               onChange={(value: string) => {
-                if (value && exampleQueries[value]) {
-                  const { query: exampleQuery, variables: exampleVars } = exampleQueries[value];
+                if (value && loadedExampleQueries[value]) {
+                  const { query: exampleQuery, variables: exampleVars } = loadedExampleQueries[value];
                   editParameter('query', exampleQuery);
                   if (exampleVars) {
                     editParameter('variables', JSON.stringify(exampleVars, null, 2));
@@ -400,13 +366,12 @@ export const App: React.FC<AppProps> = ({
       }
     };
 
-    // Run immediately (no interval)
     addCustomTopbarButtons();
     return () => {};
   }, [
     currentService,
     services,
-    exampleQueries
+    serviceName
   ]);
 
   if (currentService == null) {
