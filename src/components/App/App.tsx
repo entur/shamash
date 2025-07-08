@@ -378,8 +378,11 @@ export const App: React.FC<AppProps> = ({
         // Create dropdowns
         const dropdowns = [
           {
-            options: services.map((s) => ({ value: s.id, label: s.name })),
-            value: serviceName || currentService?.id || '',
+            options: [
+              { value: '', label: 'Service', disabled: true },
+              ...services.map((s) => ({ value: s.id, label: s.name })),
+            ],
+            value: '', // Always show the header, never the selected service
             onChange: handleServiceChange,
             title: 'Select Service',
           },
@@ -408,18 +411,6 @@ export const App: React.FC<AppProps> = ({
           const select = document.createElement('select');
           select.className = 'custom-topbar-select';
           select.title = title;
-          // Always set the value after all options are added
-          options.forEach((option) => {
-            const optionEl = document.createElement('option');
-            optionEl.value = option.value;
-            optionEl.textContent = option.label;
-            select.appendChild(optionEl);
-          });
-          select.value = value;
-          select.addEventListener('change', (e) => {
-            const target = e.target as HTMLSelectElement;
-            onChange(target.value);
-          });
           select.style.cssText = `
             padding: 6px 8px;
             margin-right: 8px;
@@ -429,7 +420,31 @@ export const App: React.FC<AppProps> = ({
             background: white;
             font-family: inherit;
             cursor: pointer;
+            width: auto;
+            min-width: 0;
+            max-width: 80px;
           `;
+          // Always set the value after all options are added
+          options.forEach((option) => {
+            const optionEl = document.createElement('option');
+            optionEl.value = option.value;
+            optionEl.textContent = option.label;
+            if (option.disabled) optionEl.disabled = true;
+            select.appendChild(optionEl);
+          });
+          // Set the value to the selected service so the checkmark is correct
+          if (title === 'Select Service') {
+            select.value = serviceName || currentService?.id || '';
+          } else {
+            select.value = value;
+          }
+          select.addEventListener('change', (e) => {
+            const target = e.target as HTMLSelectElement;
+            if (target.value) onChange(target.value);
+            // Reset to header after selection
+            if (title === 'Select Service') select.value = serviceName || currentService?.id || '';
+            else select.value = '';
+          });
 
           customButtonsContainer.appendChild(select);
         });
