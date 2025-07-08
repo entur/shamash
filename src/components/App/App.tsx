@@ -314,7 +314,11 @@ export const App: React.FC<AppProps> = ({
                     document.querySelector('.graphiql-container > div:first-child') ||
                     document.querySelector('[class*="logo"]')?.parentElement;
 
-      if (topbar && !topbar.querySelector('.custom-buttons-injected')) {
+      if (topbar) {
+        // Remove any previously injected container
+        const prev = topbar.querySelector('.custom-buttons-injected');
+        if (prev) prev.remove();
+
         // Make sure topbar has proper layout
         const topbarElement = topbar as HTMLElement;
         if (!topbarElement.style.display || topbarElement.style.display === 'block') {
@@ -403,49 +407,12 @@ export const App: React.FC<AppProps> = ({
           />,
         );
 
-        // Remove theme dropdown creation (Theme button) since it is now managed by GraphiQL
-        topbar.appendChild(customButtonsContainer);
-      }
-    };
-
-    // Run immediately and on a timer to handle dynamic content
-    hideUnwantedElements();
-    const interval = setInterval(hideUnwantedElements, 500);
-
-    return () => clearInterval(interval);
-  }, [
-    currentService,
-    services,
-    exampleQueries,
-    handleClickMinifyButton,
-    toggleMap,
-    searchForId,
-    handleServiceChange,
-    handleEnvironmentChange,
-  ]);
-
-  // Handler for selecting an example from the dropdown
-  const handleExampleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const key = e.target.value;
-    if (key && exampleQueries[key]) {
-      const { query: exampleQuery, variables: exampleVars } = exampleQueries[key];
-      editParameter('query', exampleQuery);
-      if (exampleVars) {
-        editParameter('variables', JSON.stringify(exampleVars, null, 2));
-      }
-    }
-  };
-
-  if (currentService == null) {
-    return <NotFound />;
-  }
-
-  return (
-    <div className="App">
-      <div className="graphiql-wrapper">
-        {/* Render Examples dropdown if available */}
-        {Object.keys(exampleQueries).length > 0 && (
-          <div style={{ margin: '16px 0' }}>
+        // Add Examples dropdown if available
+        if (Object.keys(exampleQueries).length > 0) {
+          const examplesDropdown = document.createElement('div');
+          examplesDropdown.className = 'custom-examples-dropdown-wrapper';
+          customButtonsContainer.appendChild(examplesDropdown);
+          createRoot(examplesDropdown).render(
             <select
               className="custom-topbar-select"
               title="Examples"
@@ -471,8 +438,41 @@ export const App: React.FC<AppProps> = ({
                 </option>
               ))}
             </select>
-          </div>
-        )}
+          );
+        }
+
+        topbar.appendChild(customButtonsContainer);
+      }
+    };
+
+    // Run immediately (no interval)
+    hideUnwantedElements();
+    return () => {};
+  }, [
+    currentService,
+    services,
+    exampleQueries
+  ]);
+
+  // Handler for selecting an example from the dropdown
+  const handleExampleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const key = e.target.value;
+    if (key && exampleQueries[key]) {
+      const { query: exampleQuery, variables: exampleVars } = exampleQueries[key];
+      editParameter('query', exampleQuery);
+      if (exampleVars) {
+        editParameter('variables', JSON.stringify(exampleVars, null, 2));
+      }
+    }
+  };
+
+  if (currentService == null) {
+    return <NotFound />;
+  }
+
+  return (
+    <div className="App">
+      <div className="graphiql-wrapper">
         <GraphiQL
           fetcher={customFetcher}
           query={query}
