@@ -40,7 +40,7 @@ const ServiceDropdown: React.FC<ServiceDropdownProps> = ({ options, selected, on
         type="button"
       >
         Service
-        <span className={styles.arrow} aria-hidden>▼</span>
+        <svg width="14" height="8"><path fill="#666" d="M 5 1.5 L 14 1.5 L 9.5 7 z"></path></svg>
       </button>
       {open && (
         <ul className={styles.menu} role="listbox">
