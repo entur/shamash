@@ -546,6 +546,7 @@ export const App: React.FC<AppProps> = ({
               minWidth: 0,
               zIndex: 1,
               position: 'relative',
+              pointerEvents: 'auto',
             }}>
               <button
                 onClick={() => setShowMap(false)}
@@ -553,24 +554,25 @@ export const App: React.FC<AppProps> = ({
                   position: 'absolute',
                   top: 8,
                   right: 8,
-                  background: 'rgba(255,255,255,0.85)',
+                  background: 'rgba(255,255,255,0.97)',
                   border: 'none',
                   fontSize: '22px',
                   cursor: 'pointer',
-                  zIndex: 2,
+                  zIndex: 9999,
                   borderRadius: '50%',
                   width: 32,
                   height: 32,
                   lineHeight: '32px',
                   textAlign: 'center',
-                  boxShadow: '0 1px 4px rgba(0,0,0,0.08)'
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
+                  pointerEvents: 'auto',
                 }}
                 aria-label="Close map"
                 title="Close map"
               >
                 ×
               </button>
-              <div style={{ flex: 1, padding: '16px', minWidth: 0 }}>
+              <div style={{ flex: 1, padding: '16px', minWidth: 0, position: 'relative', pointerEvents: 'auto' }}>
                 {response ? (
                   <MapView response={response} />
                 ) : (
