@@ -404,50 +404,6 @@ export const App: React.FC<AppProps> = ({
         );
 
         // Remove theme dropdown creation (Theme button) since it is now managed by GraphiQL
-
-        // Add examples dropdown if available
-        if (Object.keys(exampleQueries).length > 0) {
-          const examplesSelect = document.createElement('select');
-          examplesSelect.className = 'custom-topbar-select';
-          examplesSelect.title = 'Examples';
-          examplesSelect.style.cssText = `
-            padding: 6px 8px;
-            margin-right: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-            background: white;
-            font-family: inherit;
-            cursor: pointer;
-          `;
-          examplesSelect.addEventListener('change', (e) => {
-            const target = e.target as HTMLSelectElement;
-            const key = target.value;
-            if (key && exampleQueries[key]) {
-              const { query: exampleQuery, variables: exampleVars } =
-                exampleQueries[key];
-              editParameter('query', exampleQuery);
-              if (exampleVars) {
-                editParameter('variables', JSON.stringify(exampleVars, null, 2));
-              }
-            }
-          });
-
-          const defaultOption = document.createElement('option');
-          defaultOption.value = '';
-          defaultOption.textContent = 'Examples';
-          examplesSelect.appendChild(defaultOption);
-
-          Object.keys(exampleQueries).forEach((key) => {
-            const option = document.createElement('option');
-            option.value = key;
-            option.textContent = key;
-            examplesSelect.appendChild(option);
-          });
-
-          customButtonsContainer.appendChild(examplesSelect);
-        }
-
         topbar.appendChild(customButtonsContainer);
       }
     };
@@ -468,6 +424,18 @@ export const App: React.FC<AppProps> = ({
     handleEnvironmentChange,
   ]);
 
+  // Handler for selecting an example from the dropdown
+  const handleExampleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const key = e.target.value;
+    if (key && exampleQueries[key]) {
+      const { query: exampleQuery, variables: exampleVars } = exampleQueries[key];
+      editParameter('query', exampleQuery);
+      if (exampleVars) {
+        editParameter('variables', JSON.stringify(exampleVars, null, 2));
+      }
+    }
+  };
+
   if (currentService == null) {
     return <NotFound />;
   }
@@ -475,6 +443,36 @@ export const App: React.FC<AppProps> = ({
   return (
     <div className="App">
       <div className="graphiql-wrapper">
+        {/* Render Examples dropdown if available */}
+        {Object.keys(exampleQueries).length > 0 && (
+          <div style={{ margin: '16px 0' }}>
+            <select
+              className="custom-topbar-select"
+              title="Examples"
+              style={{
+                padding: '6px 8px',
+                marginRight: 8,
+                border: '1px solid #ccc',
+                borderRadius: 4,
+                fontSize: 14,
+                background: 'white',
+                fontFamily: 'inherit',
+                cursor: 'pointer',
+              }}
+              defaultValue=""
+              onChange={handleExampleSelect}
+            >
+              <option value="" disabled>
+                Examples
+              </option>
+              {Object.keys(exampleQueries).map((key) => (
+                <option key={key} value={key}>
+                  {key}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         <GraphiQL
           fetcher={customFetcher}
           query={query}
