@@ -21,6 +21,7 @@ import graphQLFetcher from '../../utils/graphQLFetcher';
 import getPreferredTheme from '../../utils/getPreferredTheme';
 import history from '../../utils/history';
 const GeocoderModal = lazy(() => import('../GeocoderModal'));
+import MapPortal from './MapPortal';
 import './custom.css';
 import findServiceName from '../../utils/findServiceName';
 
@@ -258,12 +259,7 @@ export const App: React.FC<AppProps> = ({
   };
 
   const toggleMap = () => {
-    console.log('Map button clicked, current showMap:', showMap);
-    setShowMap((prev) => {
-      const newValue = !prev;
-      console.log('Setting showMap from', prev, 'to', newValue);
-      return newValue;
-    });
+    setShowMap((prev) => !prev);
   };
 
   const searchForId = () => {
@@ -341,17 +337,17 @@ export const App: React.FC<AppProps> = ({
         const buttons = [
           {
             text: 'Minify',
-            onClick: () => handleClickMinifyButton(),
+            onClick: handleClickMinifyButton,
             title: 'Minify Query',
           },
           {
             text: 'Map',
-            onClick: () => toggleMap(),
-            title: 'Show Map'
+            onClick: toggleMap,
+            title: 'Show Map',
           },
           {
             text: 'Search for ID',
-            onClick: () => searchForId(),
+            onClick: searchForId,
             title: 'Search for ID',
           },
         ];
@@ -384,7 +380,7 @@ export const App: React.FC<AppProps> = ({
           {
             options: services.map((s) => ({ value: s.id, label: s.name })),
             value: currentService?.id || '',
-            onChange: (value: string) => handleServiceChange(value),
+            onChange: handleServiceChange,
             title: 'Select Service',
           },
           {
@@ -394,7 +390,7 @@ export const App: React.FC<AppProps> = ({
               { value: 'staging', label: 'Staging' },
               { value: 'dev', label: 'Dev' },
             ],
-            onChange: (value: string) => handleEnvironmentChange(value),
+            onChange: handleEnvironmentChange,
             title: 'Environment',
           },
           {
@@ -403,7 +399,7 @@ export const App: React.FC<AppProps> = ({
               { value: 'light', label: 'Light' },
               { value: 'dark', label: 'Dark' },
             ],
-            onChange: (value: string) => handleThemeChange(value),
+            onChange: handleThemeChange,
             title: 'Theme',
           },
         ];
@@ -534,55 +530,13 @@ export const App: React.FC<AppProps> = ({
           <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
         </Suspense>
       ) : null}
-      {showMap && typeof window !== 'undefined' && document.querySelector('#graphiql-session')
-        ? ReactDOM.createPortal(
-            <div style={{
-              width: '400px',
-              borderLeft: '1px solid #ccc',
-              display: 'flex',
-              flexDirection: 'column',
-              backgroundColor: 'white',
-              height: '100%',
-              minWidth: 0,
-              zIndex: 1,
-              position: 'relative',
-              pointerEvents: 'auto',
-            }}>
-              <button
-                onClick={() => setShowMap(false)}
-                style={{
-                  position: 'absolute',
-                  top: 8,
-                  right: 8,
-                  background: 'rgba(255,255,255,0.97)',
-                  border: 'none',
-                  fontSize: '22px',
-                  cursor: 'pointer',
-                  zIndex: 9999,
-                  borderRadius: '50%',
-                  width: 32,
-                  height: 32,
-                  lineHeight: '32px',
-                  textAlign: 'center',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
-                  pointerEvents: 'auto',
-                }}
-                aria-label="Close map"
-                title="Close map"
-              >
-                ×
-              </button>
-              <div style={{ flex: 1, padding: '16px', minWidth: 0, position: 'relative', pointerEvents: 'auto' }}>
-                {response ? (
-                  <MapView response={response} />
-                ) : (
-                  <p>No map data available. Please run a GraphQL query that returns geographic data (like journeys, stops, or routes) to see the map visualization.</p>
-                )}
-              </div>
-            </div>,
-            document.querySelector('#graphiql-session')
-          )
-        : null}
+      <MapPortal show={showMap} onClose={() => setShowMap(false)} response={response}>
+        {response ? (
+          <MapView response={response} />
+        ) : (
+          <p>No map data available. Please run a GraphQL query that returns geographic data (like journeys, stops, or routes) to see the map visualization.</p>
+        )}
+      </MapPortal>
     </div>
   );
 };
