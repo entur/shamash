@@ -286,6 +286,202 @@ export const App: React.FC<AppProps> = ({
     loadExampleQueries();
   }, [currentService]);
 
+  // Use useEffect to hide unwanted UI elements and inject custom buttons
+  useEffect(() => {
+    const hideUnwantedElements = () => {
+      // Hide the tabs that show "<untitled>"
+      const tabs = document.querySelectorAll('[role="tab"]');
+      tabs.forEach((tab) => {
+        if (tab.textContent?.includes('untitled') || tab.textContent?.trim() === '') {
+          (tab.parentElement as HTMLElement)?.style.setProperty('display', 'none');
+        }
+      });
+
+      // Hide tab list entirely if it only contains unwanted tabs
+      const tabList = document.querySelector('[role="tablist"]');
+      if (tabList) {
+        const visibleTabs = Array.from(tabList.children).filter(
+          (child) => (child as HTMLElement).style.display !== 'none'
+        );
+        if (visibleTabs.length === 0) {
+          (tabList as HTMLElement).style.display = 'none';
+        }
+      }
+
+      // Inject custom buttons into the topbar (where the logo is)
+      const topbar = document.querySelector('.graphiql-logo') ||
+                    document.querySelector('.graphiql-container > div:first-child') ||
+                    document.querySelector('[class*="logo"]')?.parentElement;
+
+      if (topbar && !topbar.querySelector('.custom-buttons-injected')) {
+        // Make sure topbar has proper layout
+        const topbarElement = topbar as HTMLElement;
+        if (!topbarElement.style.display || topbarElement.style.display === 'block') {
+          topbarElement.style.display = 'flex';
+          topbarElement.style.alignItems = 'center';
+          topbarElement.style.justifyContent = 'space-between';
+          topbarElement.style.padding = '8px 16px';
+        }
+
+        const customButtonsContainer = document.createElement('div');
+        customButtonsContainer.className = 'custom-buttons-injected';
+        customButtonsContainer.style.cssText =
+          'display: flex; align-items: center; gap: 8px;';
+
+        // Create buttons with proper styling
+        const buttons = [
+          {
+            text: 'Minify',
+            onClick: handleClickMinifyButton,
+            title: 'Minify Query',
+          },
+          { text: 'Map', onClick: toggleMap, title: 'Show Map' },
+          {
+            text: 'Search for ID',
+            onClick: searchForId,
+            title: 'Search for ID',
+          },
+        ];
+
+        buttons.forEach(({ text, onClick, title }) => {
+          const button = document.createElement('button');
+          button.className = 'custom-topbar-button';
+          button.textContent = text;
+          button.title = title;
+          button.onclick = onClick;
+          button.style.cssText = `
+            padding: 6px 12px;
+            margin-right: 8px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+          `;
+          customButtonsContainer.appendChild(button);
+        });
+
+        // Create dropdowns
+        const dropdowns = [
+          {
+            options: services.map((s) => ({ value: s.id, label: s.name })),
+            value: currentService?.id || '',
+            onChange: handleServiceChange,
+            title: 'Select Service',
+          },
+          {
+            options: [
+              { value: '', label: 'Environment' },
+              { value: 'prod', label: 'Prod' },
+              { value: 'staging', label: 'Staging' },
+              { value: 'dev', label: 'Dev' },
+            ],
+            onChange: handleEnvironmentChange,
+            title: 'Environment',
+          },
+          {
+            options: [
+              { value: '', label: 'Theme' },
+              { value: 'light', label: 'Light' },
+              { value: 'dark', label: 'Dark' },
+            ],
+            onChange: handleThemeChange,
+            title: 'Theme',
+          },
+        ];
+
+        dropdowns.forEach(({ options, value, onChange, title }) => {
+          const select = document.createElement('select');
+          select.className = 'custom-topbar-select';
+          select.title = title;
+          if (value) select.value = value;
+          select.onchange = (e) =>
+            onChange((e.target as HTMLSelectElement).value);
+          select.style.cssText = `
+            padding: 6px 8px;
+            margin-right: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            font-family: inherit;
+            cursor: pointer;
+          `;
+
+          options.forEach((option) => {
+            const optionEl = document.createElement('option');
+            optionEl.value = option.value;
+            optionEl.textContent = option.label;
+            select.appendChild(optionEl);
+          });
+
+          customButtonsContainer.appendChild(select);
+        });
+
+        // Add examples dropdown if available
+        if (Object.keys(exampleQueries).length > 0) {
+          const examplesSelect = document.createElement('select');
+          examplesSelect.className = 'custom-topbar-select';
+          examplesSelect.title = 'Examples';
+          examplesSelect.style.cssText = `
+            padding: 6px 8px;
+            margin-right: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            font-family: inherit;
+            cursor: pointer;
+          `;
+          examplesSelect.onchange = (e) => {
+            const key = (e.target as HTMLSelectElement).value;
+            if (key && exampleQueries[key]) {
+              const { query: exampleQuery, variables: exampleVars } =
+                exampleQueries[key];
+              editParameter('query', exampleQuery);
+              if (exampleVars) {
+                editParameter('variables', JSON.stringify(exampleVars, null, 2));
+              }
+            }
+          };
+
+          const defaultOption = document.createElement('option');
+          defaultOption.value = '';
+          defaultOption.textContent = 'Examples';
+          examplesSelect.appendChild(defaultOption);
+
+          Object.keys(exampleQueries).forEach((key) => {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = key;
+            examplesSelect.appendChild(option);
+          });
+
+          customButtonsContainer.appendChild(examplesSelect);
+        }
+
+        topbar.appendChild(customButtonsContainer);
+      }
+    };
+
+    // Run immediately and on a timer to handle dynamic content
+    hideUnwantedElements();
+    const interval = setInterval(hideUnwantedElements, 500);
+
+    return () => clearInterval(interval);
+  }, [
+    currentService,
+    services,
+    exampleQueries,
+    handleClickMinifyButton,
+    toggleMap,
+    searchForId,
+    handleServiceChange,
+    handleEnvironmentChange,
+    handleThemeChange,
+  ]);
+
   if (currentService == null) {
     return <NotFound />;
   }
@@ -303,9 +499,6 @@ export const App: React.FC<AppProps> = ({
           onEditOperationName={(value) => editParameter('operationName', value)}
           plugins={[explorer]}
           schema={schema}
-          defaultEditorToolsVisibility={false}
-          defaultTabs={[]}
-          showPersistHeadersSettings={false}
         >
           <GraphiQL.Logo>
             <img
@@ -314,89 +507,6 @@ export const App: React.FC<AppProps> = ({
               className="logo"
             />
           </GraphiQL.Logo>
-          <GraphiQL.Toolbar>
-            <button
-              className="graphiql-toolbar-button"
-              onClick={handleClickMinifyButton}
-              title="Minify Query"
-            >
-              Minify
-            </button>
-            <button
-              className="graphiql-toolbar-button"
-              onClick={toggleMap}
-              title="Show Map"
-            >
-              Map
-            </button>
-
-            <select
-              className="graphiql-toolbar-select"
-              value={currentService?.id || ''}
-              onChange={(e) => handleServiceChange(e.target.value)}
-              title="Select Service"
-            >
-              {services.map((service) => (
-                <option key={service.id} value={service.id}>
-                  {service.name}
-                </option>
-              ))}
-            </select>
-
-            <select
-              className="graphiql-toolbar-select"
-              onChange={(e) => handleEnvironmentChange(e.target.value)}
-              title="Environment"
-            >
-              <option value="">Environment</option>
-              <option value="prod">Prod</option>
-              <option value="staging">Staging</option>
-              <option value="dev">Dev</option>
-            </select>
-
-            {Object.keys(exampleQueries).length > 0 && (
-              <select
-                className="graphiql-toolbar-select"
-                onChange={(e) => {
-                  const key = e.target.value;
-                  if (key && exampleQueries[key]) {
-                    const { query: exampleQuery, variables: exampleVars } =
-                      exampleQueries[key];
-                    editParameter('query', exampleQuery);
-                    if (exampleVars) {
-                      editParameter('variables', JSON.stringify(exampleVars, null, 2));
-                    }
-                  }
-                }}
-                title="Examples"
-              >
-                <option value="">Examples</option>
-                {Object.keys(exampleQueries).map((key) => (
-                  <option key={key} value={key}>
-                    {key}
-                  </option>
-                ))}
-              </select>
-            )}
-
-            <select
-              className="graphiql-toolbar-select"
-              onChange={(e) => handleThemeChange(e.target.value)}
-              title="Theme"
-            >
-              <option value="">Theme</option>
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-            </select>
-
-            <button
-              className="graphiql-toolbar-button"
-              onClick={searchForId}
-              title="Search for ID"
-            >
-              Search for ID
-            </button>
-          </GraphiQL.Toolbar>
         </GraphiQL>
       </div>
 
