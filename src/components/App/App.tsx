@@ -4,18 +4,14 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
-import GraphiQL from 'graphiql';
-import { Explorer as GraphiQLExplorer } from 'graphiql-explorer';
+import { GraphiQL } from 'graphiql';
+import { explorerPlugin } from '@graphiql/plugin-explorer';
 import {
   buildClientSchema,
   getIntrospectionQuery,
   GraphQLSchema,
-  parse,
-  print,
-  stripIgnoredCharacters,
 } from 'graphql';
 import queryString from 'query-string';
 import graphQLFetcher from '../../utils/graphQLFetcher';
@@ -25,13 +21,10 @@ const GeocoderModal = lazy(() => import('../GeocoderModal'));
 import './custom.css';
 import findServiceName from '../../utils/findServiceName';
 
-import explorerDarkColors from './DarkmodeExplorerColors';
 import 'graphiql/graphiql.css';
 
 import MapView from '../MapView';
 
-import whiteLogo from '../../static/images/entur-white.png';
-import normalLogo from '../../static/images/entur.png';
 
 import { NotFound } from './404';
 
@@ -62,11 +55,8 @@ export const App: React.FC<AppProps> = ({
   const { services, enturClientName } = useConfig();
   const [showGeocoderModal, setShowGeocoderModal] = useState<boolean>(false);
   const [schema, setSchema] = useState<GraphQLSchema | undefined>();
-  const [showExplorer, setShowExplorer] = useState<boolean>(false);
   const [showMap, setShowMap] = useState<boolean>(false);
   const [response, setResponse] = useState<any>();
-
-  let graphiql = useRef<any>(null);
 
   const serviceName = findServiceName(pathname, BASE_PATH);
 
@@ -126,22 +116,14 @@ export const App: React.FC<AppProps> = ({
   );
 
   useEffect(() => {
-    fetcher &&
+    if (fetcher) {
       fetcher({
         query: getIntrospectionQuery(),
       }).then((result) => {
         setSchema(buildClientSchema(result.data));
       });
+    }
   }, [fetcher]);
-
-  const handleServiceChange = (id: string) => {
-    // For development with Vite, use simple relative paths
-    // For production, handle base path correctly
-    const basePath = import.meta.env.BASE_URL || '/';
-
-    // Use window.location for proper navigation instead of custom history
-    window.location.href = basePath === '/' ? `/${id}` : `${basePath}${id}`;
-  };
 
   const editParameter = (key: string, value: any) => {
     setParameters((prevParameters: Record<string, any>) => {
@@ -157,145 +139,6 @@ export const App: React.FC<AppProps> = ({
 
       return newParameters;
     });
-  };
-
-  const handleEnvironmentChange = (env: string) => {
-    if (window.location.host.includes('localhost')) {
-      console.log('Running on localhost, not redirecting');
-      return;
-    }
-
-    if (env === 'dev') {
-      redirectHost('api.dev.entur.io');
-    } else if (env === 'staging') {
-      redirectHost('api.staging.entur.io');
-    } else if (env === 'prod') {
-      redirectHost('api.entur.io');
-    }
-  };
-
-  const redirectHost = (host: string) => {
-    window.location.href = `${window.location.protocol}//${host}${window.location.pathname}${window.location.search}`;
-  };
-
-  const handleThemeChange = (theme: string) => {
-    window.localStorage.setItem('theme', theme);
-    window.location.reload();
-  };
-
-  const handleClickPrettifyButton = () => {
-    if (!graphiql || !graphiql.current) return;
-
-    try {
-      const queryEditor = graphiql.current.getQueryEditor();
-      const variablesEditor = graphiql.current.getVariableEditor();
-
-      if (queryEditor) {
-        const currentQueryText = queryEditor.getValue();
-        if (currentQueryText) {
-          const prettyQueryText = print(parse(currentQueryText));
-          queryEditor.setValue(prettyQueryText);
-        }
-      }
-
-      if (variablesEditor) {
-        const currentVariablesText = variablesEditor.getValue();
-        if (currentVariablesText && currentVariablesText.trim() !== '') {
-          const prettyVariablesText = JSON.stringify(
-            JSON.parse(currentVariablesText),
-            null,
-            2
-          );
-          variablesEditor.setValue(prettyVariablesText);
-        }
-      }
-    } catch (error) {
-      console.warn('Prettify failed:', error);
-    }
-  };
-
-  const handleClickMinifyButton = () => {
-    if (!graphiql) return;
-
-    const queryEditor = graphiql.current.getQueryEditor();
-    const currentQueryText = queryEditor.getValue();
-    const uglyQueryText = stripIgnoredCharacters(currentQueryText);
-    queryEditor.setValue(uglyQueryText);
-
-    const variablesEditor = graphiql.current.getVariableEditor();
-    const currentVariablesText = variablesEditor.getValue();
-    const uglyVariablesText = JSON.stringify(JSON.parse(currentVariablesText));
-    variablesEditor.setValue(uglyVariablesText);
-  };
-
-  const handleHistoryButton = () => {
-    if (!graphiql) return;
-    graphiql.current.setState({
-      historyPaneOpen: !graphiql.current.state.historyPaneOpen,
-    });
-  };
-
-  const toggleExplorer = () => {
-    setShowExplorer((prevShowExplorer) => !prevShowExplorer);
-  };
-
-  const toggleMap = () => {
-    setShowMap((prev) => !prev);
-  };
-
-  const [exampleQueries, setExampleQueries] = useState({});
-
-  // Load example queries dynamically when service changes
-  useEffect(() => {
-    const loadExampleQueries = async () => {
-      if (!currentService?.queries) return;
-
-      try {
-        let module;
-        const modules = await import.meta.glob('../../queries/**/index.ts');
-        const path = `../../queries/${currentService.queries}/index.ts`;
-        module = await modules[path]();
-        setExampleQueries(module);
-      } catch (error) {
-        console.warn(
-          `Failed to load example queries for ${currentService.queries}:`,
-          error
-        );
-        setExampleQueries({});
-      }
-    };
-
-    loadExampleQueries();
-  }, [currentService]);
-
-  const renderExamplesMenu = () => {
-    if (!exampleQueries || Object.keys(exampleQueries).length === 0) {
-      return null;
-    }
-
-    return (
-      <GraphiQL.Menu label="Examples" title="Examples">
-        {Object.entries(
-          exampleQueries as Record<string, { query: string; variables?: any }>
-        ).map(([key, { query, variables }]) => (
-          <GraphiQL.MenuItem
-            key={key}
-            label={key}
-            title={key}
-            onSelect={() => {
-              editParameter('query', query);
-              if (variables) {
-                editParameter('variables', JSON.stringify(variables, null, 2));
-              }
-            }}
-          />
-        ))}
-      </GraphiQL.Menu>
-    );
-  };
-
-  const searchForId = () => {
-    setShowGeocoderModal(!showGeocoderModal);
   };
 
   const [query, setQuery] = useState('');
@@ -327,13 +170,16 @@ export const App: React.FC<AppProps> = ({
   const { variables, operationName } = parameters;
 
   const customFetcher = useCallback(
-    async (...args: any[]) => {
-      const res = await fetcher(...args);
+    async (params: any) => {
+      const res = await fetcher(params);
       setResponse(res);
       return res;
     },
     [fetcher]
   );
+
+  // Configure the explorer plugin
+  const explorer = useMemo(() => explorerPlugin(), []);
 
   if (currentService == null) {
     return <NotFound />;
@@ -341,132 +187,22 @@ export const App: React.FC<AppProps> = ({
 
   return (
     <div className="App graphiql-container">
-      <GraphiQLExplorer
-        schema={schema}
+      <GraphiQL
+        fetcher={customFetcher}
         query={query}
-        onEdit={(value) => editParameter('query', value)}
-        onRunOperation={(operationName) =>
-          graphiql.current.handleRunQuery(operationName)
-        }
-        explorerIsOpen={showExplorer}
-        onToggleExplorer={toggleExplorer}
-        colors={getPreferredTheme() === 'dark' ? explorerDarkColors : undefined}
+        variables={variables}
+        operationName={operationName}
+        onEditQuery={(value) => editParameter('query', value)}
+        onEditVariables={(value) => editParameter('variables', value)}
+        onEditOperationName={(value) => editParameter('operationName', value)}
+        plugins={[explorer]}
+        schema={schema}
       />
-      <div style={{ flex: 1 }}>
-        <GraphiQL
-          ref={graphiql}
-          fetcher={customFetcher}
-          query={query}
-          variables={variables}
-          operationName={operationName}
-          onEditQuery={(value) => editParameter('query', value)}
-          onEditVariables={(value) => editParameter('variables', value)}
-          onEditOperationName={(value) => editParameter('operationName', value)}
-        >
-          <GraphiQL.Logo>
-            <img
-              alt="logo"
-              src={getPreferredTheme() === 'dark' ? whiteLogo : normalLogo}
-              className="logo"
-            />
-          </GraphiQL.Logo>
-          <GraphiQL.Toolbar>
-            <GraphiQL.Button
-              onClick={handleClickPrettifyButton}
-              label="Prettify"
-              title="Prettify Query (Shift-Ctrl-P)"
-            />
-            <GraphiQL.Button
-              onClick={handleClickMinifyButton}
-              label="Minify"
-              title="Minify Query"
-            />
-
-            <GraphiQL.Button
-              onClick={handleHistoryButton}
-              label="History"
-              title="Show History"
-            />
-
-            <GraphiQL.Button
-              onClick={toggleExplorer}
-              label="Explorer"
-              title="Show Explorer"
-            />
-
-            <GraphiQL.Button onClick={toggleMap} label="Map" title="Show Map" />
-
-            <GraphiQL.Menu label="Service" title="Service">
-              {services.map((service) => (
-                <GraphiQL.MenuItem
-                  key={service.id}
-                  label={service.name}
-                  title={service.name}
-                  onSelect={() => handleServiceChange(service.id)}
-                />
-              ))}
-            </GraphiQL.Menu>
-
-            <GraphiQL.Menu label="Environment" title="Environment">
-              <GraphiQL.MenuItem
-                label="Prod"
-                title="Prod"
-                onSelect={() => handleEnvironmentChange('prod')}
-              />
-              <GraphiQL.MenuItem
-                label="Staging"
-                title="Staging"
-                onSelect={() => handleEnvironmentChange('staging')}
-              />
-              <GraphiQL.MenuItem
-                label="Dev"
-                title="Dev"
-                onSelect={() => handleEnvironmentChange('dev')}
-              />
-            </GraphiQL.Menu>
-
-            {renderExamplesMenu()}
-
-            <GraphiQL.Menu label="Theme" title="Theme">
-              <GraphiQL.MenuItem
-                label="Light"
-                title="Light"
-                onSelect={() => handleThemeChange('light')}
-              />
-              <GraphiQL.MenuItem
-                label="Dark"
-                title="Dark"
-                onSelect={() => handleThemeChange('dark')}
-              />
-            </GraphiQL.Menu>
-
-            <GraphiQL.Button
-              onClick={() => {
-                searchForId();
-              }}
-              label="Search for ID"
-              title="Search for ID"
-            />
-          </GraphiQL.Toolbar>
-          <GraphiQL.Footer>
-            <div className="label">
-              {currentService.name}:{' '}
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={currentService.url}
-              >
-                {currentService.url}
-              </a>
-            </div>
-          </GraphiQL.Footer>
-        </GraphiQL>
-        {showGeocoderModal ? (
-          <Suspense fallback={<div>Loading...</div>}>
-            <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
-          </Suspense>
-        ) : null}
-      </div>
+      {showGeocoderModal ? (
+        <Suspense fallback={<div>Loading...</div>}>
+          <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
+        </Suspense>
+      ) : null}
       {showMap ? <MapView response={response} /> : null}
     </div>
   );
