@@ -100,12 +100,10 @@ function getVehiclePositions(responseData) {
     return [];
   }
 
-  const vehiclePositions = vehicles
+  return vehicles
     .map((vehicle) => vehicle?.location)
     .filter(Boolean)
     .map((location) => point([location.longitude, location.latitude]));
-
-  return vehiclePositions;
 }
 
 function MapContent({ mapData }) {
@@ -153,6 +151,56 @@ function MapContent({ mapData }) {
   );
 }
 
+function ZoomControls() {
+  const map = useMap();
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        bottom: 16,
+        left: 16,
+        zIndex: 1000,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 8,
+      }}
+    >
+      <button
+        aria-label="Zoom in"
+        style={{
+          width: 36,
+          height: 36,
+          fontSize: 22,
+          borderRadius: '50%',
+          border: '1px solid #ccc',
+          background: 'white',
+          cursor: 'pointer',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
+        }}
+        onClick={() => map.setZoom(map.getZoom() + 1)}
+      >
+        +
+      </button>
+      <button
+        aria-label="Zoom out"
+        style={{
+          width: 36,
+          height: 36,
+          fontSize: 22,
+          borderRadius: '50%',
+          border: '1px solid #ccc',
+          background: 'white',
+          cursor: 'pointer',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
+        }}
+        onClick={() => map.setZoom(map.getZoom() - 1)}
+      >
+        –
+      </button>
+    </div>
+  );
+}
+
 export default function MapView({ response }) {
   const [mapData, setMapData] = useState(getMapData(response));
 
@@ -166,9 +214,9 @@ export default function MapView({ response }) {
       zoom={10}
       style={{
         width: '100%',
+        height: '100%',
       }}
       zoomControl={false}
-      useFlyTo
       boundsOptions={{
         animate: true,
         duration: 2,
@@ -182,6 +230,7 @@ export default function MapView({ response }) {
         }
         url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
       />
+      <ZoomControls />
       <MapContent mapData={mapData} />
     </MapContainer>
   );

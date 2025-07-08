@@ -23,7 +23,7 @@ body {
   float: right;
   margin: 10px;
   color: #2e6c8b;
-  font-weight: 600;
+  font-weight: 200;
 }
 
 .logo {
@@ -35,12 +35,128 @@ body {
   height: 48px;
 }
 div.toolbar > .toolbar-button {
-  font-weight: 400;
+  font-weight: 200;
   padding: 2px 11px 2px 11px;
 }
 .toolbar-menu-items > li {
   margin: -2px;
 }
-.CodeMirror-code pre.CodeMirror-line {
-  line-height: 1.1rem;
+.CodeMirror-code{
+  line-height: 0.9rem;
+    font-size: 0.8rem;
+}
+
+/* Simple custom toolbar styles */
+.custom-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: #f7f7f7;
+  border-bottom: 1px solid #e0e0e0;
+  flex-wrap: wrap;
+  font-family: 'Fira Code', 'Consolas', 'Inconsolata', 'Droid Sans Mono', 'Monaco', monospace;
+}
+
+.custom-toolbar button {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.custom-toolbar button:hover {
+  background-color: #f0f0f0;
+}
+
+.custom-toolbar select {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.custom-toolbar select:hover {
+  background-color: #f0f0f0;
+}
+
+.custom-buttons-injected {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.custom-topbar-button, .custom-dropdown-wrapper button {
+  padding: 6px 12px;
+  margin-right: 8px;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.custom-topbar-button:last-child {
+  margin-right: 0;
+}
+
+/* Layout styles */
+.App {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.graphiql-wrapper {
+  flex: 1;
+  height: calc(100vh - 48px); /* Subtract toolbar height */
+}
+
+.graphiql-wrapper .graphiql-container {
+  height: 100%;
+}
+
+/* Dark theme styles */
+.graphiql-container[data-theme="dark"] .graphiql-toolbar {
+  background-color: #1a1a1a;
+  border-bottom-color: #333;
+}
+
+.graphiql-container[data-theme="dark"] .graphiql-toolbar-button {
+  background-color: #2a2a2a;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+.graphiql-container[data-theme="dark"] .graphiql-toolbar-button:hover {
+  background-color: #3a3a3a;
+}
+
+.graphiql-container[data-theme="dark"] .graphiql-toolbar-select label {
+  color: #e0e0e0;
+}
+
+.graphiql-container[data-theme="dark"] .graphiql-toolbar-select select {
+  background-color: #2a2a2a;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+/* Ensure GraphiQL container takes remaining space */
+.App.graphiql-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.App.graphiql-container > .graphiql-container {
+  flex: 1;
+}
+
+.graphiql-session-header-right div {
+  font-weight: 100;
 }
