@@ -284,44 +284,15 @@ export const App: React.FC<AppProps> = ({
 
   // Use useEffect to hide unwanted UI elements and inject custom buttons
   useEffect(() => {
-    const hideUnwantedElements = () => {
-      // Hide the tabs that show "<untitled>"
-      const tabs = document.querySelectorAll('[role="tab"]');
-      tabs.forEach((tab) => {
-        if (tab.textContent?.includes('untitled') || tab.textContent?.trim() === '') {
-          (tab.parentElement as HTMLElement)?.style.setProperty('display', 'none');
-        }
-      });
+    const addCustomTopbarButtons = () => {
 
-      // Hide tab list entirely if it only contains unwanted tabs
-      const tabList = document.querySelector('[role="tablist"]');
-      if (tabList) {
-        const visibleTabs = Array.from(tabList.children).filter(
-          (child) => (child as HTMLElement).style.display !== 'none'
-        );
-        if (visibleTabs.length === 0) {
-          (tabList as HTMLElement).style.display = 'none';
-        }
-      }
+      const topbar = document.querySelector('.graphiql-session-header-right');
 
-      // Inject custom buttons into the topbar (where the logo is)
-      const topbar = document.querySelector('.graphiql-logo') ||
-                    document.querySelector('.graphiql-container > div:first-child') ||
-                    document.querySelector('[class*="logo"]')?.parentElement;
-
-      if (topbar) {
+      if (topbar && !topbar.querySelector('.custom-buttons-injected')) {
         // Remove any previously injected container
         const prev = topbar.querySelector('.custom-buttons-injected');
         if (prev) prev.remove();
 
-        // Make sure topbar has proper layout
-        const topbarElement = topbar as HTMLElement;
-        if (!topbarElement.style.display || topbarElement.style.display === 'block') {
-          topbarElement.style.display = 'flex';
-          topbarElement.style.alignItems = 'center';
-          topbarElement.style.justifyContent = 'space-between';
-          topbarElement.style.padding = '8px 16px';
-        }
 
         const customButtonsContainer = document.createElement('div');
         customButtonsContainer.className = 'custom-buttons-injected';
@@ -430,25 +401,13 @@ export const App: React.FC<AppProps> = ({
     };
 
     // Run immediately (no interval)
-    hideUnwantedElements();
+    addCustomTopbarButtons();
     return () => {};
   }, [
     currentService,
     services,
     exampleQueries
   ]);
-
-  // Handler for selecting an example from the dropdown
-  const handleExampleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const key = e.target.value;
-    if (key && exampleQueries[key]) {
-      const { query: exampleQuery, variables: exampleVars } = exampleQueries[key];
-      editParameter('query', exampleQuery);
-      if (exampleVars) {
-        editParameter('variables', JSON.stringify(exampleVars, null, 2));
-      }
-    }
-  };
 
   if (currentService == null) {
     return <NotFound />;
@@ -458,6 +417,7 @@ export const App: React.FC<AppProps> = ({
     <div className="App">
       <div className="graphiql-wrapper">
         <GraphiQL
+          disableTabs={true}
           fetcher={customFetcher}
           query={query}
           variables={variables}
