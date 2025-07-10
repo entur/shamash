@@ -401,7 +401,7 @@
     classnames "^2.3.1"
     react-collapse "^5.1.1"
 
-"@entur/form@^8.3.0":
+"@entur/form@8.3.0", "@entur/form@^8.3.0":
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/@entur/form/-/form-8.3.0.tgz#e6d7d596c0ffcd0c9269d487ccec05a6699d2b7e"
   integrity sha512-sv/hcJp1fmoeKdiNVZWmVGe9ubIrH0p0UY67w7gTQhq4ygCvMiQXcCuex4Uul76Y/+y057jIruNHqMuPBrbTjA==
@@ -414,7 +414,7 @@
     "@entur/utils" "^0.12.3"
     classnames "^2.3.1"
 
-"@entur/icons@^8.0.0":
+"@entur/icons@8.0.0", "@entur/icons@^8.0.0":
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/@entur/icons/-/icons-8.0.0.tgz#a13048cf2e583b6f4c00d46158eb7f55445625a7"
   integrity sha512-5AlvY2Sa+rEmYTpAgH8GCt2WAA9pM3rl9krFVomcTDtffVC1atk6MMJAYfsh9cGhXScKHzUv63PslMy5VOeaPw==
@@ -442,7 +442,7 @@
     "@entur/utils" "^0.12.3"
     classnames "^2.3.1"
 
-"@entur/sdk@^5.3.0":
+"@entur/sdk@5.3.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@entur/sdk/-/sdk-5.3.0.tgz#ee4bef7612f473264063f7dace7e5eaea3b23ecd"
   integrity sha512-zipLcDLZFjiCHYChIafkNt5PJ8O0HIRq88QuOV/5y1jLDwnM00tp8eKfkv4WQZAYxINuFi/i+bBYRT9x0aqO/w==
@@ -459,7 +459,7 @@
     qs "^6.10.1"
     regenerator-runtime "^0.13.8"
 
-"@entur/table@^4.9.12":
+"@entur/table@4.9.12":
   version "4.9.12"
   resolved "https://registry.yarnpkg.com/@entur/table/-/table-4.9.12.tgz#ce4271c8644ae6ba858cda1606b7e55f09172a1f"
   integrity sha512-gU47AQcEvbdyu0sx67gIKhX+eoON2Yj0hxA5gNKBTLtUg01JJkT5qSQRpMyLxXonQg3o0H8oQMSLQjLUy6A5LA==
