@@ -744,10 +744,10 @@
   dependencies:
     graphiql-explorer "^0.9.0"
 
-"@graphiql/react@0.35.5":
-  version "0.35.5"
-  resolved "https://registry.yarnpkg.com/@graphiql/react/-/react-0.35.5.tgz#8ea5939a686c6d183d5ad4c72c2bb08031dee03c"
-  integrity sha512-/1UVTRpwAfqtqTXr8fSQuHgRiWUI0qN4BKcz9L+Zpc9HEl3+TlFFokZFEN1SNSZRNPOlG2K+qd9oJVxqS4Talg==
+"@graphiql/react@0.35.6":
+  version "0.35.6"
+  resolved "https://registry.yarnpkg.com/@graphiql/react/-/react-0.35.6.tgz#e0b4a51caf19caccdcb8be11091d79d02d96e18e"
+  integrity sha512-WGel05bOBTL4qdaoZ3IPox4JbEEWzDA0EeZDcqNAamyaVemdco2khXeOHSSsusf6no7kjXlW54qzj5KkMdbZkQ==
   dependencies:
     "@graphiql/toolkit" "^0.11.3"
     "@radix-ui/react-dialog" "^1.1"
