@@ -737,17 +737,17 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.8.tgz#21a907684723bbbaa5f0974cf7730bd797eb8e62"
   integrity sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==
 
-"@graphiql/plugin-explorer@5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@graphiql/plugin-explorer/-/plugin-explorer-5.0.0.tgz#26546c4a702f47b412cfd90503f3d0ae79019610"
-  integrity sha512-cFyL96o0Bo4Nzp45Ub/Bj8bFGbuFvsvAfWs+Acua/tGt/rf6qu7GyoThtQD+DV0pF8qcy+ojW7SxKxCTzepQEg==
+"@graphiql/plugin-explorer@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@graphiql/plugin-explorer/-/plugin-explorer-5.1.0.tgz#5bafdbb2f1c3241d2af28119707784c66e8cb86b"
+  integrity sha512-TAnk4zLo0FlRfSsuyYxp508YCWmNxCkdWTbfkajWo7WtNzPwSa16UzQbTAOuGCGM1I22CReJDEw6KxVojbE3yw==
   dependencies:
     graphiql-explorer "^0.9.0"
 
-"@graphiql/react@0.35.6":
-  version "0.35.6"
-  resolved "https://registry.yarnpkg.com/@graphiql/react/-/react-0.35.6.tgz#e0b4a51caf19caccdcb8be11091d79d02d96e18e"
-  integrity sha512-WGel05bOBTL4qdaoZ3IPox4JbEEWzDA0EeZDcqNAamyaVemdco2khXeOHSSsusf6no7kjXlW54qzj5KkMdbZkQ==
+"@graphiql/react@0.36.0":
+  version "0.36.0"
+  resolved "https://registry.yarnpkg.com/@graphiql/react/-/react-0.36.0.tgz#7f3a11feb94972019c72f5c11022d8f38def8588"
+  integrity sha512-e0UDmNijRaqQYlhmQJKxRbMi8sYsiFWroQMfbJGbkja8B/ZTyFpgx2FVRmNzNSmyKCIdtS40RIrJl+USx7PPqQ==
   dependencies:
     "@graphiql/toolkit" "^0.11.3"
     "@radix-ui/react-dialog" "^1.1"
@@ -757,13 +757,12 @@
     clsx "^1.2.1"
     framer-motion "^12.12"
     get-value "^3.0.1"
-    graphql-language-service "^5.3.1"
+    graphql-language-service "^5.5.0"
     jsonc-parser "^3.3.1"
     markdown-it "^14.1.0"
     monaco-editor "^0.52.2"
-    monaco-graphql "^1.7.1"
+    monaco-graphql "^1.7.2"
     prettier "^3.5.3"
-    react-compiler-runtime "19.1.0-rc.1"
     set-value "^4.1.0"
     zustand "^5"
 
@@ -4064,10 +4063,19 @@ graphiql@1.11.5:
     graphql-language-service "^5.0.6"
     markdown-it "^12.2.0"
 
-graphql-language-service@^5.0.6, graphql-language-service@^5.3.1, graphql-language-service@^5.4.0:
+graphql-language-service@^5.0.6:
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/graphql-language-service/-/graphql-language-service-5.4.0.tgz#c1f896a53875705b892849c560b0f75f005c9000"
   integrity sha512-g4N5PKh4Dxow9zuHrzX6PHuWWL/aQPYgzZvZst1KkWYFW1H1rmOA/p0/eEJ2WVuoCCfy1tyAR91iG92MAKCILA==
+  dependencies:
+    debounce-promise "^3.1.2"
+    nullthrows "^1.0.0"
+    vscode-languageserver-types "^3.17.1"
+
+graphql-language-service@^5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/graphql-language-service/-/graphql-language-service-5.5.0.tgz#2e68b23bd5384f2fbf1e9391e907106e8246d025"
+  integrity sha512-9EvWrLLkF6Y5e29/2cmFoAO6hBPPAZlCyjznmpR11iFtRydfkss+9m6x+htA8h7YznGam+TtJwS6JuwoWWgb2Q==
   dependencies:
     debounce-promise "^3.1.2"
     nullthrows "^1.0.0"
@@ -5205,12 +5213,12 @@ monaco-editor@^0.52.2:
   resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.52.2.tgz#53c75a6fcc6802684e99fd1b2700299857002205"
   integrity sha512-GEQWEZmfkOGLdd3XK8ryrfWz3AIP8YymVXiPHEdewrUq7mh0qrKrfHLNCXcbB6sTnMLnOZ3ztSiKcciFUkIJwQ==
 
-monaco-graphql@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/monaco-graphql/-/monaco-graphql-1.7.1.tgz#26d44aae1975348f6ffe2bb8e9126c682c1db256"
-  integrity sha512-i+5SUNsDfz/vCy+bqYB8mhYIJIyU8ZCtvPN03IJAlT1wmireH5W575KaRwTV2Zb48rIyz11IxV9C7ajjzx/zgg==
+monaco-graphql@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/monaco-graphql/-/monaco-graphql-1.7.2.tgz#f26ad8acf1022792cf995173c5622f2b04355e12"
+  integrity sha512-iLw1L+pfQOISXGTLWRwjSrxcdP3pjS9ljJmerf2EfvTLBjGc1uwhRd+hnA8/LQVr7RXjrHVPkR6ToKVAvTOBEA==
   dependencies:
-    graphql-language-service "^5.4.0"
+    graphql-language-service "^5.5.0"
     picomatch-browser "^2.2.6"
 
 motion-dom@^12.20.2:
@@ -5758,11 +5766,6 @@ react-collapse@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/react-collapse/-/react-collapse-5.1.1.tgz#a2fa08ef13f372141b02e6a7d49ef72427bcbc2b"
   integrity sha512-k6cd7csF1o9LBhQ4AGBIdxB60SUEUMQDAnL2z1YvYNr9KoKr+nDkhN6FK7uGaBd/rYrYfrMpzpmJEIeHRYogBw==
-
-react-compiler-runtime@19.1.0-rc.1:
-  version "19.1.0-rc.1"
-  resolved "https://registry.yarnpkg.com/react-compiler-runtime/-/react-compiler-runtime-19.1.0-rc.1.tgz#2535efd2e9fc9fc7d5ad47e970061dfbe38fb3f6"
-  integrity sha512-wCt6g+cRh8g32QT18/9blfQHywGjYu+4FlEc3CW1mx3pPxYzZZl1y+VtqxRgnKKBCFLIGUYxog4j4rs5YS86hw==
 
 react-dom@18.3.1:
   version "18.3.1"
