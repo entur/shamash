@@ -737,17 +737,17 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.8.tgz#21a907684723bbbaa5f0974cf7730bd797eb8e62"
   integrity sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==
 
-"@graphiql/plugin-explorer@5.1.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@graphiql/plugin-explorer/-/plugin-explorer-5.1.0.tgz#5bafdbb2f1c3241d2af28119707784c66e8cb86b"
-  integrity sha512-TAnk4zLo0FlRfSsuyYxp508YCWmNxCkdWTbfkajWo7WtNzPwSa16UzQbTAOuGCGM1I22CReJDEw6KxVojbE3yw==
+"@graphiql/plugin-explorer@5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@graphiql/plugin-explorer/-/plugin-explorer-5.1.1.tgz#58d8f5bcb24669476fcd821a72d8cd39c26ba81c"
+  integrity sha512-JknPfk3f/LBWz7HXSTeiRPN6O14rkYTK1ORew7YJsGWUJ3mqZNNlaxOleP5DD+yAgpLExIoCW4TDGOcPdJ0h0w==
   dependencies:
     graphiql-explorer "^0.9.0"
 
-"@graphiql/react@0.36.0":
-  version "0.36.0"
-  resolved "https://registry.yarnpkg.com/@graphiql/react/-/react-0.36.0.tgz#7f3a11feb94972019c72f5c11022d8f38def8588"
-  integrity sha512-e0UDmNijRaqQYlhmQJKxRbMi8sYsiFWroQMfbJGbkja8B/ZTyFpgx2FVRmNzNSmyKCIdtS40RIrJl+USx7PPqQ==
+"@graphiql/react@0.37.0":
+  version "0.37.0"
+  resolved "https://registry.yarnpkg.com/@graphiql/react/-/react-0.37.0.tgz#8a5dc7bbf2010a4d5863c913c5428eef8ed13f50"
+  integrity sha512-H0wAJv+OJcpjpvSpgc3YlHPEfXMsUtBCeeqSBbJp6/TVSYDPMl3sSxX3RZ25cMBQEibvZ3BWi4jcBWmTqbJ/3g==
   dependencies:
     "@graphiql/toolkit" "^0.11.3"
     "@radix-ui/react-dialog" "^1.1"
