@@ -20,7 +20,7 @@
     "crypto-browserify": "3.12.1",
     "dotenv": "16.4.7",
     "global": "4.4.0",
-    "graphiql": "1.11.5",
+    "graphiql": "5.2.0",
     "graphiql-explorer": "0.9.0",
     "graphql": "16.11.0",
     "graphql-ws": "5.16.2",
