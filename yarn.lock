@@ -401,10 +401,10 @@
     classnames "^2.3.1"
     react-collapse "^5.1.1"
 
-"@entur/form@8.3.0", "@entur/form@^8.3.0":
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/@entur/form/-/form-8.3.0.tgz#e6d7d596c0ffcd0c9269d487ccec05a6699d2b7e"
-  integrity sha512-sv/hcJp1fmoeKdiNVZWmVGe9ubIrH0p0UY67w7gTQhq4ygCvMiQXcCuex4Uul76Y/+y057jIruNHqMuPBrbTjA==
+"@entur/form@8.3.1", "@entur/form@^8.3.1":
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/@entur/form/-/form-8.3.1.tgz#fd55ec88bd87d1f99cb6462693f976898754309f"
+  integrity sha512-1apCo4oBL/8ra2F2MlCYmsS59Qaka+Zh6p1toScHaDRCnYR58e9NOD5nh1xzVJoFvYTgEM7AiEPvGAc8apHyRA==
   dependencies:
     "@entur/button" "^3.3.12"
     "@entur/icons" "^8.0.0"
@@ -459,15 +459,15 @@
     qs "^6.10.1"
     regenerator-runtime "^0.13.8"
 
-"@entur/table@4.9.12":
-  version "4.9.12"
-  resolved "https://registry.yarnpkg.com/@entur/table/-/table-4.9.12.tgz#ce4271c8644ae6ba858cda1606b7e55f09172a1f"
-  integrity sha512-gU47AQcEvbdyu0sx67gIKhX+eoON2Yj0hxA5gNKBTLtUg01JJkT5qSQRpMyLxXonQg3o0H8oQMSLQjLUy6A5LA==
+"@entur/table@4.9.13":
+  version "4.9.13"
+  resolved "https://registry.yarnpkg.com/@entur/table/-/table-4.9.13.tgz#5c66bf15a280f1112a6792229f4fb272f5246ed2"
+  integrity sha512-I1CZgFnjyLldgyAicZetjbG+5xJA2qIFHyUuXTiF1nr6zT2jxYKHOVybUXotT5Yq0XvsReQ88xecKABg6uaJog==
   dependencies:
     "@entur/a11y" "^0.2.99"
     "@entur/button" "^3.3.12"
     "@entur/expand" "^3.6.12"
-    "@entur/form" "^8.3.0"
+    "@entur/form" "^8.3.1"
     "@entur/icons" "^8.0.0"
     "@entur/layout" "^3.1.8"
     "@entur/tokens" "^3.19.1"
