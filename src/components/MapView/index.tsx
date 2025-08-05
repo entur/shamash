@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
 import Leaflet, { LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -8,7 +8,6 @@ import lineToPolygon from '@turf/line-to-polygon';
 import { toGeoJSON } from '@mapbox/polyline';
 import { colors } from '@entur/tokens';
 
-// Fix for missing marker icons
 delete (Leaflet.Icon.Default.prototype as any)._getIconUrl;
 Leaflet.Icon.Default.mergeOptions({
   iconRetinaUrl: new URL('leaflet/dist/images/marker-icon-2x.png', import.meta.url).href,
@@ -22,7 +21,6 @@ function getTransportColor(mode) {
   return colors.transport.default[mode] || colors.transport.default.walk;
 }
 
-// Returns an array of LineString GeoJSON features
 function getLegLines(responseData) {
   if (!responseData) return;
 
@@ -42,7 +40,6 @@ function getLegLines(responseData) {
     );
 }
 
-// Returns an array of Polygon GeoJSON features
 function getFlexibleAreas(responseData) {
   if (!responseData) return;
 
@@ -67,7 +64,6 @@ function getFlexibleAreas(responseData) {
   return [...quayAreas, ...fromPlaceAreas];
 }
 
-// Returns an array of LineString GeoJSON features
 function getServiceJourneyLines(responseData) {
   if (!responseData) return;
 
@@ -98,9 +94,8 @@ function getMapData(responseData) {
   };
 }
 
-// Returns an array of points
 function getVehiclePositions(responseData) {
-  if (!responseData) return;
+  if (!responseData) return [];
 
   const vehicles = responseData.data?.vehicles;
 
@@ -109,9 +104,22 @@ function getVehiclePositions(responseData) {
   }
 
   return vehicles
-    .map((vehicle) => vehicle?.location)
-    .filter(Boolean)
-    .map((location) => point([location.longitude, location.latitude]));
+    .map((vehicle, index) => ({
+      vehicle,
+      index,
+      location: vehicle?.location || { longitude: vehicle?.lon, latitude: vehicle?.lat }
+    }))
+    .filter(({ location }) => location?.longitude && location?.latitude)
+    .map(({ vehicle, index, location }) => {
+      const systemName = vehicle?.system?.name?.translation?.[0]?.value || 'unknown';
+      const vehicleKey = `${systemName}_vehicle_${index}`;
+
+      return point([location.longitude, location.latitude], {
+        vehicleKey,
+        originalIndex: index,
+        systemName
+      });
+    });
 }
 
 function MapContent({ mapData }) {
@@ -130,21 +138,39 @@ function MapContent({ mapData }) {
     return allFeatures.length > 0 ? featureCollection(allFeatures) : null;
   }, [mapData]);
 
-  // Create a unique key that changes when vehicle positions change
   const collectionKey = useMemo(() => {
     if (!collection) return 'empty';
 
-    // Create a hash of vehicle positions to detect changes
     const vehiclePoints = collection.features
       .filter((feature) => feature.geometry.type === 'Point')
-      .map(
-        (feature) =>
-          `${feature.geometry.coordinates[0]},${feature.geometry.coordinates[1]}`
-      )
+      .map((feature) => {
+        const pointGeometry = feature.geometry as any;
+        return `${pointGeometry.coordinates[0]},${pointGeometry.coordinates[1]}-${feature.properties?.markerType || 'default'}`;
+      })
       .join('|');
 
     return `${collection.features.length}-${vehiclePoints}`;
   }, [collection]);
+
+  const pointToLayer = useCallback((feature, latlng) => {
+    const age = feature.properties?.age || 0;
+    const opacity = Math.max(0.1, 1.0 - (age * 0.1));
+
+    const customIcon = new Leaflet.Icon({
+      iconUrl: new URL('leaflet/dist/images/marker-icon.png', import.meta.url).href,
+      shadowUrl: new URL('leaflet/dist/images/marker-shadow.png', import.meta.url).href,
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41],
+      className: `marker-age-${age}`
+    });
+
+    const marker = Leaflet.marker(latlng, { icon: customIcon });
+    marker.setOpacity(opacity);
+
+    return marker;
+  }, []);
 
   useEffect(() => {
     if (!collection) return;
@@ -161,7 +187,6 @@ function MapContent({ mapData }) {
       }
     );
 
-    // Expand cumulative bounds to include new data, never shrink
     if (!cumulativeBoundsRef.current) {
       cumulativeBoundsRef.current = newBounds;
     } else {
@@ -180,16 +205,66 @@ function MapContent({ mapData }) {
       key={collectionKey}
       data={collection}
       style={(feature) => ({ color: feature.properties.color })}
+      pointToLayer={pointToLayer}
     />
   );
 }
 
 export default function MapView({ response }) {
   const [mapData, setMapData] = useState(getMapData(response));
+  const [vehicleHistory, setVehicleHistory] = useState(new Map());
 
   useEffect(() => {
-    setMapData(getMapData(response));
+    const newMapData = getMapData(response);
+
+    if (newMapData?.vehiclePositions && newMapData.vehiclePositions.length > 0) {
+      setVehicleHistory((prevHistory) => {
+        const newHistory = new Map(prevHistory);
+
+        newMapData.vehiclePositions.forEach((currentPos) => {
+          const vehicleKey = currentPos.properties.vehicleKey;
+          const coords = currentPos.geometry.coordinates;
+          const existingHistory = newHistory.get(vehicleKey) || [];
+
+          const lastPosition = existingHistory[0];
+          const positionChanged = !lastPosition ||
+            Math.abs(lastPosition[0] - coords[0]) > 0.000001 ||
+            Math.abs(lastPosition[1] - coords[1]) > 0.000001;
+
+          if (positionChanged) {
+            const updatedHistory = [coords, ...existingHistory].slice(0, 10);
+            newHistory.set(vehicleKey, updatedHistory);
+          }
+        });
+
+        return newHistory;
+      });
+    }
+
+    setMapData(newMapData);
   }, [response]);
+
+  const enhancedMapData = useMemo(() => {
+    if (!mapData) return mapData;
+
+    const historicalPositions = [];
+
+    vehicleHistory.forEach((positions, vehicleKey) => {
+      positions.forEach((coords, ageIndex) => {
+        historicalPositions.push(
+          point(coords, {
+            vehicleKey,
+            age: ageIndex,
+          })
+        );
+      });
+    });
+
+    return {
+      ...mapData,
+      vehiclePositions: historicalPositions,
+    };
+  }, [mapData, vehicleHistory]);
 
   return (
     <MapContainer
@@ -212,7 +287,7 @@ export default function MapView({ response }) {
         }
         url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
       />
-      <MapContent mapData={mapData} />
+      <MapContent mapData={enhancedMapData} />
     </MapContainer>
   );
 }
