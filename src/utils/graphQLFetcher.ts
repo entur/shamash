@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import { v4 as uuid } from 'uuid';
 import { parse } from 'graphql';
-import { SubscriptionClient } from 'subscriptions-transport-ws';
+import { createClient } from 'graphql-ws';
 
 const hasSubscriptionOperation = (graphQlParams) => {
   const queryDoc = parse(graphQlParams.query);
@@ -19,29 +19,39 @@ const hasSubscriptionOperation = (graphQlParams) => {
 };
 
 const graphQLFetcher = (graphQLUrl, subscriptionsUrl, enturClientName) => {
-  let activeSubscriptionId = null;
-
-  let subscriptionsClient;
+  let activeSubscription = null;
+  let subscriptionClient;
 
   if (subscriptionsUrl) {
-    subscriptionsClient = new SubscriptionClient(subscriptionsUrl, {
-      reconnect: true,
+    subscriptionClient = createClient({
+      url: subscriptionsUrl,
+      connectionParams: {
+        headers: {
+          'ET-Client-Name': enturClientName,
+          'X-Correlation-Id': uuid(),
+        },
+      },
     });
   }
 
   return (graphQLParams) => {
     console.log(graphQLParams);
     if (hasSubscriptionOperation(graphQLParams)) {
-      if (subscriptionsClient && activeSubscriptionId !== null) {
-        subscriptionsClient.unsubscribeAll();
+      if (activeSubscription) {
+        activeSubscription();
+        activeSubscription = null;
       }
 
-      if (subscriptionsClient) {
+      if (subscriptionClient) {
         return {
           subscribe: (observer) => {
-            activeSubscriptionId = subscriptionsClient
-              .request(graphQLParams)
-              .subscribe(observer);
+            activeSubscription = subscriptionClient.subscribe(
+              {
+                query: graphQLParams.query,
+                variables: graphQLParams.variables,
+              },
+              observer
+            );
           },
         };
       }
