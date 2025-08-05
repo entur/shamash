@@ -2,247 +2,247 @@
  * https://gist.github.com/bkeating/cfe0d5e72bd3f9f1f77e1a2ff2309972
  */
 
-/* CodeMirror Dark Theme */
-.CodeMirror {
+/* CodeMirror Dark Theme - only apply when dark-theme class is on body */
+body.dark-theme .CodeMirror {
   background: #282d34 !important;
   color: #abb2bf !important;
 }
 
-.CodeMirror div.CodeMirror-cursor {
+body.dark-theme .CodeMirror div.CodeMirror-cursor {
   border-color: white;
 }
 
-.CodeMirror-gutters {
+body.dark-theme .CodeMirror-gutters {
   background: #21262b !important;
   border-right: 1px solid #181a1f !important;
 }
 
-.CodeMirror-linenumber {
+body.dark-theme .CodeMirror-linenumber {
   color: #5c6370 !important;
 }
 
 /* Fix comment colors - make them more visible */
-.cm-comment {
+body.dark-theme .cm-comment {
   color: #7f848e !important;
 }
 
 /* Scrollbars */
-.CodeMirror-scrollbar-filler,
-.CodeMirror-gutter-filler {
+body.dark-theme .CodeMirror-scrollbar-filler,
+body.dark-theme .CodeMirror-gutter-filler {
   background-color: #21262b !important;
 }
 
-.CodeMirror-scroll::-webkit-scrollbar {
+body.dark-theme .CodeMirror-scroll::-webkit-scrollbar {
   width: 12px;
   height: 12px;
 }
 
-.CodeMirror-scroll::-webkit-scrollbar-track {
+body.dark-theme .CodeMirror-scroll::-webkit-scrollbar-track {
   background: #21262b;
 }
 
-.CodeMirror-scroll::-webkit-scrollbar-thumb {
+body.dark-theme .CodeMirror-scroll::-webkit-scrollbar-thumb {
   background: #4a5058;
   border-radius: 6px;
 }
 
-.CodeMirror-scroll::-webkit-scrollbar-thumb:hover {
+body.dark-theme .CodeMirror-scroll::-webkit-scrollbar-thumb:hover {
   background: #5a6068;
 }
 
-.CodeMirror-scroll::-webkit-scrollbar-corner {
+body.dark-theme .CodeMirror-scroll::-webkit-scrollbar-corner {
   background: #21262b;
 }
 
 /* GraphiQL Container Dark Theme */
-.graphiql-container {
+body.dark-theme .graphiql-container {
   background: #21262b !important;
   color: #cacdd3 !important;
 }
 
-.graphiql-container .doc-explorer-contents,
-.graphiql-container .history-contents {
+body.dark-theme .graphiql-container .doc-explorer-contents,
+body.dark-theme .graphiql-container .history-contents {
   background-color: #21262b;
   border-top: 1px solid #181a1f;
   color: #cacdd3;
 }
 
-.graphiql-container .toolbar-button {
+body.dark-theme .graphiql-container .toolbar-button {
   background: #1c2125 !important;
   box-shadow: none !important;
   color: #aaaaaa !important;
   border: 1px solid #181a1f !important;
 }
 
-.graphiql-container .toolbar-button:hover {
+body.dark-theme .graphiql-container .toolbar-button:hover {
   background: #2c3135 !important;
   color: #cacdd3 !important;
 }
 
-.graphiql-container .result-window .CodeMirror-gutters {
+body.dark-theme .graphiql-container .result-window .CodeMirror-gutters {
   background: #21262b;
   border-right: 1px solid #181a1f !important;
 }
 
-.graphiql-container .resultWrap {
+body.dark-theme .graphiql-container .resultWrap {
   border-left: solid 1px #181a1f;
   background: #21262b;
 }
 
 /* Fix pane dividers - make them dark */
-.graphiql-container .queryWrap {
+body.dark-theme .graphiql-container .queryWrap {
   border-right: 1px solid #181a1f !important;
 }
 
-.graphiql-container .editorWrap {
+body.dark-theme .graphiql-container .editorWrap {
   border-top: 1px solid #181a1f !important;
 }
 
-.graphiql-container .variable-editor {
+body.dark-theme .graphiql-container .variable-editor {
   border-top: 1px solid #181a1f !important;
 }
 
 /* Fix query variables and request headers tab selection */
-.graphiql-container .variable-editor-title {
+body.dark-theme .graphiql-container .variable-editor-title {
   background: #21262b !important;
   border-bottom: 1px solid #181a1f !important;
   border-top: 1px solid #181a1f !important;
   color: #cacdd3 !important;
 }
 
-.graphiql-container .variable-editor-title-text {
+body.dark-theme .graphiql-container .variable-editor-title-text {
   color: #888 !important;
   background: #1a1f25 !important;
   padding: 8px 12px;
   border: 1px solid #181a1f !important;
 }
 
-.graphiql-container .variable-editor-title-text.active {
+body.dark-theme .graphiql-container .variable-editor-title-text.active {
   color: #cacdd3 !important;
   background: #21262b !important;
   border-bottom: 2px solid #007acc !important;
 }
 
-.graphiql-container .topBar {
+body.dark-theme .graphiql-container .topBar {
   background: #21262b;
   border-color: #181a1f;
 }
 
-.graphiql-container .footer,
-.graphiql-container .footer:before {
+body.dark-theme .graphiql-container .footer,
+body.dark-theme .graphiql-container .footer:before {
   background: #21262b;
   color: #cacdd3;
   border-color: #181a1f;
 }
 
-.graphiql-container .docExplorerHide {
+body.dark-theme .graphiql-container .docExplorerHide {
   color: #606671;
 }
 
-.graphiql-container .doc-explorer-title,
-.graphiql-container .history-title,
-.doc-explorer-back {
+body.dark-theme .graphiql-container .doc-explorer-title,
+body.dark-theme .graphiql-container .history-title,
+body.dark-theme .doc-explorer-back {
   color: #cacdd3 !important;
 }
 
-.graphiql-container .doc-explorer {
+body.dark-theme .graphiql-container .doc-explorer {
   background: #21262b;
 }
 
-.graphiql-container .docExplorerWrap,
-.graphiql-container .historyPaneWrap {
+body.dark-theme .graphiql-container .docExplorerWrap,
+body.dark-theme .graphiql-container .historyPaneWrap {
   box-shadow: none;
   background: #21262b;
 }
 
-.graphiql-container .docExplorerShow {
+body.dark-theme .graphiql-container .docExplorerShow {
   border-left: none;
 }
 
-.graphiql-container .docExplorerShow,
-.graphiql-container .historyShow {
+body.dark-theme .graphiql-container .docExplorerShow,
+body.dark-theme .graphiql-container .historyShow {
   background: #21262b;
   border-bottom: 1px solid #181a1e;
   color: #cacdd3;
 }
 
-.graphiql-container .docExplorerShow:before,
-.graphiql-container .doc-explorer-back:before {
+body.dark-theme .graphiql-container .docExplorerShow:before,
+body.dark-theme .graphiql-container .doc-explorer-back:before {
   border-color: #cacdd3;
 }
 
-.graphiql-container .search-box {
+body.dark-theme .graphiql-container .search-box {
   margin: auto auto 10px auto;
   border: none;
 }
 
-.graphiql-container .search-box input {
+body.dark-theme .graphiql-container .search-box input {
   background: #1e2127;
   padding-left: 28px;
   color: #cacdd3;
   border: 1px solid #181a1f;
 }
 
-.graphiql-container .search-box:before {
+body.dark-theme .graphiql-container .search-box:before {
   color: #c1c4ca;
   font-size: 21px;
 }
 
 /* Global scrollbars for dark theme */
-.graphiql-container ::-webkit-scrollbar {
+body.dark-theme .graphiql-container ::-webkit-scrollbar {
   width: 12px;
   height: 12px;
 }
 
-.graphiql-container ::-webkit-scrollbar-track {
+body.dark-theme .graphiql-container ::-webkit-scrollbar-track {
   background: #21262b;
 }
 
-.graphiql-container ::-webkit-scrollbar-thumb {
+body.dark-theme .graphiql-container ::-webkit-scrollbar-thumb {
   background: #4a5058;
   border-radius: 6px;
 }
 
-.graphiql-container ::-webkit-scrollbar-thumb:hover {
+body.dark-theme .graphiql-container ::-webkit-scrollbar-thumb:hover {
   background: #5a6068;
 }
 
-.graphiql-container ::-webkit-scrollbar-corner {
+body.dark-theme .graphiql-container ::-webkit-scrollbar-corner {
   background: #21262b;
 }
 
 /* Query editor dark theme */
-.graphiql-container .query-editor .CodeMirror {
+body.dark-theme .graphiql-container .query-editor .CodeMirror {
   background: #282d34 !important;
 }
 
-.graphiql-container .variable-editor .CodeMirror {
+body.dark-theme .graphiql-container .variable-editor .CodeMirror {
   background: #282d34 !important;
 }
 
-.graphiql-container .result-window .CodeMirror {
+body.dark-theme .graphiql-container .result-window .CodeMirror {
   background: #282d34 !important;
 }
 
 /* Explorer dark theme */
-.graphiql-container .graphiql-explorer-root {
+body.dark-theme .graphiql-container .graphiql-explorer-root {
   background: #21262b !important;
   color: #cacdd3 !important;
 }
 
-.graphiql-container .graphiql-explorer-root ::-webkit-scrollbar {
+body.dark-theme .graphiql-container .graphiql-explorer-root ::-webkit-scrollbar {
   width: 12px;
 }
 
-.graphiql-container .graphiql-explorer-root ::-webkit-scrollbar-track {
+body.dark-theme .graphiql-container .graphiql-explorer-root ::-webkit-scrollbar-track {
   background: #21262b;
 }
 
-.graphiql-container .graphiql-explorer-root ::-webkit-scrollbar-thumb {
+body.dark-theme .graphiql-container .graphiql-explorer-root ::-webkit-scrollbar-thumb {
   background: #4a5058;
   border-radius: 6px;
 }
 
-.graphiql-container .graphiql-explorer-root ::-webkit-scrollbar-thumb:hover {
+body.dark-theme .graphiql-container .graphiql-explorer-root ::-webkit-scrollbar-thumb:hover {
   background: #5a6068;
 }

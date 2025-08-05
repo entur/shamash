@@ -65,26 +65,24 @@ export const App: React.FC<AppProps> = ({
   const [showExplorer, setShowExplorer] = useState<boolean>(false);
   const [showMap, setShowMap] = useState<boolean>(false);
   const [response, setResponse] = useState<any>();
+  const [currentTheme, setCurrentTheme] = useState<string>(getPreferredTheme());
 
   let graphiql = useRef<any>(null);
 
   const serviceName = findServiceName(pathname, BASE_PATH);
 
-  // Load dark theme CSS dynamically when dark theme is selected
+  // Load dark theme CSS once and toggle with body class
   useEffect(() => {
-    const isDarkTheme = getPreferredTheme() === 'dark';
+    // Import dark theme CSS once on component mount
+    import('../../darktheme.css');
 
-    if (isDarkTheme) {
-      // Import the dark theme CSS
-      import('../../darktheme.css');
+    // Apply or remove dark theme class based on current theme
+    if (currentTheme === 'dark') {
+      document.body.classList.add('dark-theme');
     } else {
-      // Remove dark theme CSS if it was previously loaded
-      const existingLink = document.querySelector('link[href*="darktheme"]');
-      if (existingLink) {
-        existingLink.remove();
-      }
+      document.body.classList.remove('dark-theme');
     }
-  }, []);
+  }, [currentTheme]);
 
   // Redirect to default service if no service is specified or if at root
   useEffect(() => {
@@ -180,7 +178,7 @@ export const App: React.FC<AppProps> = ({
 
   const handleThemeChange = (theme: string) => {
     window.localStorage.setItem('theme', theme);
-    window.location.reload();
+    setCurrentTheme(theme);
   };
 
   const handleClickPrettifyButton = () => {
@@ -327,8 +325,8 @@ export const App: React.FC<AppProps> = ({
   const { variables, operationName } = parameters;
 
   const customFetcher = useCallback(
-    async (...args: any[]) => {
-      const res = await fetcher(...args);
+    async (graphQLParams: any) => {
+      const res = await fetcher(graphQLParams);
       setResponse(res);
       return res;
     },
@@ -350,7 +348,7 @@ export const App: React.FC<AppProps> = ({
         }
         explorerIsOpen={showExplorer}
         onToggleExplorer={toggleExplorer}
-        colors={getPreferredTheme() === 'dark' ? explorerDarkColors : undefined}
+        colors={currentTheme === 'dark' ? explorerDarkColors : undefined}
       />
       <div style={{ flex: 1 }}>
         <GraphiQL
@@ -366,7 +364,7 @@ export const App: React.FC<AppProps> = ({
           <GraphiQL.Logo>
             <img
               alt="logo"
-              src={getPreferredTheme() === 'dark' ? whiteLogo : normalLogo}
+              src={currentTheme === 'dark' ? whiteLogo : normalLogo}
               className="logo"
             />
           </GraphiQL.Logo>
