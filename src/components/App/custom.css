@@ -1,4 +1,3 @@
-/* Entur UI component styles - required imports */
 @import '@entur/a11y/dist/styles.css';
 @import '@entur/button/dist/styles.css';
 @import '@entur/expand/dist/styles.css';
@@ -7,7 +6,6 @@
 @import '@entur/tooltip/dist/styles.css';
 @import '@entur/typography/dist/styles.css';
 
-/* Custom application styles */
 html,
 body,
 #root {

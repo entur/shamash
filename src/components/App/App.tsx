@@ -66,10 +66,26 @@ export const App: React.FC<AppProps> = ({
   const [showMap, setShowMap] = useState<boolean>(false);
   const [response, setResponse] = useState<any>();
   const [currentTheme, setCurrentTheme] = useState<string>(getPreferredTheme());
+  const [isSubscriptionActive, setIsSubscriptionActive] = useState<boolean>(false);
+  const [query, setQuery] = useState('');
 
   let graphiql = useRef<any>(null);
 
   const serviceName = findServiceName(pathname, BASE_PATH);
+
+  const isSubscriptionQuery = useMemo(() => {
+    if (!query) return false;
+    try {
+      const queryDoc = parse(query);
+      return queryDoc.definitions.some(
+        definition =>
+          definition.kind === 'OperationDefinition' &&
+          definition.operation === 'subscription'
+      );
+    } catch {
+      return false;
+    }
+  }, [query]);
 
   // Load dark theme CSS once and toggle with body class
   useEffect(() => {
@@ -113,13 +129,19 @@ export const App: React.FC<AppProps> = ({
   }
 
   const fetcher = useMemo(
-    () =>
-      currentService &&
-      graphQLFetcher(
+    () => {
+      if (!currentService) return null;
+
+      return graphQLFetcher(
         currentService.url,
         currentService.subscriptionsUrl,
-        enturClientName
-      ),
+        enturClientName,
+        {
+          onSubscriptionStart: () => setIsSubscriptionActive(true),
+          onSubscriptionEnd: () => setIsSubscriptionActive(false)
+        }
+      );
+    },
     [currentService, enturClientName]
   );
 
@@ -159,7 +181,6 @@ export const App: React.FC<AppProps> = ({
 
   const handleEnvironmentChange = (env: string) => {
     if (window.location.host.includes('localhost')) {
-      console.log('Running on localhost, not redirecting');
       return;
     }
 
@@ -296,7 +317,6 @@ export const App: React.FC<AppProps> = ({
     setShowGeocoderModal(!showGeocoderModal);
   };
 
-  const [query, setQuery] = useState('');
 
   useEffect(() => {
     const setInitialQuery = async () => {
@@ -324,14 +344,44 @@ export const App: React.FC<AppProps> = ({
 
   const { variables, operationName } = parameters;
 
+  // Custom fetcher that handles subscription lifecycle
   const customFetcher = useCallback(
-    async (graphQLParams: any) => {
-      const res = await fetcher(graphQLParams);
-      setResponse(res);
-      return res;
+    (graphQLParams: any) => {
+      const result = fetcher(graphQLParams);
+
+      if (result && typeof result.then === 'function') {
+        result.then((res) => setResponse(res));
+      }
+
+      return result;
     },
     [fetcher]
   );
+
+  // Monitor for subscription query changes to reset state
+  useEffect(() => {
+    if (!isSubscriptionQuery) {
+      setIsSubscriptionActive(false);
+    }
+  }, [isSubscriptionQuery]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const executeButton = document.querySelector('.graphiql-container .execute-button') as HTMLElement;
+      if (!executeButton) return;
+
+      const svg = executeButton.querySelector('svg');
+      if (isSubscriptionQuery && isSubscriptionActive) {
+        executeButton.classList.add('subscription-active');
+        svg.innerHTML = `<path d="M 10 10 L 23 10 L 23 23 L 10 23 z" />`;
+      } else {
+        executeButton.classList.remove('subscription-active');
+        svg.innerHTML = `<path d="M 11 9 L 24 16 L 11 23 z" />`;
+      }
+    }, 10);
+
+    return () => clearTimeout(timer);
+  }, [isSubscriptionQuery, isSubscriptionActive]);
 
   if (currentService == null) {
     return <NotFound />;
