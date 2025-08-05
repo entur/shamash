@@ -8,6 +8,18 @@ import lineToPolygon from '@turf/line-to-polygon';
 import { toGeoJSON } from '@mapbox/polyline';
 import { colors } from '@entur/tokens';
 
+// Fix for missing marker icons in Vite
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+// Configure default marker icons
+Leaflet.Icon.Default.mergeOptions({
+  iconUrl: markerIcon,
+  iconRetinaUrl: markerIcon2x,
+  shadowUrl: markerShadow,
+});
+
 const DEFAULT_CENTER: LatLngTuple = [60, 10];
 
 function getTransportColor(mode) {
@@ -100,12 +112,10 @@ function getVehiclePositions(responseData) {
     return [];
   }
 
-  const vehiclePositions = vehicles
+  return vehicles
     .map((vehicle) => vehicle?.location)
     .filter(Boolean)
     .map((location) => point([location.longitude, location.latitude]));
-
-  return vehiclePositions;
 }
 
 function MapContent({ mapData }) {
@@ -168,7 +178,6 @@ export default function MapView({ response }) {
         width: '100%',
       }}
       zoomControl={false}
-      useFlyTo
       boundsOptions={{
         animate: true,
         duration: 2,
