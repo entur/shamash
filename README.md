@@ -28,3 +28,5 @@ Deployment to dev is (done automatically)[.github/workflows/firebase-hosting-mer
 ```sh
 firebase -P dev deploy --only hosting
 ```
+
+The updated app should now be available at https://api.dev.entur.io/graphql-explorer
