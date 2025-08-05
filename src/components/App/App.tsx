@@ -349,8 +349,32 @@ export const App: React.FC<AppProps> = ({
     (graphQLParams: any) => {
       const result = fetcher(graphQLParams);
 
+      // Handle regular queries/mutations (promises)
       if (result && typeof result.then === 'function') {
         result.then((res) => setResponse(res));
+        return result;
+      }
+
+      // Handle subscriptions (observables)
+      if (result && typeof result.subscribe === 'function') {
+        return {
+          subscribe: (observer) => {
+            const subscription = result.subscribe({
+              next: (data) => {
+                setResponse(data); // Update response state with subscription data
+                observer.next(data);
+              },
+              error: (error) => {
+                observer.error(error);
+              },
+              complete: () => {
+                observer.complete();
+              }
+            });
+
+            return subscription;
+          }
+        };
       }
 
       return result;

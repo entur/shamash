@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
 import Leaflet, { LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -116,6 +116,7 @@ function getVehiclePositions(responseData) {
 
 function MapContent({ mapData }) {
   const map = useMap();
+  const cumulativeBoundsRef = useRef(null);
 
   const collection = useMemo(() => {
     const { legLines, flexibleAreas, serviceJourney, vehiclePositions } =
@@ -128,6 +129,22 @@ function MapContent({ mapData }) {
     ];
     return allFeatures.length > 0 ? featureCollection(allFeatures) : null;
   }, [mapData]);
+
+  // Create a unique key that changes when vehicle positions change
+  const collectionKey = useMemo(() => {
+    if (!collection) return 'empty';
+
+    // Create a hash of vehicle positions to detect changes
+    const vehiclePoints = collection.features
+      .filter((feature) => feature.geometry.type === 'Point')
+      .map(
+        (feature) =>
+          `${feature.geometry.coordinates[0]},${feature.geometry.coordinates[1]}`
+      )
+      .join('|');
+
+    return `${collection.features.length}-${vehiclePoints}`;
+  }, [collection]);
 
   useEffect(() => {
     if (!collection) return;
@@ -144,7 +161,14 @@ function MapContent({ mapData }) {
       }
     );
 
-    map.fitBounds(newBounds);
+    // Expand cumulative bounds to include new data, never shrink
+    if (!cumulativeBoundsRef.current) {
+      cumulativeBoundsRef.current = newBounds;
+    } else {
+      cumulativeBoundsRef.current.extend(newBounds);
+    }
+
+    map.fitBounds(cumulativeBoundsRef.current);
   }, [map, collection]);
 
   if (!collection) {
@@ -153,6 +177,7 @@ function MapContent({ mapData }) {
 
   return (
     <GeoJSON
+      key={collectionKey}
       data={collection}
       style={(feature) => ({ color: feature.properties.color })}
     />
