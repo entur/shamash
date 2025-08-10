@@ -14,7 +14,7 @@ concurrency:
 jobs:
   build:
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: 22.18.0
@@ -50,7 +50,7 @@ jobs:
     needs: [build]
     environment: 'dev'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
       - uses: FirebaseExtended/action-hosting-deploy@v0
@@ -64,7 +64,7 @@ jobs:
     needs: [deploy_dev]
     environment: 'staging'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
       - uses: FirebaseExtended/action-hosting-deploy@v0
@@ -78,7 +78,7 @@ jobs:
     needs: [deploy_dev, deploy_staging]
     environment: 'prod'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
       - uses: FirebaseExtended/action-hosting-deploy@v0
