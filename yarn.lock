@@ -371,76 +371,76 @@
   resolved "https://registry.yarnpkg.com/@csstools/css-tokenizer/-/css-tokenizer-3.0.4.tgz#333fedabc3fd1a8e5d0100013731cf19e6a8c5d3"
   integrity sha512-Vd/9EVDiu6PPJt9yAh6roZP6El1xHrdvIVGjyBsHR0RYwNHgL7FJPyIIW4fANJNG6FtyZfvlRPpFI4ZM/lubvw==
 
-"@entur/a11y@^0.2.99":
-  version "0.2.99"
-  resolved "https://registry.yarnpkg.com/@entur/a11y/-/a11y-0.2.99.tgz#fff462a831fd3dd860c731c812a2a230a99ea3ea"
-  integrity sha512-0Bsrf+v4X0WSFqeeHJ4g3VVXorJEAayonHyITQxST0acFjiH50+N261aVdULp0aVa0V8qKkc4uBT2Fs3k7O/Vw==
+"@entur/a11y@^0.2.100":
+  version "0.2.100"
+  resolved "https://registry.yarnpkg.com/@entur/a11y/-/a11y-0.2.100.tgz#3e403e2ee39594cd3aa09eafd7a3ddfbde25d5e2"
+  integrity sha512-6HY/B+KShkpMLD0TOv/3r7y/XB1IkbLL1cnLi5r375/hXZ8ye3ACmr3lamCokv1X3GyYgzOXR5L7vrZszjMz7w==
   dependencies:
-    "@entur/tokens" "^3.19.1"
-    "@entur/utils" "^0.12.3"
+    "@entur/tokens" "^3.19.2"
+    "@entur/utils" "^0.12.4"
 
-"@entur/button@^3.3.12":
-  version "3.3.12"
-  resolved "https://registry.yarnpkg.com/@entur/button/-/button-3.3.12.tgz#0cd94048cc3d2e132dffbc751a125fdae00b6042"
-  integrity sha512-DIdRFyvDdBhlUmEdTdVeIXfcHlrysI0pKjmFMwpyEn4ROPF3y2oi6ldomKr/8ug5M/7y/AbWInw/Twm4zJIRpQ==
+"@entur/button@^3.3.13":
+  version "3.3.13"
+  resolved "https://registry.yarnpkg.com/@entur/button/-/button-3.3.13.tgz#1383f9ab4d73b152224cdd2eda58bf99a6edcaee"
+  integrity sha512-0n7xwionRTP9rOpIHo3tXbMOowioUDHK8xiPhYdNLUwNLxn+F+rz3dxOZQLa2zSArZam9rOfA7N5E1xYPDzCaA==
   dependencies:
-    "@entur/loader" "^0.5.29"
-    "@entur/tokens" "^3.19.1"
-    "@entur/utils" "^0.12.3"
-    classnames "^2.3.1"
+    "@entur/loader" "^0.5.30"
+    "@entur/tokens" "^3.19.2"
+    "@entur/utils" "^0.12.4"
+    classnames "^2.5.1"
 
-"@entur/expand@^3.6.12":
-  version "3.6.12"
-  resolved "https://registry.yarnpkg.com/@entur/expand/-/expand-3.6.12.tgz#76a81d527e4b29db12c4ee4034eb4c43caf8f67f"
-  integrity sha512-2Z/c4RQfFuB4v9sNYLtGsT9SzHTeeGLR+COmtR9J8K7Z32cU0Kea+rcvVUBvL8TRBwA802k7lVVoDOQUz4sBbA==
+"@entur/expand@^3.6.13":
+  version "3.6.13"
+  resolved "https://registry.yarnpkg.com/@entur/expand/-/expand-3.6.13.tgz#96a79f8e261635c2e9809de2954bef72b441cb20"
+  integrity sha512-dfRaPiJr2BdCQ18KX+rBAm+XWr4QsD696l4D+tWZwQQhO7MC1v0J0XRGtJFLHlZBJP1GxYL1/vH525XyxviJng==
   dependencies:
-    "@entur/icons" "^8.0.0"
-    "@entur/tokens" "^3.19.1"
-    "@entur/typography" "^1.9.12"
-    "@entur/utils" "^0.12.3"
-    classnames "^2.3.1"
+    "@entur/icons" "^8.0.1"
+    "@entur/tokens" "^3.19.2"
+    "@entur/typography" "^1.9.13"
+    "@entur/utils" "^0.12.4"
+    classnames "^2.5.1"
     react-collapse "^5.1.1"
 
-"@entur/form@8.3.1", "@entur/form@^8.3.1":
-  version "8.3.1"
-  resolved "https://registry.yarnpkg.com/@entur/form/-/form-8.3.1.tgz#fd55ec88bd87d1f99cb6462693f976898754309f"
-  integrity sha512-1apCo4oBL/8ra2F2MlCYmsS59Qaka+Zh6p1toScHaDRCnYR58e9NOD5nh1xzVJoFvYTgEM7AiEPvGAc8apHyRA==
+"@entur/form@8.3.2", "@entur/form@^8.3.2":
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/@entur/form/-/form-8.3.2.tgz#bdbf52b2b2b6720fabad36f0d3a6f5247b04ce29"
+  integrity sha512-DdLTgkDwaWkb/9QX6r/IChlKqYvgNQ/lSJXHpCWe75uzIWJxdy3GGSVyMfNJZ8MAkIym5sjvF8i/nSRIQvVAHg==
   dependencies:
-    "@entur/button" "^3.3.12"
-    "@entur/icons" "^8.0.0"
-    "@entur/tokens" "^3.19.1"
-    "@entur/tooltip" "^5.2.12"
-    "@entur/typography" "^1.9.12"
-    "@entur/utils" "^0.12.3"
-    classnames "^2.3.1"
+    "@entur/button" "^3.3.13"
+    "@entur/icons" "^8.0.1"
+    "@entur/tokens" "^3.19.2"
+    "@entur/tooltip" "^5.2.13"
+    "@entur/typography" "^1.9.13"
+    "@entur/utils" "^0.12.4"
+    classnames "^2.5.1"
 
-"@entur/icons@8.0.0", "@entur/icons@^8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@entur/icons/-/icons-8.0.0.tgz#a13048cf2e583b6f4c00d46158eb7f55445625a7"
-  integrity sha512-5AlvY2Sa+rEmYTpAgH8GCt2WAA9pM3rl9krFVomcTDtffVC1atk6MMJAYfsh9cGhXScKHzUv63PslMy5VOeaPw==
+"@entur/icons@8.0.1", "@entur/icons@^8.0.1":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@entur/icons/-/icons-8.0.1.tgz#467a77618d27646d89508284dde692a1705e7f7a"
+  integrity sha512-t5LpzHqqTCziOy4Qo2C8dp+DxS8n31mSxCUu7M03aOYxjVDwr8mh6irrk8laAwVD4xeOAnYSkBww4PT9hzfA3Q==
   dependencies:
-    "@entur/tokens" "^3.19.1"
+    "@entur/tokens" "^3.19.2"
 
-"@entur/layout@^3.1.8":
-  version "3.1.8"
-  resolved "https://registry.yarnpkg.com/@entur/layout/-/layout-3.1.8.tgz#c02efb8526633e919adcc65006ec39612f855772"
-  integrity sha512-kqgtG6dY6kbWp9axXQMsXtUdO7KgC3IBuhejXXaxZ2mQMoKj04qlXe1zOxcS7XXlymF0iOfoSStXXy22EHkvMw==
+"@entur/layout@^3.1.9":
+  version "3.1.9"
+  resolved "https://registry.yarnpkg.com/@entur/layout/-/layout-3.1.9.tgz#72883795df05385a8a16fd7ece28535bde293f35"
+  integrity sha512-u5azfsPTQgU8MdjOAd212ZCyh7x1RSCR8TVAPkF/6a5QrUAAB1mw+CnKwRq3dr9UpHHDs7l0fkRxaw4nFLv/jw==
   dependencies:
-    "@entur/icons" "^8.0.0"
-    "@entur/tokens" "^3.19.1"
-    "@entur/typography" "^1.9.12"
-    "@entur/utils" "^0.12.3"
-    classnames "^2.3.1"
+    "@entur/icons" "^8.0.1"
+    "@entur/tokens" "^3.19.2"
+    "@entur/typography" "^1.9.13"
+    "@entur/utils" "^0.12.4"
+    classnames "^2.5.1"
 
-"@entur/loader@^0.5.29":
-  version "0.5.29"
-  resolved "https://registry.yarnpkg.com/@entur/loader/-/loader-0.5.29.tgz#e6a01570c4779177d77a1665be2a0f48f0bcd7dc"
-  integrity sha512-cJPE5k/fYYRYkx0WEOl/lnh/CnZwIJe23iJAmYaQn15BXji95KbDDHnjgAHA7BJnaGAFHnKtt18OK+9BNSCJ/w==
+"@entur/loader@^0.5.30":
+  version "0.5.30"
+  resolved "https://registry.yarnpkg.com/@entur/loader/-/loader-0.5.30.tgz#541fd27945790b364684720a8aa536e21e74751d"
+  integrity sha512-/mSXO1vawa3RJWB3QYpBnEuQEny25WE2ChztJbl6yhkMGQu2eo702G5lg1BObukju3iZEfRG8h9bLp9SOeYh1w==
   dependencies:
-    "@entur/tokens" "^3.19.1"
-    "@entur/typography" "^1.9.12"
-    "@entur/utils" "^0.12.3"
-    classnames "^2.3.1"
+    "@entur/tokens" "^3.19.2"
+    "@entur/typography" "^1.9.13"
+    "@entur/utils" "^0.12.4"
+    classnames "^2.5.1"
 
 "@entur/sdk@5.3.0":
   version "5.3.0"
@@ -459,61 +459,61 @@
     qs "^6.10.1"
     regenerator-runtime "^0.13.8"
 
-"@entur/table@4.9.13":
-  version "4.9.13"
-  resolved "https://registry.yarnpkg.com/@entur/table/-/table-4.9.13.tgz#5c66bf15a280f1112a6792229f4fb272f5246ed2"
-  integrity sha512-I1CZgFnjyLldgyAicZetjbG+5xJA2qIFHyUuXTiF1nr6zT2jxYKHOVybUXotT5Yq0XvsReQ88xecKABg6uaJog==
+"@entur/table@4.9.14":
+  version "4.9.14"
+  resolved "https://registry.yarnpkg.com/@entur/table/-/table-4.9.14.tgz#882fe2fbbb3ad69fc8a851f8881505abcef8a0ac"
+  integrity sha512-oQkl1693Oqr5xCsJP7LR/cbmV6wAt2nK9ouwy5pDYVjGiC70MfZZtrIdkf0M+1edlRdgtuaFnbAnT0bCcuUCwg==
   dependencies:
-    "@entur/a11y" "^0.2.99"
-    "@entur/button" "^3.3.12"
-    "@entur/expand" "^3.6.12"
-    "@entur/form" "^8.3.1"
-    "@entur/icons" "^8.0.0"
-    "@entur/layout" "^3.1.8"
-    "@entur/tokens" "^3.19.1"
-    "@entur/tooltip" "^5.2.12"
-    "@entur/utils" "^0.12.3"
-    "@types/lodash.get" "^4.4.6"
-    classnames "^2.3.1"
+    "@entur/a11y" "^0.2.100"
+    "@entur/button" "^3.3.13"
+    "@entur/expand" "^3.6.13"
+    "@entur/form" "^8.3.2"
+    "@entur/icons" "^8.0.1"
+    "@entur/layout" "^3.1.9"
+    "@entur/tokens" "^3.19.2"
+    "@entur/tooltip" "^5.2.13"
+    "@entur/utils" "^0.12.4"
+    "@types/lodash.get" "^4.4.9"
+    classnames "^2.5.1"
     lodash.get "^4.4.2"
 
-"@entur/tokens@^3.19.1":
-  version "3.19.1"
-  resolved "https://registry.yarnpkg.com/@entur/tokens/-/tokens-3.19.1.tgz#c884f93bf6945afb8a62e5ca9ed98a8e30a20b0c"
-  integrity sha512-ix0Q+G7loW+lKjWPVgZ/1qjE+VD9/XjLHN74FithRMHKA/iF8GVDwAds6+rCr2gyX+OWD4uDdaFMVz8J11gVRA==
+"@entur/tokens@^3.19.2":
+  version "3.19.2"
+  resolved "https://registry.yarnpkg.com/@entur/tokens/-/tokens-3.19.2.tgz#4ba4a9add5ceac5c249f212dafc38bb1bd1111d3"
+  integrity sha512-W82eI0UwywDwyL3o594ejLF3RR8M3ICyR9DwWOqJT12oFq9UZTt9d3jgRlZPHIi4dI+Q3kbL1FbZevikmll1fQ==
   dependencies:
-    flat "^5.0.1"
+    flat "^5.0.2"
     hex-rgb "^4.3.0"
 
-"@entur/tooltip@^5.2.12":
-  version "5.2.12"
-  resolved "https://registry.yarnpkg.com/@entur/tooltip/-/tooltip-5.2.12.tgz#bb33df0565b243a4327f73086a3b6928a4bed929"
-  integrity sha512-SXN7BzpwHVh8vv3Ih8dEFfC1LANtxioOe4hks5m54azPPjAGLtki0OgKdpAPG/nANZOp0WsoTKzp4nrjCGnibQ==
+"@entur/tooltip@^5.2.13":
+  version "5.2.13"
+  resolved "https://registry.yarnpkg.com/@entur/tooltip/-/tooltip-5.2.13.tgz#ceeb90adce4015f0ec7964e33f1e809df9a81e8e"
+  integrity sha512-+4dvRvroPxGRmWL3bH4+JsgR+RjVbrm8gLo3d2ZtJpsi+OOxA0/W2FRd5A/qZ0+ia438nutiIBziYM+PjorQUg==
   dependencies:
-    "@entur/button" "^3.3.12"
-    "@entur/icons" "^8.0.0"
-    "@entur/layout" "^3.1.8"
-    "@entur/tokens" "^3.19.1"
-    "@entur/utils" "^0.12.3"
-    "@floating-ui/react" "^0.26.24"
-    "@floating-ui/react-dom" "^2.1.0"
-    classnames "^2.3.1"
+    "@entur/button" "^3.3.13"
+    "@entur/icons" "^8.0.1"
+    "@entur/layout" "^3.1.9"
+    "@entur/tokens" "^3.19.2"
+    "@entur/utils" "^0.12.4"
+    "@floating-ui/react" "^0.26.28"
+    "@floating-ui/react-dom" "^2.1.6"
+    classnames "^2.5.1"
 
-"@entur/typography@^1.9.12":
-  version "1.9.12"
-  resolved "https://registry.yarnpkg.com/@entur/typography/-/typography-1.9.12.tgz#459727950dcb65cbe640f3a9661ee5093089783c"
-  integrity sha512-kBNg0WoraAVgnIHMLZJBrLwy3/eRtWD7qGNVcEnBT3X2UCfFO7jQ/QMaSyydakmWwfNx+fqWfXFCtf3E0PmRKw==
+"@entur/typography@^1.9.13":
+  version "1.9.13"
+  resolved "https://registry.yarnpkg.com/@entur/typography/-/typography-1.9.13.tgz#15d6f7a60f68eabebce696622a21f56791bdeae5"
+  integrity sha512-c9F/uYSaDk0YDWWsid/GpGwq7L+1+HQo4BN7I+o8tROfJt1iEnF0qvvWzWQ7ZNS4tyCNouD8PW8LEZi/WJh4Lg==
   dependencies:
-    "@entur/icons" "^8.0.0"
-    "@entur/tokens" "^3.19.1"
-    "@entur/utils" "^0.12.3"
-    classnames "^2.3.1"
+    "@entur/icons" "^8.0.1"
+    "@entur/tokens" "^3.19.2"
+    "@entur/utils" "^0.12.4"
+    classnames "^2.5.1"
     normalize-scss "^8.0.0"
 
-"@entur/utils@^0.12.3":
-  version "0.12.3"
-  resolved "https://registry.yarnpkg.com/@entur/utils/-/utils-0.12.3.tgz#35f6b000e800537043ce4f1f1231dbab861eaf33"
-  integrity sha512-8IDDjQOPFAswSqt/K2lGqfVPMTuix0GL042Ad/osVAOYbOzfYS61rziTmWzdpEghf25qxCUUtzUzVGputzsLKg==
+"@entur/utils@^0.12.4":
+  version "0.12.4"
+  resolved "https://registry.yarnpkg.com/@entur/utils/-/utils-0.12.4.tgz#a91543142d995da6cf76e75276961ff10fce7387"
+  integrity sha512-syE9bdzrZ3TdKZKVdHAyJWlHNpILp9Teg5xJO7y2Qda+i7l/Mni5rkUNR625U3Tabq5gYzs6y00U4E89IUUC6A==
   dependencies:
     tiny-warning "^1.0.3"
 
@@ -688,6 +688,13 @@
   dependencies:
     "@floating-ui/utils" "^0.2.10"
 
+"@floating-ui/core@^1.7.3":
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-1.7.3.tgz#462d722f001e23e46d86fd2bd0d21b7693ccb8b7"
+  integrity sha512-sGnvb5dmrJaKEZ+LDIpguvdX3bDlEllmv4/ClQ9awcmCZrlx5jQyyMWFM5kBI+EyNOCDDiKk8il0zeuX3Zlg/w==
+  dependencies:
+    "@floating-ui/utils" "^0.2.10"
+
 "@floating-ui/dom@^1.0.0":
   version "1.6.11"
   resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.6.11.tgz#8631857838d34ee5712339eb7cbdfb8ad34da723"
@@ -704,6 +711,14 @@
     "@floating-ui/core" "^1.7.2"
     "@floating-ui/utils" "^0.2.10"
 
+"@floating-ui/dom@^1.7.4":
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.7.4.tgz#ee667549998745c9c3e3e84683b909c31d6c9a77"
+  integrity sha512-OOchDgh4F2CchOX94cRVqhvy7b3AFb+/rQXyswmzmGakRfkMgoWVjfnLWkRirfLEfuD4ysVW16eXzwt3jHIzKA==
+  dependencies:
+    "@floating-ui/core" "^1.7.3"
+    "@floating-ui/utils" "^0.2.10"
+
 "@floating-ui/react-dom@^2.0.0":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@floating-ui/react-dom/-/react-dom-2.1.4.tgz#a0689be8978352fff2be2dfdd718cf668c488ec3"
@@ -711,14 +726,21 @@
   dependencies:
     "@floating-ui/dom" "^1.7.2"
 
-"@floating-ui/react-dom@^2.1.0", "@floating-ui/react-dom@^2.1.2":
+"@floating-ui/react-dom@^2.1.2":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@floating-ui/react-dom/-/react-dom-2.1.2.tgz#a1349bbf6a0e5cb5ded55d023766f20a4d439a31"
   integrity sha512-06okr5cgPzMNBy+Ycse2A6udMi4bqwW/zgBF/rwjcNqWkyr82Mcg8b0vjX8OJpZFy/FKjJmw6wV7t44kK6kW7A==
   dependencies:
     "@floating-ui/dom" "^1.0.0"
 
-"@floating-ui/react@^0.26.24":
+"@floating-ui/react-dom@^2.1.6":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@floating-ui/react-dom/-/react-dom-2.1.6.tgz#189f681043c1400561f62972f461b93f01bf2231"
+  integrity sha512-4JX6rEatQEvlmgU80wZyq9RT96HZJa88q8hp0pBd+LrczeDI4o6uA2M+uvxngVHo4Ihr8uibXxH6+70zhAFrVw==
+  dependencies:
+    "@floating-ui/dom" "^1.7.4"
+
+"@floating-ui/react@^0.26.28":
   version "0.26.28"
   resolved "https://registry.yarnpkg.com/@floating-ui/react/-/react-0.26.28.tgz#93f44ebaeb02409312e9df9507e83aab4a8c0dc7"
   integrity sha512-yORQuuAtVpiRjpMhdc0wJj06b9JFjrYF4qp96j++v2NBpbi6SEGF7donUJ3TMieerQ6qVkAv1tgr7L4r5roTqw==
@@ -1679,7 +1701,7 @@
   dependencies:
     "@types/geojson" "*"
 
-"@types/lodash.get@^4.4.6":
+"@types/lodash.get@^4.4.9":
   version "4.4.9"
   resolved "https://registry.yarnpkg.com/@types/lodash.get/-/lodash.get-4.4.9.tgz#6390714bf688321d9a445cbc8e90220635649713"
   integrity sha512-J5dvW98sxmGnamqf+/aLP87PYXyrha9xIgc2ZlHl6OHMFR2Ejdxep50QfU0abO1+CH6+ugx+8wEUN1toImAinA==
@@ -2508,7 +2530,7 @@ chokidar@^4.0.0:
   dependencies:
     readdirp "^4.0.1"
 
-classnames@^2.3.1:
+classnames@^2.5.1:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.5.1.tgz#ba774c614be0f016da105c858e7159eae8e7687b"
   integrity sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==
@@ -3643,7 +3665,7 @@ flat-cache@^3.0.4:
     keyv "^4.5.3"
     rimraf "^3.0.2"
 
-flat@^5.0.1:
+flat@^5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/flat/-/flat-5.0.2.tgz#8ca6fe332069ffa9d324c327198c598259ceb241"
   integrity sha512-b6suED+5/3rTpUBdG1gupIl8MPFCAMA0QXwmljLhvCUKcUvdE4gWky9zpuGCcXHOsz4J9wPGNWq6OKpmIzz3hQ==
