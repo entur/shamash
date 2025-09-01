@@ -26,26 +26,28 @@ describe('EnturService', () => {
           properties: {
             id: 'NSR:StopPlace:337',
             label: 'Jernbanetorget',
-            category: ['onstreetBus', 'railStation']
-          }
-        }
-      ]
+            category: ['onstreetBus', 'railStation'],
+          },
+        },
+      ],
     };
 
     (fetch as any).mockResolvedValueOnce({
       ok: true,
-      json: async () => mockResponse
+      json: async () => mockResponse,
     });
 
     const service = createEnturService({ clientName: 'test-client' });
-    const result = await service.getFeatures('Jernbanetorget', undefined, { limit: 5 });
+    const result = await service.getFeatures('Jernbanetorget', undefined, {
+      limit: 5,
+    });
 
     expect(fetch).toHaveBeenCalledWith(
       'https://api.entur.io/geocoder/v1/autocomplete?text=Jernbanetorget&size=5&lang=no',
       {
         headers: {
-          'ET-Client-Name': 'test-client'
-        }
+          'ET-Client-Name': 'test-client',
+        },
       }
     );
 
@@ -54,9 +56,9 @@ describe('EnturService', () => {
         properties: {
           id: 'NSR:StopPlace:337',
           label: 'Jernbanetorget',
-          category: ['onstreetBus', 'railStation']
-        }
-      }
+          category: ['onstreetBus', 'railStation'],
+        },
+      },
     ]);
   });
 
@@ -72,7 +74,7 @@ describe('EnturService', () => {
   it('should handle HTTP errors gracefully', async () => {
     (fetch as any).mockResolvedValueOnce({
       ok: false,
-      status: 500
+      status: 500,
     });
 
     const service = createEnturService({ clientName: 'test-client' });

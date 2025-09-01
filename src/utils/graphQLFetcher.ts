@@ -11,13 +11,18 @@ interface SubscriptionCallbacks {
 const hasSubscriptionOperation = (graphQlParams) => {
   const queryDoc = parse(graphQlParams.query);
   return queryDoc.definitions.some(
-    definition =>
+    (definition) =>
       definition.kind === 'OperationDefinition' &&
       definition.operation === 'subscription'
   );
 };
 
-const graphQLFetcher = (graphQLUrl, subscriptionsUrl, enturClientName, subscriptionCallbacks: SubscriptionCallbacks = {}) => {
+const graphQLFetcher = (
+  graphQLUrl,
+  subscriptionsUrl,
+  enturClientName,
+  subscriptionCallbacks: SubscriptionCallbacks = {}
+) => {
   let activeSubscription = null;
   let subscriptionClient;
 
@@ -66,14 +71,14 @@ const graphQLFetcher = (graphQLUrl, subscriptionsUrl, enturClientName, subscript
                 observer.complete();
                 activeSubscription = null;
                 subscriptionCallbacks.onSubscriptionEnd?.();
-              }
+              },
             }
           );
 
           return {
-            unsubscribe: cancelActiveSubscription
+            unsubscribe: cancelActiveSubscription,
           };
-        }
+        },
       };
     }
 
@@ -87,8 +92,8 @@ const graphQLFetcher = (graphQLUrl, subscriptionsUrl, enturClientName, subscript
       },
       body: JSON.stringify(graphQLParams),
     })
-      .then(response => response.text())
-      .then(responseBody => {
+      .then((response) => response.text())
+      .then((responseBody) => {
         try {
           return JSON.parse(responseBody);
         } catch {

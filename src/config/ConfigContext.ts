@@ -1,5 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import configreader from "./readConfig.js";
+import { createContext, useContext, useEffect, useState } from 'react';
+import configreader from './readConfig.js';
 
 const defaultConfig = {
   services: [],
@@ -12,7 +12,7 @@ export const useConfig = () => useContext(ConfigContext);
 
 export const useFetchConfig = () => {
   const [config, setConfig] = useState(defaultConfig);
-  
+
   useEffect(() => {
     const fetchConfig = async () => {
       configreader.readConfig((config) => setConfig(config));
@@ -21,4 +21,4 @@ export const useFetchConfig = () => {
   }, []);
 
   return config;
-}
+};

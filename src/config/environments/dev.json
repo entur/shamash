@@ -1,40 +1,40 @@
 {
   "services": [
-  {
-    "id": "journey-planner-v3",
-    "name": "journey-planner-v3",
-    "url": "https://api.dev.entur.io/journey-planner/v3/graphql",
-    "queries": "journey-planner-v3",
-    "defaultQuery": "trip"
-  },
-  {
-    "id": "journey-planner-nordic",
-    "name": "journey-planner-v3-nordic",
-    "url": "https://api.dev.entur.io/journey-planner/v3/nordic/graphql",
-    "queries": "journey-planner-v3",
-    "defaultQuery": "trip"
-  },
-  {
-    "id": "mobility",
-    "name": "mobility",
-    "url": "https://api.dev.entur.io/mobility/v2/graphql",
-    "queries": "mobility",
-    "defaultQuery": "vehicles"
-  },
-  {
-    "id": "vehicles-v2",
-    "name": "vehicles-v2",
-    "url": "https://api.dev.entur.io/realtime/v2/vehicles/graphql",
-    "subscriptionsUrl": "wss://api.dev.entur.io/realtime/v2/vehicles/subscriptions",
-    "queries": "vehicle-updates",
-    "defaultQuery": "updates"
-  },
-  {
-    "id": "estimated-timetables",
-    "name": "estimated-timetables",
-    "url": "https://api.dev.entur.io/realtime/invalid-et/graphql",
-    "queries": "estimated-timetables",
-    "defaultQuery": "estimated-vehicle-journey"
-  }
-]
+    {
+      "id": "journey-planner-v3",
+      "name": "journey-planner-v3",
+      "url": "https://api.dev.entur.io/journey-planner/v3/graphql",
+      "queries": "journey-planner-v3",
+      "defaultQuery": "trip"
+    },
+    {
+      "id": "journey-planner-nordic",
+      "name": "journey-planner-v3-nordic",
+      "url": "https://api.dev.entur.io/journey-planner/v3/nordic/graphql",
+      "queries": "journey-planner-v3",
+      "defaultQuery": "trip"
+    },
+    {
+      "id": "mobility",
+      "name": "mobility",
+      "url": "https://api.dev.entur.io/mobility/v2/graphql",
+      "queries": "mobility",
+      "defaultQuery": "vehicles"
+    },
+    {
+      "id": "vehicles-v2",
+      "name": "vehicles-v2",
+      "url": "https://api.dev.entur.io/realtime/v2/vehicles/graphql",
+      "subscriptionsUrl": "wss://api.dev.entur.io/realtime/v2/vehicles/subscriptions",
+      "queries": "vehicle-updates",
+      "defaultQuery": "updates"
+    },
+    {
+      "id": "estimated-timetables",
+      "name": "estimated-timetables",
+      "url": "https://api.dev.entur.io/realtime/invalid-et/graphql",
+      "queries": "estimated-timetables",
+      "defaultQuery": "estimated-vehicle-journey"
+    }
+  ]
 }

@@ -1,3 +1,5 @@
+import React from 'react';
+
 declare module '*.png' {
   const value: string;
   export default value;
@@ -31,4 +33,3 @@ declare module '*.css' {
 declare module 'graphiql-explorer' {
   export const Explorer: React.ComponentType<any>;
 }
-

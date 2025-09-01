@@ -338,19 +338,31 @@ body.dark-theme .graphiql-container .graphiql-explorer-root {
   color: #cacdd3 !important;
 }
 
-body.dark-theme .graphiql-container .graphiql-explorer-root ::-webkit-scrollbar {
+body.dark-theme
+  .graphiql-container
+  .graphiql-explorer-root
+  ::-webkit-scrollbar {
   width: 12px;
 }
 
-body.dark-theme .graphiql-container .graphiql-explorer-root ::-webkit-scrollbar-track {
+body.dark-theme
+  .graphiql-container
+  .graphiql-explorer-root
+  ::-webkit-scrollbar-track {
   background: #21262b;
 }
 
-body.dark-theme .graphiql-container .graphiql-explorer-root ::-webkit-scrollbar-thumb {
+body.dark-theme
+  .graphiql-container
+  .graphiql-explorer-root
+  ::-webkit-scrollbar-thumb {
   background: #4a5058;
   border-radius: 6px;
 }
 
-body.dark-theme .graphiql-container .graphiql-explorer-root ::-webkit-scrollbar-thumb:hover {
+body.dark-theme
+  .graphiql-container
+  .graphiql-explorer-root
+  ::-webkit-scrollbar-thumb:hover {
   background: #5a6068;
 }

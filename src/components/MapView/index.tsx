@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
 import Leaflet, { LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -10,9 +16,13 @@ import { colors } from '@entur/tokens';
 
 delete (Leaflet.Icon.Default.prototype as any)._getIconUrl;
 Leaflet.Icon.Default.mergeOptions({
-  iconRetinaUrl: new URL('leaflet/dist/images/marker-icon-2x.png', import.meta.url).href,
+  iconRetinaUrl: new URL(
+    'leaflet/dist/images/marker-icon-2x.png',
+    import.meta.url
+  ).href,
   iconUrl: new URL('leaflet/dist/images/marker-icon.png', import.meta.url).href,
-  shadowUrl: new URL('leaflet/dist/images/marker-shadow.png', import.meta.url).href,
+  shadowUrl: new URL('leaflet/dist/images/marker-shadow.png', import.meta.url)
+    .href,
 });
 
 const DEFAULT_CENTER: LatLngTuple = [60, 10];
@@ -107,17 +117,21 @@ function getVehiclePositions(responseData) {
     .map((vehicle, index) => ({
       vehicle,
       index,
-      location: vehicle?.location || { longitude: vehicle?.lon, latitude: vehicle?.lat }
+      location: vehicle?.location || {
+        longitude: vehicle?.lon,
+        latitude: vehicle?.lat,
+      },
     }))
     .filter(({ location }) => location?.longitude && location?.latitude)
     .map(({ vehicle, index, location }) => {
-      const systemName = vehicle?.system?.name?.translation?.[0]?.value || 'unknown';
+      const systemName =
+        vehicle?.system?.name?.translation?.[0]?.value || 'unknown';
       const vehicleKey = `${systemName}_vehicle_${index}`;
 
       return point([location.longitude, location.latitude], {
         vehicleKey,
         originalIndex: index,
-        systemName
+        systemName,
       });
     });
 }
@@ -145,7 +159,9 @@ function MapContent({ mapData }) {
       .filter((feature) => feature.geometry.type === 'Point')
       .map((feature) => {
         const pointGeometry = feature.geometry as any;
-        return `${pointGeometry.coordinates[0]},${pointGeometry.coordinates[1]}-${feature.properties?.markerType || 'default'}`;
+        return `${pointGeometry.coordinates[0]},${
+          pointGeometry.coordinates[1]
+        }-${feature.properties?.markerType || 'default'}`;
       })
       .join('|');
 
@@ -154,16 +170,20 @@ function MapContent({ mapData }) {
 
   const pointToLayer = useCallback((feature, latlng) => {
     const age = feature.properties?.age || 0;
-    const opacity = Math.max(0.1, 1.0 - (age * 0.1));
+    const opacity = Math.max(0.1, 1.0 - age * 0.1);
 
     const customIcon = new Leaflet.Icon({
-      iconUrl: new URL('leaflet/dist/images/marker-icon.png', import.meta.url).href,
-      shadowUrl: new URL('leaflet/dist/images/marker-shadow.png', import.meta.url).href,
+      iconUrl: new URL('leaflet/dist/images/marker-icon.png', import.meta.url)
+        .href,
+      shadowUrl: new URL(
+        'leaflet/dist/images/marker-shadow.png',
+        import.meta.url
+      ).href,
       iconSize: [25, 41],
       iconAnchor: [12, 41],
       popupAnchor: [1, -34],
       shadowSize: [41, 41],
-      className: `marker-age-${age}`
+      className: `marker-age-${age}`,
     });
 
     const marker = Leaflet.marker(latlng, { icon: customIcon });
@@ -217,7 +237,10 @@ export default function MapView({ response }) {
   useEffect(() => {
     const newMapData = getMapData(response);
 
-    if (newMapData?.vehiclePositions && newMapData.vehiclePositions.length > 0) {
+    if (
+      newMapData?.vehiclePositions &&
+      newMapData.vehiclePositions.length > 0
+    ) {
       setVehicleHistory((prevHistory) => {
         const newHistory = new Map(prevHistory);
 
@@ -227,7 +250,8 @@ export default function MapView({ response }) {
           const existingHistory = newHistory.get(vehicleKey) || [];
 
           const lastPosition = existingHistory[0];
-          const positionChanged = !lastPosition ||
+          const positionChanged =
+            !lastPosition ||
             Math.abs(lastPosition[0] - coords[0]) > 0.000001 ||
             Math.abs(lastPosition[1] - coords[1]) > 0.000001;
 

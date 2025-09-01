@@ -66,7 +66,8 @@ export const App: React.FC<AppProps> = ({
   const [showMap, setShowMap] = useState<boolean>(false);
   const [response, setResponse] = useState<any>();
   const [currentTheme, setCurrentTheme] = useState<string>(getPreferredTheme());
-  const [isSubscriptionActive, setIsSubscriptionActive] = useState<boolean>(false);
+  const [isSubscriptionActive, setIsSubscriptionActive] =
+    useState<boolean>(false);
   const [query, setQuery] = useState('');
 
   let graphiql = useRef<any>(null);
@@ -78,7 +79,7 @@ export const App: React.FC<AppProps> = ({
     try {
       const queryDoc = parse(query);
       return queryDoc.definitions.some(
-        definition =>
+        (definition) =>
           definition.kind === 'OperationDefinition' &&
           definition.operation === 'subscription'
       );
@@ -128,22 +129,19 @@ export const App: React.FC<AppProps> = ({
     currentService = services.find((s) => s.id === serviceName);
   }
 
-  const fetcher = useMemo(
-    () => {
-      if (!currentService) return null;
+  const fetcher = useMemo(() => {
+    if (!currentService) return null;
 
-      return graphQLFetcher(
-        currentService.url,
-        currentService.subscriptionsUrl,
-        enturClientName,
-        {
-          onSubscriptionStart: () => setIsSubscriptionActive(true),
-          onSubscriptionEnd: () => setIsSubscriptionActive(false)
-        }
-      );
-    },
-    [currentService, enturClientName]
-  );
+    return graphQLFetcher(
+      currentService.url,
+      currentService.subscriptionsUrl,
+      enturClientName,
+      {
+        onSubscriptionStart: () => setIsSubscriptionActive(true),
+        onSubscriptionEnd: () => setIsSubscriptionActive(false),
+      }
+    );
+  }, [currentService, enturClientName]);
 
   useEffect(() => {
     fetcher &&
@@ -317,7 +315,6 @@ export const App: React.FC<AppProps> = ({
     setShowGeocoderModal(!showGeocoderModal);
   };
 
-
   useEffect(() => {
     const setInitialQuery = async () => {
       const urlQuery = parameters.query;
@@ -369,11 +366,11 @@ export const App: React.FC<AppProps> = ({
               },
               complete: () => {
                 observer.complete();
-              }
+              },
             });
 
             return subscription;
-          }
+          },
         };
       }
 
@@ -391,7 +388,9 @@ export const App: React.FC<AppProps> = ({
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const executeButton = document.querySelector('.graphiql-container .execute-button') as HTMLElement;
+      const executeButton = document.querySelector(
+        '.graphiql-container .execute-button'
+      ) as HTMLElement;
       if (!executeButton) return;
 
       const svg = executeButton.querySelector('svg');

@@ -10,7 +10,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the Licence for the specific language governing permissions and
 limitations under the Licence. */
 
-import { getEnvironment } from "./getEnvironment.js";
+import { getEnvironment } from './getEnvironment.js';
 
 const readConfig = async (callback) => {
   const env = getEnvironment();

@@ -40,11 +40,13 @@ function GeocoderModal({ onDismiss }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const modalRef = useRef(null);
-  const [copiedPopupStyle, setCopiedPopupStyle] = useState<React.CSSProperties>({
-    top: 10,
-    left: 10,
-    opacity: 0,
-  });
+  const [copiedPopupStyle, setCopiedPopupStyle] = useState<React.CSSProperties>(
+    {
+      top: 10,
+      left: 10,
+      opacity: 0,
+    }
+  );
   const theme = getPreferredTheme();
 
   let popupTimeout = null;
@@ -59,30 +61,32 @@ function GeocoderModal({ onDismiss }) {
 
   const handleRowClick = (newClip, event) => {
     const { clientX, clientY } = event;
-    navigator.permissions.query({ name: 'clipboard-write' as PermissionName }).then((result) => {
-      if (result.state === 'granted' || result.state === 'prompt') {
-        navigator.clipboard.writeText(newClip).then(
-          function () {
-            const { offsetLeft = 0, offsetTop = 0 } = modalRef
-              ? modalRef.current
-              : {};
-            setCopiedPopupStyle({
-              opacity: 1,
-              left: clientX - offsetLeft,
-              top: clientY - offsetTop,
-            });
-            clearTimeout(popupTimeout);
-            popupTimeout = setTimeout(
-              () => setCopiedPopupStyle({ opacity: 0 }),
-              1000
-            );
-          },
-          () => {
-            setCopiedPopupStyle(null);
-          }
-        );
-      }
-    });
+    navigator.permissions
+      .query({ name: 'clipboard-write' as 'clipboard-write' })
+      .then((result) => {
+        if (result.state === 'granted' || result.state === 'prompt') {
+          navigator.clipboard.writeText(newClip).then(
+            function () {
+              const { offsetLeft = 0, offsetTop = 0 } = modalRef
+                ? modalRef.current
+                : {};
+              setCopiedPopupStyle({
+                opacity: 1,
+                left: clientX - offsetLeft,
+                top: clientY - offsetTop,
+              });
+              clearTimeout(popupTimeout);
+              popupTimeout = setTimeout(
+                () => setCopiedPopupStyle({ opacity: 0 }),
+                1000
+              );
+            },
+            () => {
+              setCopiedPopupStyle(null);
+            }
+          );
+        }
+      });
   };
 
   const onOverlayClick = (event) => {

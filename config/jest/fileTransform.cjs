@@ -10,21 +10,22 @@ function camelCase(str, options = {}) {
   const words = str
     .replace(/[^a-zA-Z0-9]/g, ' ')
     .split(/\s+/)
-    .filter(word => word.length > 0);
+    .filter((word) => word.length > 0);
 
   if (words.length === 0) return '';
 
   // Convert to camelCase
   const firstWord = words[0].toLowerCase();
-  const restWords = words.slice(1).map(word =>
-    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-  );
+  const restWords = words
+    .slice(1)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
 
   const result = firstWord + restWords.join('');
 
   // Return PascalCase if requested
-  return options.pascalCase ?
-    result.charAt(0).toUpperCase() + result.slice(1) : result;
+  return options.pascalCase
+    ? result.charAt(0).toUpperCase() + result.slice(1)
+    : result;
 }
 
 // This is a custom Jest transformer turning file imports into filenames.

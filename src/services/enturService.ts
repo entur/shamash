@@ -50,13 +50,15 @@ class EnturService {
 
       const data = await response.json();
 
-      return data.features?.map((feature: any) => ({
-        properties: {
-          id: feature.properties.id,
-          label: feature.properties.label,
-          category: feature.properties.category || [],
-        },
-      })) || [];
+      return (
+        data.features?.map((feature: any) => ({
+          properties: {
+            id: feature.properties.id,
+            label: feature.properties.label,
+            category: feature.properties.category || [],
+          },
+        })) || []
+      );
     } catch (error) {
       console.error('Error fetching features:', error);
       return [];
@@ -64,6 +66,8 @@ class EnturService {
   }
 }
 
-export default function createEnturService(options: EnturServiceOptions): EnturService {
+export default function createEnturService(
+  options: EnturServiceOptions
+): EnturService {
   return new EnturService(options);
 }
