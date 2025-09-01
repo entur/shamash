@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import debounce from 'lodash.debounce';
-import EnturService from '@entur/sdk';
+import createEnturService from '../../services/enturService';
 import getPreferredTheme from '../../utils/getPreferredTheme.js';
 
 import { TextField } from '@entur/form';
@@ -34,7 +34,7 @@ const autocompleteSearch = debounce(
 function GeocoderModal({ onDismiss }) {
   const { enturClientName } = useConfig();
   const service = useMemo(
-    () => EnturService({ clientName: enturClientName }),
+    () => createEnturService({ clientName: enturClientName }),
     [enturClientName]
   );
   const [query, setQuery] = useState('');
@@ -59,7 +59,7 @@ function GeocoderModal({ onDismiss }) {
 
   const handleRowClick = (newClip, event) => {
     const { clientX, clientY } = event;
-    navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
+    navigator.permissions.query({ name: 'clipboard-write' as PermissionName }).then((result) => {
       if (result.state === 'granted' || result.state === 'prompt') {
         navigator.clipboard.writeText(newClip).then(
           function () {
@@ -122,6 +122,7 @@ function GeocoderModal({ onDismiss }) {
           JourneyPlanner queries. Click a row to copy the ID to your clipboard.
         </p>
         <TextField
+          label="Search location"
           value={query}
           onChange={(e) => setQuery(e.currentTarget.value)}
           placeholder="Jernbanetorget"
