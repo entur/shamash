@@ -1,25 +1,53 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { App } from './App';
+import { expect, test, describe, vi } from 'vitest';
+import { ConfigContext } from '../../config/ConfigContext';
 
-const services = [
-  {
-    id: 'journey-planner-v3',
-    name: 'JourneyPlanner',
-    url: 'https://fake.entur.local/journey-planner/v3/graphql',
-    queries: 'journey-planner-v3',
-    defaultQuery: 'trip',
-  },
-];
+vi.mock('../../utils/graphQLFetcher', () => ({
+  default: vi.fn(() =>
+    vi.fn(() =>
+      Promise.resolve({
+        data: {},
+      })
+    )
+  ),
+}));
 
-const pathname = '/journey-planner-v3';
+vi.mock('graphql', () => ({
+  buildClientSchema: vi.fn(() => ({})),
+  getIntrospectionQuery: vi.fn(() => 'mock query'),
+}));
 
-const parameters = {};
+vi.mock('graphiql', () => ({
+  default: () => <div data-testid="graphiql">GraphiQL Mock</div>,
+}));
 
-test('App renders', async () => {
-  render(
-    <App services={services} pathname={pathname} parameters={parameters} />
-  );
-  // Add a basic assertion to verify the app renders
-  await waitFor(() => expect(document.body).toBeInTheDocument());
+const mockConfig = {
+  services: [
+    {
+      id: 'journey-planner-v3',
+      name: 'JourneyPlanner',
+      url: 'https://api.example.com/graphql',
+      queries: 'journey-planner-v3',
+      defaultQuery: 'trip',
+    },
+  ],
+  enturClientName: 'test-client',
+};
+
+describe('App', () => {
+  test('renders without crashing', () => {
+    const { container } = render(
+      <ConfigContext.Provider value={mockConfig}>
+        <App
+          pathname="/journey-planner-v3"
+          parameters={{}}
+          setParameters={vi.fn()}
+        />
+      </ConfigContext.Provider>
+    );
+
+    expect(container).toBeTruthy();
+  });
 });
