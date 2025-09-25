@@ -16,7 +16,7 @@
     "@turf/helpers": "7.2.0",
     "@turf/line-to-polygon": "7.2.0",
     "dotenv": "16.4.7",
-    "graphiql": "1.11.5",
+    "graphiql": "5.2.0",
     "graphiql-explorer": "0.9.0",
     "graphql": "16.11.0",
     "graphql-ws": "5.16.2",
