@@ -69,6 +69,7 @@ export const App: React.FC<AppProps> = ({
   const [isSubscriptionActive, setIsSubscriptionActive] =
     useState<boolean>(false);
   const [query, setQuery] = useState('');
+  const hasInitializedQuery = useRef(false);
 
   let graphiql = useRef<any>(null);
 
@@ -320,7 +321,9 @@ export const App: React.FC<AppProps> = ({
       const urlQuery = parameters.query;
       if (urlQuery) {
         setQuery(urlQuery);
-      } else if (currentService) {
+        hasInitializedQuery.current = true;
+      } else if (currentService && !hasInitializedQuery.current) {
+        // Only load default query on initial load, not when user clears the query
         try {
           let module;
           const modules = await import.meta.glob('../../queries/**/*.ts');
@@ -334,10 +337,14 @@ export const App: React.FC<AppProps> = ({
           );
           setQuery('');
         }
+        hasInitializedQuery.current = true;
+      } else if (urlQuery === '' && hasInitializedQuery.current) {
+        // Allow empty query if user has cleared it
+        setQuery('');
       }
     };
     setInitialQuery();
-  }, [currentService]);
+  }, [parameters.query, currentService]);
 
   const { variables, operationName } = parameters;
 
