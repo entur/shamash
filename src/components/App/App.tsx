@@ -315,37 +315,29 @@ export const App: React.FC<AppProps> = ({
     setShowGeocoderModal(!showGeocoderModal);
   };
 
-  const [hasLoadedInitialQuery, setHasLoadedInitialQuery] = useState(false);
-
-  useEffect(() => {
-    setHasLoadedInitialQuery(false);
-  }, [currentService]);
-
   useEffect(() => {
     const setInitialQuery = async () => {
       const urlQuery = parameters.query;
       if (urlQuery) {
         setQuery(urlQuery);
-      } else if (currentService && !hasLoadedInitialQuery) {
+      } else if (currentService) {
         try {
           let module;
           const modules = await import.meta.glob('../../queries/**/*.ts');
           const path = `../../queries/${currentService.queries}/${currentService.defaultQuery}.ts`;
           module = await modules[path]();
           setQuery(module.default.query);
-          setHasLoadedInitialQuery(true);
         } catch (error) {
           console.warn(
             `Failed to load default query for ${currentService.id}:`,
             error
           );
           setQuery('');
-          setHasLoadedInitialQuery(true);
         }
       }
     };
     setInitialQuery();
-  }, [parameters.query, currentService, hasLoadedInitialQuery]);
+  }, [currentService]);
 
   const { variables, operationName } = parameters;
 
