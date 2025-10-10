@@ -2,6 +2,10 @@
 
 An in-browser IDE for exploring GraphQL – extended with a map, query selection, etc.
 
+## About the name
+
+Shamash was the ancient Mesopotamian sun god and the god of justice. As the sun illuminates the world, this tool aims to illuminate and bring clarity to GraphQL APIs, making them easier to explore and understand.
+
 ## Install dependencies
 
 ```sh
