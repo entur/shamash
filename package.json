@@ -6,8 +6,8 @@
   "dependencies": {
     "@apollo/client": "3.14.0",
     "@entur/form": "8.4.2",
-    "@entur/icons": "8.2.0",
-    "@entur/table": "4.9.20",
+    "@entur/icons": "8.3.0",
+    "@entur/table": "4.9.21",
     "@graphiql/plugin-explorer": "5.1.1",
     "@graphiql/react": "0.37.2",
     "@graphiql/toolkit": "0.11.3",
