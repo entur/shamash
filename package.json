@@ -74,7 +74,7 @@
     "@testing-library/user-event": "14.6.1",
     "@types/leaflet": "1.9.21",
     "@types/node": "24.9.1",
-    "@types/react": "19.2.6",
+    "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "@typescript-eslint/eslint-plugin": "8.47.0",
     "@typescript-eslint/parser": "8.47.0",
