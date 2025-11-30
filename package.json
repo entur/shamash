@@ -9,7 +9,7 @@
     "@entur/icons": "8.3.0",
     "@entur/table": "4.9.21",
     "@graphiql/plugin-explorer": "5.1.1",
-    "@graphiql/react": "0.37.2",
+    "@graphiql/react": "0.37.3",
     "@graphiql/toolkit": "0.11.3",
     "@mapbox/polyline": "1.2.1",
     "@turf/bbox": "7.3.1",
