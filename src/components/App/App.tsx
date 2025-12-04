@@ -319,8 +319,51 @@ export const App: React.FC<AppProps> = ({
   useEffect(() => {
     const setInitialQuery = async () => {
       const urlQuery = parameters.query;
+      const exampleKey = parameters.example as string | undefined;
+
       if (urlQuery) {
+        // Explicit query parameter takes precedence
         setQuery(urlQuery);
+        hasInitializedQuery.current = true;
+      } else if (exampleKey && currentService && !hasInitializedQuery.current) {
+        // Load example query by key from URL (e.g., ?example=tripQuery)
+        // Keep short URL in address bar - only expands when user makes edits
+        try {
+          const modules = await import.meta.glob('../../queries/**/index.ts');
+          const path = `../../queries/${currentService.queries}/index.ts`;
+          const module = (await modules[path]()) as Record<
+            string,
+            { query: string; variables?: object }
+          >;
+
+          const exampleQuery = module[exampleKey];
+          if (exampleQuery) {
+            setQuery(exampleQuery.query);
+            if (exampleQuery.variables) {
+              // Set variables in state without updating URL (keeps short URL)
+              setParameters((prev) => ({
+                ...prev,
+                variables: JSON.stringify(exampleQuery.variables, null, 2),
+              }));
+            }
+          } else {
+            console.warn(
+              `Example query "${exampleKey}" not found for ${currentService.queries}`
+            );
+            // Fall back to default query
+            const defaultModules = await import.meta.glob(
+              '../../queries/**/*.ts'
+            );
+            const defaultPath = `../../queries/${currentService.queries}/${currentService.defaultQuery}.ts`;
+            const defaultModule = (await defaultModules[defaultPath]()) as {
+              default: { query: string };
+            };
+            setQuery(defaultModule.default.query);
+          }
+        } catch (error) {
+          console.warn(`Failed to load example query "${exampleKey}":`, error);
+          setQuery('');
+        }
         hasInitializedQuery.current = true;
       } else if (currentService && !hasInitializedQuery.current) {
         // Only load default query on initial load, not when user clears the query
@@ -344,7 +387,7 @@ export const App: React.FC<AppProps> = ({
       }
     };
     setInitialQuery();
-  }, [parameters.query, currentService]);
+  }, [parameters.query, parameters.example, currentService, setParameters]);
 
   const { variables, operationName } = parameters;
 
