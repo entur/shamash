@@ -70,6 +70,8 @@ export const App: React.FC<AppProps> = ({
     useState<boolean>(false);
   const [query, setQuery] = useState('');
   const hasInitializedQuery = useRef(false);
+  const loadedExampleQuery = useRef<string | null>(null);
+  const loadedExampleVariables = useRef<string | null>(null);
 
   let graphiql = useRef<any>(null);
 
@@ -169,10 +171,28 @@ export const App: React.FC<AppProps> = ({
         [key]: value,
       };
 
-      // Use the new parameters for the URL update to avoid stale closure
-      history.replace({
-        search: queryString.stringify(newParameters),
-      });
+      // Check if this is the same value that was loaded from an example
+      const isLoadedExampleValue =
+        (key === 'query' && value === loadedExampleQuery.current) ||
+        (key === 'variables' && value === loadedExampleVariables.current);
+
+      // Skip URL update if this is just the initial load from example
+      if (!isLoadedExampleValue) {
+        // User made an actual edit - clear example refs and update URL
+        if (key === 'query') {
+          loadedExampleQuery.current = null;
+        }
+        if (key === 'variables') {
+          loadedExampleVariables.current = null;
+        }
+
+        // Remove example param and show full query/variables
+        const urlParameters = { ...newParameters };
+        delete urlParameters.example;
+        history.replace({
+          search: queryString.stringify(urlParameters),
+        });
+      }
 
       return newParameters;
     });
@@ -338,12 +358,20 @@ export const App: React.FC<AppProps> = ({
 
           const exampleQuery = module[exampleKey];
           if (exampleQuery) {
+            // Store loaded values to detect when user makes actual edits
+            loadedExampleQuery.current = exampleQuery.query;
             setQuery(exampleQuery.query);
             if (exampleQuery.variables) {
+              const variablesJson = JSON.stringify(
+                exampleQuery.variables,
+                null,
+                2
+              );
+              loadedExampleVariables.current = variablesJson;
               // Set variables in state without updating URL (keeps short URL)
               setParameters((prev) => ({
                 ...prev,
-                variables: JSON.stringify(exampleQuery.variables, null, 2),
+                variables: variablesJson,
               }));
             }
           } else {
