@@ -306,6 +306,17 @@ export const App: React.FC<AppProps> = ({
     loadExampleQueries();
   }, [currentService]);
 
+  const handleExampleSelect = (exampleKey: string) => {
+    // Navigate to short URL for the example
+    const basePath = import.meta.env.BASE_URL || '/';
+    const serviceId = currentService?.id || DEFAULT_SERVICE_ID;
+    const url =
+      basePath === '/'
+        ? `/${serviceId}?example=${exampleKey}`
+        : `${basePath}${serviceId}?example=${exampleKey}`;
+    window.location.href = url;
+  };
+
   const renderExamplesMenu = () => {
     if (!exampleQueries || Object.keys(exampleQueries).length === 0) {
       return null;
@@ -315,17 +326,12 @@ export const App: React.FC<AppProps> = ({
       <GraphiQL.Menu label="Examples" title="Examples">
         {Object.entries(
           exampleQueries as Record<string, { query: string; variables?: any }>
-        ).map(([key, { query, variables }]) => (
+        ).map(([key]) => (
           <GraphiQL.MenuItem
             key={key}
             label={key}
             title={key}
-            onSelect={() => {
-              editParameter('query', query);
-              if (variables) {
-                editParameter('variables', JSON.stringify(variables, null, 2));
-              }
-            }}
+            onSelect={() => handleExampleSelect(key)}
           />
         ))}
       </GraphiQL.Menu>
