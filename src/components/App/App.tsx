@@ -70,6 +70,8 @@ export const App: React.FC<AppProps> = ({
     useState<boolean>(false);
   const [query, setQuery] = useState('');
   const hasInitializedQuery = useRef(false);
+  const loadedExampleQuery = useRef<string | null>(null);
+  const loadedExampleVariables = useRef<string | null>(null);
 
   let graphiql = useRef<any>(null);
 
@@ -169,10 +171,28 @@ export const App: React.FC<AppProps> = ({
         [key]: value,
       };
 
-      // Use the new parameters for the URL update to avoid stale closure
-      history.replace({
-        search: queryString.stringify(newParameters),
-      });
+      // Check if this is the same value that was loaded from an example
+      const isLoadedExampleValue =
+        (key === 'query' && value === loadedExampleQuery.current) ||
+        (key === 'variables' && value === loadedExampleVariables.current);
+
+      // Skip URL update if this is just the initial load from example
+      if (!isLoadedExampleValue) {
+        // User made an actual edit - clear example refs and update URL
+        if (key === 'query') {
+          loadedExampleQuery.current = null;
+        }
+        if (key === 'variables') {
+          loadedExampleVariables.current = null;
+        }
+
+        // Remove example param and show full query/variables
+        const urlParameters = { ...newParameters };
+        delete urlParameters.example;
+        history.replace({
+          search: queryString.stringify(urlParameters),
+        });
+      }
 
       return newParameters;
     });
@@ -286,6 +306,17 @@ export const App: React.FC<AppProps> = ({
     loadExampleQueries();
   }, [currentService]);
 
+  const handleExampleSelect = (exampleKey: string) => {
+    // Navigate to short URL for the example
+    const basePath = import.meta.env.BASE_URL || '/';
+    const serviceId = currentService?.id || DEFAULT_SERVICE_ID;
+    const url =
+      basePath === '/'
+        ? `/${serviceId}?example=${exampleKey}`
+        : `${basePath}${serviceId}?example=${exampleKey}`;
+    window.location.href = url;
+  };
+
   const renderExamplesMenu = () => {
     if (!exampleQueries || Object.keys(exampleQueries).length === 0) {
       return null;
@@ -295,17 +326,12 @@ export const App: React.FC<AppProps> = ({
       <GraphiQL.Menu label="Examples" title="Examples">
         {Object.entries(
           exampleQueries as Record<string, { query: string; variables?: any }>
-        ).map(([key, { query, variables }]) => (
+        ).map(([key]) => (
           <GraphiQL.MenuItem
             key={key}
             label={key}
             title={key}
-            onSelect={() => {
-              editParameter('query', query);
-              if (variables) {
-                editParameter('variables', JSON.stringify(variables, null, 2));
-              }
-            }}
+            onSelect={() => handleExampleSelect(key)}
           />
         ))}
       </GraphiQL.Menu>
@@ -319,8 +345,59 @@ export const App: React.FC<AppProps> = ({
   useEffect(() => {
     const setInitialQuery = async () => {
       const urlQuery = parameters.query;
+      const exampleKey = parameters.example as string | undefined;
+
       if (urlQuery) {
+        // Explicit query parameter takes precedence
         setQuery(urlQuery);
+        hasInitializedQuery.current = true;
+      } else if (exampleKey && currentService && !hasInitializedQuery.current) {
+        // Load example query by key from URL (e.g., ?example=tripQuery)
+        // Keep short URL in address bar - only expands when user makes edits
+        try {
+          const modules = await import.meta.glob('../../queries/**/index.ts');
+          const path = `../../queries/${currentService.queries}/index.ts`;
+          const module = (await modules[path]()) as Record<
+            string,
+            { query: string; variables?: object }
+          >;
+
+          const exampleQuery = module[exampleKey];
+          if (exampleQuery) {
+            // Store loaded values to detect when user makes actual edits
+            loadedExampleQuery.current = exampleQuery.query;
+            setQuery(exampleQuery.query);
+            if (exampleQuery.variables) {
+              const variablesJson = JSON.stringify(
+                exampleQuery.variables,
+                null,
+                2
+              );
+              loadedExampleVariables.current = variablesJson;
+              // Set variables in state without updating URL (keeps short URL)
+              setParameters((prev) => ({
+                ...prev,
+                variables: variablesJson,
+              }));
+            }
+          } else {
+            console.warn(
+              `Example query "${exampleKey}" not found for ${currentService.queries}`
+            );
+            // Fall back to default query
+            const defaultModules = await import.meta.glob(
+              '../../queries/**/*.ts'
+            );
+            const defaultPath = `../../queries/${currentService.queries}/${currentService.defaultQuery}.ts`;
+            const defaultModule = (await defaultModules[defaultPath]()) as {
+              default: { query: string };
+            };
+            setQuery(defaultModule.default.query);
+          }
+        } catch (error) {
+          console.warn(`Failed to load example query "${exampleKey}":`, error);
+          setQuery('');
+        }
         hasInitializedQuery.current = true;
       } else if (currentService && !hasInitializedQuery.current) {
         // Only load default query on initial load, not when user clears the query
@@ -344,7 +421,7 @@ export const App: React.FC<AppProps> = ({
       }
     };
     setInitialQuery();
-  }, [parameters.query, currentService]);
+  }, [parameters.query, parameters.example, currentService, setParameters]);
 
   const { variables, operationName } = parameters;
 
