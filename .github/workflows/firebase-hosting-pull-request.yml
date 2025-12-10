@@ -26,10 +26,9 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Install dependencies
-        if: steps.cache-npm.outputs.cache-hit != 'true'
         run: yarn --immutable
       - run: yarn test
-      - run: yarn build
+      - run: yarn build --base /
         env:
           REACT_APP_VERSION: ${{ github.sha }}
           REACT_APP_ENTUR_CLIENT_NAME: entur-shamash2023
