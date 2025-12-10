@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies
         run: yarn --immutable
       - run: yarn test
-      - run: yarn build
+      - run: yarn build --base /graphql-explorer/
         env:
           REACT_APP_VERSION: ${{ github.sha }}
           REACT_APP_ENTUR_CLIENT_NAME: entur-shamash2023

@@ -8,14 +8,8 @@ export default defineConfig(({ command, mode }) => {
   // Load env file based on `mode` in the current working directory.
   const env = loadEnv(mode, process.cwd(), '');
 
-  // Determine base path based on environment
-  const base = mode === 'production' ? '/graphql-explorer/' : '/';
-
   return {
     plugins: [react()],
-
-    // Set base path for deployment
-    base,
 
     // Define environment variables
     define: {

@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: yarn --immutable
       - run: yarn test
-      - run: yarn build --base /
+      - run: yarn build
         env:
           REACT_APP_VERSION: ${{ github.sha }}
           REACT_APP_ENTUR_CLIENT_NAME: entur-shamash2023
