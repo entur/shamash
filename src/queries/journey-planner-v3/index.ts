@@ -1,5 +1,14 @@
-export { default as enturAppQuery } from './enturApp';
+export { default as authorityFilterQuery } from './authorityFilter';
+export { default as bikeRentalQuery } from './bikeRental';
+export { default as bikeRentalAccessQuery } from './bikeRentalAccess';
 export { default as bikeRentalStationsByBboxQuery } from './bikeRentalStationsByBbox';
+export { default as departureBoardQuery } from './departureBoard';
+export { default as enturAppQuery } from './enturApp';
+export { default as filterByLocalBusQuery } from './filterByLocalBus';
+export { default as plannedAndActualDepartureTimesQuery } from './plannedAndActualDepartureTimes';
+export { default as situationMessagesQuery } from './situationMessages';
 export { default as stopPlaceQuery } from './stopPlace';
+export { default as stopPlaceToCoordinateQuery } from './stopPlaceToCoordinate';
 export { default as tripQuery } from './trip';
 export { default as viaTripQuery } from './viaTrip';
+export { default as walkOnlyQuery } from './walkOnly';
