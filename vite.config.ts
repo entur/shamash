@@ -16,7 +16,7 @@ export default defineConfig(({ command, mode }) => {
       // Make process.env available in browser
       'process.env': JSON.stringify({
         NODE_ENV: mode,
-        PUBLIC_URL: env.PUBLIC_URL || '',
+        PUBLIC_URL: process.env.PUBLIC_URL ?? env.PUBLIC_URL ?? '',
         // Include all REACT_APP_ prefixed variables
         ...Object.keys(env).reduce((prev, key) => {
           if (key.startsWith('REACT_APP_')) {

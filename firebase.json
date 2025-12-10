@@ -6,6 +6,10 @@
       {
         "source": "/graphql-explorer/**",
         "destination": "/graphql-explorer/index.html"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
       }
     ]
   }
