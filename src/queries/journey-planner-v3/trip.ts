@@ -17,7 +17,24 @@ const query = {
 # will appear in the pane to the right.
 #
 #
-################## Example query for planning a journey
+################## Basic trip planning query
+#
+# This is the fundamental query for planning a journey between two locations.
+# It demonstrates the core 'trip' query with common parameters.
+#
+# Key parameters:
+# - from/to: Origin and destination (can use coordinates, place ID, or both)
+# - numTripPatterns: Number of journey alternatives to return
+# - dateTime: When to travel (ISO 8601 format with timezone)
+# - walkSpeed: Walking speed in meters/second (1.3 m/s ≈ 4.7 km/h is typical)
+# - arriveBy: false = depart at dateTime, true = arrive by dateTime
+#
+# The response includes tripPatterns, each containing:
+# - expectedStartTime: When the journey starts (with real-time adjustments)
+# - duration: Total travel time in seconds
+# - walkDistance: Total walking distance in meters
+# - legs: Individual segments of the journey (walk, bus, train, etc.)
+#
 #### Arguments
 {
   trip(

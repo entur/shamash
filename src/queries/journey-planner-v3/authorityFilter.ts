@@ -15,7 +15,18 @@ const query = {
 # will appear in the pane to the right.
 #
 #
-################## Example query
+################## Filter trips by authority (whiteListed)
+#
+# This query demonstrates how to filter trip results to only include
+# journeys operated by specific authorities. The 'whiteListed' parameter
+# restricts results to services from the specified authority IDs.
+#
+# In this example, only trips operated by NSB (now Vy) are returned
+# for a journey from Oslo Bus Terminal to Drammen Bus Terminal.
+#
+# Use case: When you want to show only train options or only services
+# from a particular transport provider.
+#
 {
   trip(
     from: {

@@ -15,7 +15,24 @@ const query = {
 # will appear in the pane to the right.
 #
 #
-################## Example query
+################## Trip from stop place to coordinates
+#
+# This query shows how to plan a trip where the destination is specified
+# as GPS coordinates rather than a stop place ID. This is useful when
+# the user's destination is not a known transit stop.
+#
+# Origin/destination can be specified as:
+# - place: NSR stop place ID (e.g., "NSR:StopPlace:59872")
+# - coordinates: Latitude/longitude pair
+# - Both: place ID with coordinates as fallback
+#
+# When using coordinates as destination, the journey planner will:
+# 1. Find the nearest transit stops to the coordinates
+# 2. Plan routes to those stops
+# 3. Add a walking leg from the stop to the final destination
+#
+# Use case: "Navigate me from Oslo S to my home address"
+#
 {
   trip(
     from: {

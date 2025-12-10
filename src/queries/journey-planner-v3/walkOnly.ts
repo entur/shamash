@@ -15,7 +15,25 @@ const query = {
 # will appear in the pane to the right.
 #
 #
-################## Example query
+################## Walking-only trip (no public transit)
+#
+# This query plans a walking-only route between two locations,
+# without using any public transit.
+#
+# Mode configuration:
+# - directMode: foot - Walk directly from origin to destination
+# - transportModes: [] - Empty array means no transit modes allowed
+#
+# This is useful for:
+# - Showing walk time as a comparison to transit options
+# - Providing directions when transit isn't practical for short distances
+# - Accessibility: finding pedestrian routes
+#
+# The response will contain a single leg with mode "foot" showing
+# the walking distance, duration, and path.
+#
+# Use case: "How long would it take to just walk there?"
+#
 {
   trip(
     from: {

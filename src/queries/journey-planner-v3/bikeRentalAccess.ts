@@ -15,8 +15,21 @@ const query = {
 # will appear in the pane to the right.
 #
 #
-################## Example query
-# Travel search with city bike as access method
+################## City bike as first-mile access to public transit
+#
+# This query demonstrates a multimodal trip where city bike is used
+# as the 'access mode' (first mile) to reach public transit, followed
+# by bus, and then walking (foot) as the 'egress mode' (last mile).
+#
+# Mode configuration:
+# - accessMode: bike_rental - Use city bike to get to the transit stop
+# - egressMode: foot - Walk from the final transit stop to destination
+# - transportModes: bus - Use bus for the main transit leg
+#
+# Use case: When the origin is not near a transit stop, but there are
+# city bikes available nearby. The traveler can bike to a bus stop,
+# take the bus, and walk to the final destination.
+#
 {
   trip(
     from: {

@@ -15,7 +15,27 @@ const query = {
 # will appear in the pane to the right.
 #
 #
-################## Example: Getting bike rental stations within a bounding box
+################## Find bike rental stations in a geographic area
+#
+# This query returns all bike rental (city bike) stations within a
+# rectangular bounding box defined by latitude/longitude coordinates.
+#
+# Parameters:
+# - minimumLatitude/maximumLatitude: South/North bounds of the box
+# - minimumLongitude/maximumLongitude: West/East bounds of the box
+#
+# The response includes for each station:
+# - id: Unique identifier for the station
+# - name: Human-readable station name
+# - bikesAvailable: Number of bikes currently available for pickup
+# - spacesAvailable: Number of empty docks for returning bikes
+#
+# Use case: Displaying city bike stations on a map, showing availability
+# in real-time. Great for "find bikes near me" features.
+#
+# Tip: You can also request 'latitude' and 'longitude' fields to plot
+# the stations on a map.
+#
 #### Arguments
 {
   bikeRentalStationsByBbox(

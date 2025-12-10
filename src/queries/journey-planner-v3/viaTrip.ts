@@ -17,7 +17,29 @@ const query = {
 # will appear in the pane to the right.
 #
 #
-################## Example query for planning a journey with a via point
+################## Trip planning with intermediate stops (via points)
+#
+# The viaTrip query plans journeys that must pass through one or more
+# intermediate locations. This is useful when you need to make a stop
+# along the way (e.g., pick someone up, run an errand).
+#
+# Key parameters:
+# - from/to: Origin and final destination
+# - via: Array of intermediate stops that must be visited in order
+#   - minSlack: Minimum time to spend at the via point (e.g., "PT120S" = 2 min)
+#   - maxSlack: Maximum waiting time allowed at the via point
+# - segments: Filter transport modes for each segment of the journey
+#   (one segment per via point + 1)
+# - searchWindow: How long to search for departures (ISO 8601 duration)
+#
+# Response structure:
+# - tripPatternsPerSegment: Trip options for each segment separately
+# - tripPatternCombinations: Valid combinations of segments that work together
+# - routingErrors: Any issues with the routing request
+#
+# Use case: "I need to travel from Hamar to Oslo, but stop at Lillestrøm
+# for at least 2 minutes to pick up a friend"
+#
 #### Arguments
 {
   viaTrip(

@@ -15,9 +15,20 @@ const query = {
 # will appear in the pane to the right.
 #
 #
-################## Example query
-# Travel search with city bike
-
+################## Direct city bike trip (bike_rental as directMode)
+#
+# This query plans a trip using only city bike (bike sharing) as the
+# mode of transport. By setting 'directMode: bike_rental', the planner
+# will find routes that go directly from origin to destination using
+# available city bikes.
+#
+# The response includes:
+# - aimedStartTime/aimedEndTime: Planned departure and arrival times
+# - pointsOnLink: The GPS coordinates of the route for map visualization
+#
+# Use case: Finding the fastest city bike route between two points,
+# useful for short urban trips where bike sharing is available.
+#
 {
   trip(
     from: {

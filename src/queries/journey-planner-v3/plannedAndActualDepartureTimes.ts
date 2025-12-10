@@ -15,18 +15,36 @@ const query = {
 # will appear in the pane to the right.
 #
 #
-################## Example query
+################## Comparing planned vs actual departure times
+#
+# This query demonstrates how to retrieve and compare scheduled (aimed),
+# expected (real-time prediction), and actual departure/arrival times
+# for each stop along a journey.
+#
+# Time fields explained:
+# - aimedDepartureTime: The scheduled/timetabled departure time
+# - expectedDepartureTime: Real-time predicted departure (if available)
+# - actualDepartureTime: The recorded actual departure (after it happened)
+#
+# The same pattern applies to arrival times (aimedArrival, expectedArrival, etc.)
+#
+# The 'realtime' field indicates whether real-time data is available.
+# Compare aimed vs expected to show delays to users.
+#
+# Use case: Building an app that shows delays, or analyzing punctuality
+# of public transport services.
+#
 {
   trip(
     from: {
-      place: "NSR:StopPlace:3247", 
+      place: "NSR:StopPlace:3247",
       name: "Asker stasjon, Asker"
-    }, 
+    },
     to: {
-      place: "NSR:StopPlace:269", 
+      place: "NSR:StopPlace:269",
       name: "Oslo lufthavn, Ullensaker"
-    }, 
-    numTripPatterns: 3, 
+    },
+    numTripPatterns: 3,
   ) {
     tripPatterns {
       startTime

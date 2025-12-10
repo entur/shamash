@@ -15,7 +15,22 @@ const query = {
 # will appear in the pane to the right.
 #
 #
-################## Example query
+################## Filter by transport submode (local bus only)
+#
+# This query demonstrates how to filter trips to use only specific
+# transport submodes. In this case, only local buses are allowed,
+# excluding express buses, regional buses, etc.
+#
+# The 'transportSubModes' parameter accepts an array of submodes.
+# For buses, common submodes include:
+# - localBus: Regular city/local buses
+# - expressBus: Long-distance express services
+# - regionalBus: Regional bus services
+# - shuttleBus: Shuttle services
+#
+# Use case: When you want to find trips using only local city buses,
+# perhaps for a more scenic route or to use a specific ticket type.
+#
 {
   trip(
     from: {

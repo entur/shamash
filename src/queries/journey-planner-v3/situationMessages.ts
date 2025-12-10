@@ -15,19 +15,37 @@ const query = {
 # will appear in the pane to the right.
 #
 #
-################## Example query
+################## Retrieving situation messages (service disruptions)
+#
+# This query shows how to fetch situation messages (SIRI-SX) for trips.
+# Situations include service disruptions, planned maintenance, delays,
+# cancellations, and other travel advisories.
+#
+# Situation fields:
+# - description: Human-readable description of the situation
+# - validityPeriod: When the situation is active (startTime/endTime)
+# - reportType: Type of situation (e.g., incident, maintenance)
+#
+# Situations can be attached to:
+# - legs: Affecting specific journey segments
+# - lines: Affecting entire lines
+# - quays: Affecting specific platforms/stops
+#
+# Use case: Displaying warnings to travelers about disruptions,
+# helping them make informed travel decisions.
+#
 {
   trip(
     from: {
-      place: "NSR:StopPlace:11", 
+      place: "NSR:StopPlace:11",
       name: "Drammen stasjon, Drammen"
-    }, 
+    },
     to: {
-      place: "NSR:StopPlace:288", 
+      place: "NSR:StopPlace:288",
       name: "Nationaltheatret, Oslo"
-    }, 
-    numTripPatterns: 3, 
-    
+    },
+    numTripPatterns: 3,
+
   ) {
     tripPatterns {
       startTime

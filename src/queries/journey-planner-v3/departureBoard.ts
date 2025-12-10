@@ -15,8 +15,23 @@ const query = {
 # will appear in the pane to the right.
 #
 #
-################## Example query
-# Avgangstavle - Stavanger stadion
+################## Departure board for a stop place
+#
+# This query fetches upcoming departures from a specific stop place,
+# similar to what you would see on a departure board at a station.
+#
+# Key parameters:
+# - id: The NSR ID of the stop place (e.g., "NSR:StopPlace:548" for Stavanger stadion)
+# - timeRange: How far ahead to look for departures (in seconds, 72100 = ~20 hours)
+# - numberOfDepartures: Maximum number of departures to return
+#
+# The response includes both scheduled (aimed) and real-time (expected/actual) times,
+# allowing you to show delays. The 'realtime' field indicates if real-time data
+# is available for that departure.
+#
+# Use case: Building a departure board display, showing upcoming departures
+# from a specific stop with real-time updates.
+#
 {
   stopPlace(id: "NSR:StopPlace:548") {
     id
