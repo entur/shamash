@@ -37,8 +37,10 @@ const query = {
       place: "NSR:StopPlace:16804"
       name: "Drammen Bussterminal, Drammen"
     },
-    whiteListed: {
-      authorities: ["NSB:Authority:NSB"]
+     filters: {
+      select: {
+        authorities: ["VYG:Authority:VYT"]
+      }
     }
   ) {
     tripPatterns {

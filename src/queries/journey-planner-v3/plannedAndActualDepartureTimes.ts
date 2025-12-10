@@ -23,7 +23,7 @@ const query = {
 #
 # Time fields explained:
 # - aimedDepartureTime: The scheduled/timetabled departure time
-# - expectedDepartureTime: Real-time predicted departure (if available)
+# - expectedDepartureTime: Real-time estimated departure (if available)
 # - actualDepartureTime: The recorded actual departure (after it happened)
 #
 # The same pattern applies to arrival times (aimedArrival, expectedArrival, etc.)
