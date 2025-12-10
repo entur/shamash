@@ -42,9 +42,9 @@ const query = {
     }
   ) {
     tripPatterns {
-      startTime
+      expectedStartTime
       duration
-      walkDistance
+      streetDistance
       legs {
         authority {
           name

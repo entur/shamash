@@ -107,7 +107,7 @@ const query = {
         expectedStartTime
         expectedEndTime
         duration
-        walkDistance
+        streetDistance
         legs {
           expectedStartTime
           expectedEndTime

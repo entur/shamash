@@ -71,14 +71,12 @@ query (
       }
       tripPatterns {
           generalizedCost
-          startTime
-          endTime
           expectedStartTime
           expectedEndTime
           directDuration
           duration
           distance
-          walkDistance
+          streetDistance
           systemNotices {
               tag
               text

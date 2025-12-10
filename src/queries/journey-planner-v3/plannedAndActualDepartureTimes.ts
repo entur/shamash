@@ -47,9 +47,9 @@ const query = {
     numTripPatterns: 3,
   ) {
     tripPatterns {
-      startTime
+      expectedStartTime
       duration
-      walkDistance
+      streetDistance
       legs {
         mode
         distance
