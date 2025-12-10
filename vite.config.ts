@@ -16,7 +16,7 @@ export default defineConfig(({ command, mode }) => {
       // Make process.env available in browser
       'process.env': JSON.stringify({
         NODE_ENV: mode,
-        PUBLIC_URL: env.PUBLIC_URL || base.slice(0, -1), // Remove trailing slash
+        PUBLIC_URL: env.PUBLIC_URL || '',
         // Include all REACT_APP_ prefixed variables
         ...Object.keys(env).reduce((prev, key) => {
           if (key.startsWith('REACT_APP_')) {
@@ -56,7 +56,7 @@ export default defineConfig(({ command, mode }) => {
 
     // Build configuration
     build: {
-      outDir: mode === 'production' ? 'build/graphql-explorer' : 'build',
+      outDir: 'build',
       sourcemap: true,
       rollupOptions: {
         output: {
