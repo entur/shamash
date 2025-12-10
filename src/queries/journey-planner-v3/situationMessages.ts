@@ -65,7 +65,7 @@ const query = {
           }
         }
         situations {
-          description {
+          summary {
             value
             language
           }
