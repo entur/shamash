@@ -19,110 +19,84 @@ const query = {
 #
 ################## Trip planning with intermediate stops (via points)
 #
-# The viaTrip query plans journeys that must pass through one or more
-# intermediate locations. This is useful when you need to make a stop
-# along the way (e.g., pick someone up, run an errand).
+# This query plans journeys that must pass through one or more intermediate
+# locations. Use the 'via' argument on the trip query to specify stops
+# along the way.
 #
-# Key parameters:
-# - from/to: Origin and final destination
-# - via: Array of intermediate stops that must be visited in order
-#   - minSlack: Minimum time to spend at the via point (e.g., "PT120S" = 2 min)
-#   - maxSlack: Maximum waiting time allowed at the via point
-# - segments: Filter transport modes for each segment of the journey
-#   (one segment per via point + 1)
-# - searchWindow: How long to search for departures (ISO 8601 duration)
+# Via location types:
+# - visit: The traveler must alight/board at the stop or walk to a coordinate
+#   - stopLocationIds: Stop places, quays, or groups to visit (only ONE needed)
+#   - coordinate: A specific point to visit (requires walking from transit)
+#   - minimumWaitTime: How long to stay at the via point (ISO 8601 duration)
+# - passThrough: Stay on board and pass through the stop (no alighting required)
 #
-# Response structure:
-# - tripPatternsPerSegment: Trip options for each segment separately
-# - tripPatternCombinations: Valid combinations of segments that work together
-# - routingErrors: Any issues with the routing request
+# Example 1: Multi-city business trip with lunch break
+# This example demonstrates a trip where you need to stop at an intermediate city
+# for a longer duration (e.g., for a business meeting or lunch).
 #
-# Use case: "I need to travel from Hamar to Oslo, but stop at Lillestrøm
-# for at least 2 minutes to pick up a friend"
+# Use case: "I'm traveling from Bergen to Trondheim for a business trip,
+# but need to stop in Ålesund for a 1-hour client meeting"
+
+# Example 2: Tourist trip with sightseeing stop
+# This example shows how to plan a trip with a stop for sightseeing.
 #
-#### Arguments
+# Use case: "I want to travel from Oslo to Stavanger, but I want to stop in
+# Kristiansand for 30 minutes to visit the Ravenstein Park"
+#
 {
-  viaTrip(
+  trip(
     from: {
-      place: "NSR:StopPlace:60045"
-      name: "Hamar stasjon, Hamar"
-      coordinates: {
-        latitude: 60.791525
-        longitude: 11.077097
-      }
-    },
-    to: {
       place: "NSR:StopPlace:59872"
       name: "Oslo S, Oslo"
-      coordinates: {
-        latitude: 59.910357
-        longitude: 10.753051
-      }
     },
-    searchWindow: "PT2H",
+    to: {
+      place: "NSR:StopPlace:60005"
+      name: "Stavanger S, Stavanger"
+    },
     dateTime: "${toISOStringWithTimezone(new Date())}",
-    via: [{
-      place: "NSR:StopPlace:62339"
-      name: "Lillestrøm stasjon, Lillestrøm"
-      coordinates: {
-        latitude: 59.952915
-        longitude: 11.045364
+    via: [
+      {
+        visit: {
+          stopLocationIds: ["NSR:StopPlace:60003"]
+          label: "Ålesund stasjon"
+          minimumWaitTime: "PT1H"
+        }
+      },
+      {
+        visit: {
+          stopLocationIds: ["NSR:StopPlace:60004"]
+          label: "Kristiansand stasjon"
+          minimumWaitTime: "PT30M"
+        }
       }
-      minSlack: "PT120S"
-      maxSlack: "PT2H"
-    }],
-    segments: [{
-      filters: [{
-        select: [{
-          transportModes: [{
-            transportMode: rail
-          }, {
-            transportMode: bus
-          }, {
-            transportMode: metro
-          }]
-        }]
-      }]
-    }, {
-      filters: [{
-        select: [{
-          transportModes: [{
-            transportMode: rail
-          }, {
-            transportMode: bus
-          }, {
-            transportMode: metro
-          }]
-        }]
-      }]
-    }]
+    ]
   ) {
     routingErrors {
       description
       inputField
       code
     }
-    tripPatternsPerSegment {
-      tripPatterns {
+    tripPatterns {
+      expectedStartTime
+      expectedEndTime
+      duration
+      streetDistance
+      legs {
         expectedStartTime
         expectedEndTime
-        duration
-        streetDistance
-        legs {
-          expectedStartTime
-          expectedEndTime
-          mode
-          distance
-          line {
-            id
-            publicCode
-          }
+        mode
+        distance
+        fromPlace {
+          name
+        }
+        toPlace {
+          name
+        }
+        line {
+          id
+          publicCode
         }
       }
-    }
-    tripPatternCombinations {
-      from
-      to
     }
   }
 }
