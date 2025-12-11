@@ -36,21 +36,21 @@ const query = {
 # public transit, where on-demand/flexible services provide first/last mile
 # connections or complete journeys.
 #
-# Note: This example uses coordinates in Vestland county where flexible
+# Note: This example uses coordinates in Trøndelag county where flexible
 # services operate. Adjust coordinates to test other flexible service areas.
 #
 {
   trip(
     from: {
       coordinates: {
-        latitude: 60.3899
-        longitude: 5.3326
+        latitude: 63.5862
+        longitude: 10.7393
       }
     },
     to: {
       coordinates: {
-        latitude: 60.4662
-        longitude: 5.3305
+        latitude: 63.4360
+        longitude: 10.3986
       }
     },
     modes: {
