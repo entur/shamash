@@ -15,7 +15,22 @@ const query = {
 # will appear in the pane to the right.
 #
 #
-################## Example query
+################## Stop place information with departures
+#
+# This query fetches information about a specific stop place and its
+# upcoming departures. It uses a query variable ($id) for the stop ID,
+# making it easy to reuse for different stops.
+#
+# The response includes:
+# - Stop place name and ID
+# - Upcoming departures (estimatedCalls) with:
+#   - expectedDepartureTime: Real-time departure prediction
+#   - destinationDisplay: Where the vehicle is heading (front text)
+#   - line info: Public code (e.g., "31") and transport mode
+#
+# Use case: Looking up a stop place and showing what's departing soon,
+# useful for "nearby departures" features in travel apps.
+#
 query ($id: String!) {
   stopPlace(
     id: $id

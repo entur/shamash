@@ -2,6 +2,33 @@ import { toISOStringWithTimezone } from '../../utils/time';
 
 const query = {
   query: `
+# Comprehensive trip query (Entur app style)
+#
+# This is a full-featured trip planning query similar to what the Entur
+# app uses. It demonstrates the complete set of fields available for
+# building a production travel planning application.
+#
+# Features demonstrated:
+# - Query variables for flexible input (from, to, dateTime, modes, etc.)
+# - Wheelchair accessibility filtering
+# - Banned/whitelisted operators or lines
+# - Debug options for itinerary filtering
+# - Search window configuration
+#
+# Response includes:
+# - metadata: Search window info, pagination (nextDateTime/prevDateTime)
+# - routingErrors: Any issues with the routing request
+# - tripPatterns: Complete journey options with all leg details
+#
+# Each leg includes:
+# - Real-time arrival/departure times (aimed vs expected vs actual)
+# - Operator and authority information
+# - Line details including flexible line types
+# - Situation messages (disruptions, delays)
+# - Interchange information (guaranteed connections)
+# - Booking arrangements for flexible transport
+# - Geographic path (pointsOnLink) for map display
+#
 query (
   $numTripPatterns: Int,
   $from: Location!,
@@ -44,14 +71,12 @@ query (
       }
       tripPatterns {
           generalizedCost
-          startTime
-          endTime
           expectedStartTime
           expectedEndTime
           directDuration
           duration
           distance
-          walkDistance
+          streetDistance
           systemNotices {
               tag
               text
