@@ -93,6 +93,6 @@
     "lint-staged": "15.5.2",
     "prettier": "2.8.8",
     "vite": "7.3.1",
-    "vitest": "4.0.16"
+    "vitest": "4.0.17"
   }
 }
