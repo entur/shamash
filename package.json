@@ -78,7 +78,7 @@
     "@types/react-dom": "19.2.3",
     "@typescript-eslint/eslint-plugin": "8.57.1",
     "@typescript-eslint/parser": "8.57.1",
-    "@vitejs/plugin-react": "5.2.0",
+    "@vitejs/plugin-react": "6.0.1",
     "eslint": "8.57.1",
     "eslint-import-resolver-typescript": "4.4.4",
     "eslint-plugin-import": "2.32.0",
@@ -92,7 +92,7 @@
     "jsdom": "27.4.0",
     "lint-staged": "15.5.2",
     "prettier": "2.8.8",
-    "vite": "7.3.1",
+    "vite": "8.0.1",
     "vitest": "4.1.0"
   }
 }
