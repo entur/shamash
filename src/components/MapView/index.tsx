@@ -1,31 +1,14 @@
-import React, {
-  useState,
-  useEffect,
-  useMemo,
-  useRef,
-  useCallback,
-} from 'react';
-import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
-import Leaflet, { LatLngTuple } from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import MapGL, { Source, Layer, Marker, NavigationControl, useMap } from 'react-map-gl/maplibre';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import bbox from '@turf/bbox';
 import { lineString, featureCollection, point } from '@turf/helpers';
 import lineToPolygon from '@turf/line-to-polygon';
 import { toGeoJSON } from '@mapbox/polyline';
 import { colors } from '@entur/tokens';
+import type { LngLatBoundsLike } from 'maplibre-gl';
 
-delete (Leaflet.Icon.Default.prototype as any)._getIconUrl;
-Leaflet.Icon.Default.mergeOptions({
-  iconRetinaUrl: new URL(
-    'leaflet/dist/images/marker-icon-2x.png',
-    import.meta.url
-  ).href,
-  iconUrl: new URL('leaflet/dist/images/marker-icon.png', import.meta.url).href,
-  shadowUrl: new URL('leaflet/dist/images/marker-shadow.png', import.meta.url)
-    .href,
-});
-
-const DEFAULT_CENTER: LatLngTuple = [60, 10];
+const DEFAULT_CENTER: [number, number] = [10, 60]; // [lng, lat]
 
 function getTransportColor(mode) {
   return colors.transport.default[mode] || colors.transport.default.walk;
@@ -46,7 +29,7 @@ function getLegLines(responseData) {
     .map((leg) =>
       lineString(toGeoJSON(leg.pointsOnLink.points).coordinates, {
         color: getTransportColor(leg.mode),
-      })
+      }),
     );
 }
 
@@ -87,7 +70,7 @@ function getServiceJourneyLines(responseData) {
     toGeoJSON(serviceJourney.pointsOnLink.points).coordinates,
     {
       color: getTransportColor(serviceJourney.transportMode),
-    }
+    },
   );
 
   return [polyline];
@@ -137,96 +120,115 @@ function getVehiclePositions(responseData) {
 }
 
 function MapContent({ mapData }) {
-  const map = useMap();
-  const cumulativeBoundsRef = useRef(null);
+  const { current: mapRef } = useMap();
+  const cumulativeBoundsRef = useRef<LngLatBoundsLike | null>(null);
 
-  const collection = useMemo(() => {
+  const { lineCollection, polygonCollection, pointFeatures } = useMemo(() => {
     const { legLines, flexibleAreas, serviceJourney, vehiclePositions } =
       mapData;
-    const allFeatures = [
-      ...legLines,
-      ...flexibleAreas,
-      ...serviceJourney,
-      ...vehiclePositions,
-    ];
-    return allFeatures.length > 0 ? featureCollection(allFeatures) : null;
+
+    const lines = [...legLines, ...serviceJourney];
+    const polygons = [...flexibleAreas];
+    const points = [...vehiclePositions];
+
+    return {
+      lineCollection: lines.length > 0 ? featureCollection(lines) : null,
+      polygonCollection:
+        polygons.length > 0 ? featureCollection(polygons) : null,
+      pointFeatures: points,
+    };
   }, [mapData]);
 
-  const collectionKey = useMemo(() => {
-    if (!collection) return 'empty';
-
-    const vehiclePoints = collection.features
-      .filter((feature) => feature.geometry.type === 'Point')
-      .map((feature) => {
-        const pointGeometry = feature.geometry as any;
-        return `${pointGeometry.coordinates[0]},${
-          pointGeometry.coordinates[1]
-        }-${feature.properties?.markerType || 'default'}`;
-      })
-      .join('|');
-
-    return `${collection.features.length}-${vehiclePoints}`;
-  }, [collection]);
-
-  const pointToLayer = useCallback((feature, latlng) => {
-    const age = feature.properties?.age || 0;
-    const opacity = Math.max(0.1, 1.0 - age * 0.1);
-
-    const customIcon = new Leaflet.Icon({
-      iconUrl: new URL('leaflet/dist/images/marker-icon.png', import.meta.url)
-        .href,
-      shadowUrl: new URL(
-        'leaflet/dist/images/marker-shadow.png',
-        import.meta.url
-      ).href,
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41],
-      className: `marker-age-${age}`,
-    });
-
-    const marker = Leaflet.marker(latlng, { icon: customIcon });
-    marker.setOpacity(opacity);
-
-    return marker;
-  }, []);
+  const allFeatures = useMemo(() => {
+    const features = [];
+    if (lineCollection) features.push(...lineCollection.features);
+    if (polygonCollection) features.push(...polygonCollection.features);
+    if (pointFeatures.length > 0) features.push(...pointFeatures);
+    return features.length > 0 ? featureCollection(features) : null;
+  }, [lineCollection, polygonCollection, pointFeatures]);
 
   useEffect(() => {
-    if (!collection) return;
-    const [minX, minY, maxX, maxY] = bbox(collection);
+    if (!allFeatures || !mapRef) return;
+    const [minX, minY, maxX, maxY] = bbox(allFeatures);
 
-    const newBounds = Leaflet.latLngBounds(
-      {
-        lat: minY,
-        lng: minX,
-      },
-      {
-        lat: maxY,
-        lng: maxX,
-      }
-    );
+    const newBounds: LngLatBoundsLike = [
+      [minX, minY],
+      [maxX, maxY],
+    ];
 
     if (!cumulativeBoundsRef.current) {
       cumulativeBoundsRef.current = newBounds;
     } else {
-      cumulativeBoundsRef.current.extend(newBounds);
+      const prev = cumulativeBoundsRef.current as [[number, number], [number, number]];
+      cumulativeBoundsRef.current = [
+        [Math.min(prev[0][0], minX), Math.min(prev[0][1], minY)],
+        [Math.max(prev[1][0], maxX), Math.max(prev[1][1], maxY)],
+      ];
     }
 
-    map.fitBounds(cumulativeBoundsRef.current);
-  }, [map, collection]);
-
-  if (!collection) {
-    return null;
-  }
+    mapRef.fitBounds(cumulativeBoundsRef.current as [[number, number], [number, number]], {
+      padding: 40,
+      animate: true,
+      duration: 2000,
+    });
+  }, [mapRef, allFeatures]);
 
   return (
-    <GeoJSON
-      key={collectionKey}
-      data={collection}
-      style={(feature) => ({ color: feature.properties.color })}
-      pointToLayer={pointToLayer}
-    />
+    <>
+      {lineCollection && (
+        <Source id="lines" type="geojson" data={lineCollection}>
+          <Layer
+            id="lines-layer"
+            type="line"
+            paint={{
+              'line-color': ['get', 'color'],
+              'line-width': 3,
+            }}
+          />
+        </Source>
+      )}
+      {polygonCollection && (
+        <Source id="polygons" type="geojson" data={polygonCollection}>
+          <Layer
+            id="polygons-layer"
+            type="fill"
+            paint={{
+              'fill-color': '#088',
+              'fill-opacity': 0.3,
+            }}
+          />
+          <Layer
+            id="polygons-outline"
+            type="line"
+            paint={{
+              'line-color': '#088',
+              'line-width': 2,
+            }}
+          />
+        </Source>
+      )}
+      {pointFeatures.map((feature) => {
+        const age = feature.properties?.age || 0;
+        const opacity = Math.max(0.1, 1.0 - age * 0.1);
+        const [lng, lat] = feature.geometry.coordinates;
+        const key = `${feature.properties.vehicleKey}-${age}`;
+
+        return (
+          <Marker key={key} longitude={lng} latitude={lat} anchor="bottom">
+            <div
+              style={{
+                width: 12,
+                height: 12,
+                borderRadius: '50%',
+                backgroundColor: '#e74c3c',
+                border: '2px solid white',
+                opacity,
+              }}
+            />
+          </Marker>
+        );
+      })}
+    </>
   );
 }
 
@@ -279,7 +281,7 @@ export default function MapView({ response }) {
           point(coords, {
             vehicleKey,
             age: ageIndex,
-          })
+          }),
         );
       });
     });
@@ -291,27 +293,32 @@ export default function MapView({ response }) {
   }, [mapData, vehicleHistory]);
 
   return (
-    <MapContainer
-      center={DEFAULT_CENTER}
-      zoom={10}
-      style={{
-        width: '100%',
+    <MapGL
+      onLoad={(e) => {
+        const el = e.target.getContainer().querySelector('.maplibregl-compact-show');
+        el?.classList.remove('maplibregl-compact-show');
       }}
-      zoomControl={false}
-      boundsOptions={{
-        animate: true,
-        duration: 2,
-        paddingTopLeft: [40, 40],
-        paddingBottomRight: [40, 40],
+      initialViewState={{
+        longitude: DEFAULT_CENTER[0],
+        latitude: DEFAULT_CENTER[1],
+        zoom: 10,
+      }}
+      style={{ width: '100%', height: '100%' }}
+      mapStyle={{
+        version: 8,
+        sources: {
+          osm: {
+            type: 'raster',
+            tiles: ['https://a.tile.osm.org/{z}/{x}/{y}.png', 'https://b.tile.osm.org/{z}/{x}/{y}.png', 'https://c.tile.osm.org/{z}/{x}/{y}.png'],
+            tileSize: 256,
+            attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
+          },
+        },
+        layers: [{ id: 'osm', type: 'raster', source: 'osm' }],
       }}
     >
-      <TileLayer
-        attribution={
-          '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-        }
-        url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
-      />
-      <MapContent mapData={enhancedMapData} />
-    </MapContainer>
+      <NavigationControl position="top-left" showCompass={false} />
+      {enhancedMapData && <MapContent mapData={enhancedMapData} />}
+    </MapGL>
   );
 }

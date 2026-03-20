@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
   const env = loadEnv(mode, process.cwd(), '');
 
@@ -67,10 +67,10 @@ export default defineConfig(({ command, mode }) => {
             if (id.includes('node_modules/@apollo/client')) {
               return 'apollo';
             }
-            if (id.includes('node_modules/leaflet') || id.includes('node_modules/react-leaflet')) {
-              return 'leaflet';
+            if (id.includes('node_modules/maplibre-gl/') || id.includes('node_modules/react-map-gl/')) {
+              return 'maplibre';
             }
-            if (id.includes('node_modules/graphql') || id.includes('node_modules/graphql-ws')) {
+            if (id.includes('node_modules/graphql/') || id.includes('node_modules/graphql-ws/')) {
               return 'graphql';
             }
           },
@@ -91,7 +91,7 @@ export default defineConfig(({ command, mode }) => {
     test: {
       globals: true,
       environment: 'jsdom',
-      setupFiles: ['./src/setupTests.js'],
+      setupFiles: ['./src/setupTests.ts'],
       css: true,
     },
 
@@ -102,8 +102,8 @@ export default defineConfig(({ command, mode }) => {
         'react-dom',
         '@apollo/client',
         'graphql',
-        'leaflet',
-        'react-leaflet',
+        'maplibre-gl',
+        'react-map-gl/maplibre',
         'buffer',
         'process',
       ],
