@@ -58,13 +58,21 @@ export default defineConfig(({ command, mode }) => {
     build: {
       outDir: 'build',
       sourcemap: true,
-      rollupOptions: {
+      rolldownOptions: {
         output: {
-          manualChunks: {
-            vendor: ['react', 'react-dom'],
-            apollo: ['@apollo/client'],
-            leaflet: ['leaflet', 'react-leaflet'],
-            graphql: ['graphql', 'graphql-ws'],
+          manualChunks(id) {
+            if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) {
+              return 'vendor';
+            }
+            if (id.includes('node_modules/@apollo/client')) {
+              return 'apollo';
+            }
+            if (id.includes('node_modules/leaflet') || id.includes('node_modules/react-leaflet')) {
+              return 'leaflet';
+            }
+            if (id.includes('node_modules/graphql') || id.includes('node_modules/graphql-ws')) {
+              return 'graphql';
+            }
           },
         },
       },

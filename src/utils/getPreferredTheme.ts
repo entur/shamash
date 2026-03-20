@@ -1,6 +1,6 @@
 const getPreferredTheme = () => {
   const savedTheme =
-    window.localStorage && window.localStorage.getItem('theme');
+    window.localStorage && typeof window.localStorage.getItem === 'function' && window.localStorage.getItem('theme');
   if (['light', 'dark'].includes(savedTheme)) {
     return savedTheme;
   } else if (
