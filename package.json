@@ -5,9 +5,9 @@
   "type": "module",
   "dependencies": {
     "@apollo/client": "3.14.1",
-    "@entur/form": "9.3.0",
-    "@entur/icons": "8.4.4",
-    "@entur/table": "4.10.8",
+    "@entur/form": "9.3.1",
+    "@entur/icons": "8.4.5",
+    "@entur/table": "4.10.9",
     "@graphiql/plugin-explorer": "5.1.1",
     "@graphiql/react": "0.37.3",
     "@graphiql/toolkit": "0.11.3",
