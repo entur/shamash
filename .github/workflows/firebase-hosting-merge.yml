@@ -14,13 +14,13 @@ concurrency:
 jobs:
   build:
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v6.0.2
+      - uses: actions/setup-node@v6.3.0
         with:
           node-version: 24.14.1
       - name: Cache node modules
         id: cache-npm
-        uses: actions/cache@v4
+        uses: actions/cache@v4.3.0
         env:
           cache-name: cache-node-modules
         with:
@@ -39,7 +39,7 @@ jobs:
           REACT_APP_VERSION: ${{ github.sha }}
           REACT_APP_ENTUR_CLIENT_NAME: entur-shamash2023
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: build
           path: |
@@ -50,10 +50,10 @@ jobs:
     needs: [build]
     environment: 'dev'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
       - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v4
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+        uses: actions/download-artifact@v4.3.0
+      - uses: FirebaseExtended/action-hosting-deploy@v0.10.0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_SHAMASH_DEV }}'
@@ -64,10 +64,10 @@ jobs:
     needs: [deploy_dev]
     environment: 'staging'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
       - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v4
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+        uses: actions/download-artifact@v4.3.0
+      - uses: FirebaseExtended/action-hosting-deploy@v0.10.0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_SHAMASH_TST }}'
@@ -78,10 +78,10 @@ jobs:
     needs: [deploy_dev, deploy_staging]
     environment: 'prod'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
       - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v4
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+        uses: actions/download-artifact@v4.3.0
+      - uses: FirebaseExtended/action-hosting-deploy@v0.10.0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENT_SHAMASH_PRD }}'
