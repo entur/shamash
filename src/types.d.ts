@@ -1,5 +1,3 @@
-import React from 'react';
-
 declare module '*.png' {
   const value: string;
   export default value;
@@ -30,6 +28,7 @@ declare module '*.css' {
   export default classes;
 }
 
-declare module 'graphiql-explorer' {
-  export const Explorer: React.ComponentType<any>;
+declare module '*?worker' {
+  const workerConstructor: { new (): Worker };
+  export default workerConstructor;
 }

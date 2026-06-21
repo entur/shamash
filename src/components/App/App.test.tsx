@@ -20,12 +20,26 @@ vi.mock('graphql', () => ({
 }));
 
 vi.mock('graphiql', () => ({
-  default: () => <div data-testid="graphiql">GraphiQL Mock</div>,
+  GraphiQL: Object.assign(
+    (props: any) => (
+      <div data-testid="graphiql" data-initial-query={props.initialQuery}>
+        GraphiQL Mock
+      </div>
+    ),
+    {
+      Logo: ({ children }: any) => <div>{children}</div>,
+      Toolbar: ({ children }: any) => <div>{children}</div>,
+      Footer: ({ children }: any) => <div>{children}</div>,
+    }
+  ),
 }));
 
-vi.mock('graphiql-explorer', () => ({
-  Explorer: () => <div data-testid="graphiql-explorer">Explorer Mock</div>,
+vi.mock('@graphiql/plugin-explorer', () => ({
+  explorerPlugin: () => ({}),
 }));
+
+vi.mock('graphiql/style.css', () => ({}));
+vi.mock('@graphiql/plugin-explorer/style.css', () => ({}));
 
 const mockConfig = {
   services: [
@@ -70,9 +84,12 @@ describe('App', () => {
     );
 
     // Wait for initial render to complete
-    await waitFor(() => {
-      expect(setParameters).not.toHaveBeenCalled();
-    }, { timeout: 100 });
+    await waitFor(
+      () => {
+        expect(setParameters).not.toHaveBeenCalled();
+      },
+      { timeout: 100 }
+    );
 
     // Clear the query by setting it to empty string
     rerender(
@@ -86,15 +103,32 @@ describe('App', () => {
     );
 
     // Wait a bit to ensure no automatic refill happens
-    await waitFor(() => {
-      // setParameters should not be called to refill the query
-      expect(setParameters).not.toHaveBeenCalled();
-    }, { timeout: 100 });
+    await waitFor(
+      () => {
+        // setParameters should not be called to refill the query
+        expect(setParameters).not.toHaveBeenCalled();
+      },
+      { timeout: 100 }
+    );
 
     // Verify the component still renders correctly with empty query
     expect(true).toBe(true);
 
     // Clean up
     unmount();
+  });
+
+  test('seeds GraphiQL initialQuery from the URL query parameter', async () => {
+    const { findByTestId } = render(
+      <ConfigContext.Provider value={mockConfig}>
+        <App
+          pathname="/journey-planner-v3"
+          parameters={{ query: 'query Deep { foo }' }}
+          setParameters={vi.fn()}
+        />
+      </ConfigContext.Provider>
+    );
+    const node = await findByTestId('graphiql');
+    expect(node.dataset.initialQuery).toBe('query Deep { foo }');
   });
 });

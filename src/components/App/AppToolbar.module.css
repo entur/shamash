@@ -1,0 +1,31 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--graphiql-popover-border, #ccc);
+  flex-wrap: wrap;
+}
+.logo {
+  height: 28px;
+  margin-right: 8px;
+}
+.button {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  background-color: #f8f8f8;
+  cursor: pointer;
+}
+
+:global(body.dark-theme) .toolbar {
+  background-color: #1f2430;
+  border-bottom-color: #3a3f4b;
+}
+:global(body.dark-theme) .button {
+  background-color: #2a2f3a;
+  border-color: #3a3f4b;
+  color: #e6e6e6;
+}
