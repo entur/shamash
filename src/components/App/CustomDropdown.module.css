@@ -49,3 +49,17 @@
   color: #007bff;
   font-size: 14px;
 }
+
+:global(body.dark-theme) .button {
+  background-color: #2a2f3a;
+  border-color: #3a3f4b;
+  color: #e6e6e6;
+}
+:global(body.dark-theme) .menu {
+  background: #1f2430;
+  border-color: #3a3f4b;
+  color: #e6e6e6;
+}
+:global(body.dark-theme) .option:hover {
+  background: #2a2f3a;
+}

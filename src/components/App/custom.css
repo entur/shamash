@@ -29,16 +29,21 @@ body {
   width: auto;
 }
 
-.topBarWrap div.topBar {
-  height: 48px;
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
-div.toolbar > .toolbar-button {
-  font-weight: 400;
-  padding: 2px 11px 2px 11px;
+.graphiql-wrapper {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
 }
-.toolbar-menu-items > li {
-  margin: -2px;
+.graphiql-wrapper .graphiql-container {
+  flex: 1;
+  min-width: 0;
 }
-.CodeMirror-code pre.CodeMirror-line {
-  line-height: 1.1rem;
+.graphiql-loading {
+  padding: 24px;
 }

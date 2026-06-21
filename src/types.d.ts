@@ -30,6 +30,3 @@ declare module '*.css' {
   export default classes;
 }
 
-declare module 'graphiql-explorer' {
-  export const Explorer: React.ComponentType<any>;
-}
