@@ -31,6 +31,14 @@
   list-style: none;
 }
 .option {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  border: none;
+  background: none;
+  color: inherit;
+  font-family: inherit;
   padding: 6px 16px 6px 28px;
   cursor: pointer;
   font-size: 14px;

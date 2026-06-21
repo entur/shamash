@@ -30,6 +30,6 @@ test('renders controls and fires callbacks', () => {
   expect(onToggleMap).toHaveBeenCalled();
 
   fireEvent.click(screen.getByRole('button', { name: /Service/ }));
-  fireEvent.click(screen.getByRole('option', { name: /Mobility/ }));
+  fireEvent.click(screen.getByRole('menuitem', { name: /Mobility/ }));
   expect(onServiceChange).toHaveBeenCalledWith('mobility-v2');
 });

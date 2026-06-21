@@ -17,6 +17,6 @@ test('opens on click and fires onChange with the selected value', () => {
     />
   );
   fireEvent.click(screen.getByRole('button', { name: /Service/ }));
-  fireEvent.click(screen.getByRole('option', { name: /Beta/ }));
+  fireEvent.click(screen.getByRole('menuitem', { name: /Beta/ }));
   expect(onChange).toHaveBeenCalledWith('b');
 });

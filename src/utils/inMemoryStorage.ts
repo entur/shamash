@@ -11,7 +11,7 @@ export function createInMemoryStorage(): Storage {
       map.clear();
     },
     getItem(key: string) {
-      return map.has(key) ? (map.get(key) as string) : null;
+      return map.get(key) ?? null;
     },
     key(index: number) {
       return Array.from(map.keys())[index] ?? null;

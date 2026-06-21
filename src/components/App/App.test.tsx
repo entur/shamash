@@ -129,6 +129,6 @@ describe('App', () => {
       </ConfigContext.Provider>
     );
     const node = await findByTestId('graphiql');
-    expect(node.getAttribute('data-initial-query')).toBe('query Deep { foo }');
+    expect(node.dataset.initialQuery).toBe('query Deep { foo }');
   });
 });

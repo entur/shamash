@@ -25,7 +25,11 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   useEffect(() => {
     if (!open) return;
     const handleClickOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
+      if (
+        ref.current &&
+        event.target instanceof Node &&
+        !ref.current.contains(event.target)
+      ) {
         setOpen(false);
       }
     };
@@ -38,7 +42,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       <button
         className={styles.button}
         onClick={() => setOpen((o) => !o)}
-        aria-haspopup="listbox"
+        aria-haspopup="menu"
         aria-expanded={open}
         type="button"
       >
@@ -48,15 +52,16 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
         </svg>
       </button>
       {open && (
-        <ul className={styles.menu} role="listbox">
+        <div className={styles.menu} role="menu">
           {options.map((option) => (
-            <li
+            <button
               key={option.value}
+              type="button"
+              role="menuitem"
               className={`${styles.option}${
                 option.value === selected ? ` ${styles.selected}` : ''
               }`}
-              role="option"
-              aria-selected={option.value === selected}
+              aria-current={option.value === selected}
               onClick={() => {
                 onChange(option.value);
                 setOpen(false);
@@ -66,9 +71,9 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
                 <span className={styles.check}>✓</span>
               )}
               {option.label}
-            </li>
+            </button>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
