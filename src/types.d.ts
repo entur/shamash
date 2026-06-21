@@ -30,3 +30,8 @@ declare module '*.css' {
   export default classes;
 }
 
+declare module '*?worker' {
+  const workerConstructor: { new (): Worker };
+  export default workerConstructor;
+}
+
