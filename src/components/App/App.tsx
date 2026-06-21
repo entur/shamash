@@ -7,28 +7,28 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import GraphiQL from 'graphiql';
-import { Explorer as GraphiQLExplorer } from 'graphiql-explorer';
+import { GraphiQL } from 'graphiql';
+import { explorerPlugin } from '@graphiql/plugin-explorer';
 import {
   buildClientSchema,
   getIntrospectionQuery,
   GraphQLSchema,
-  parse,
-  print,
-  stripIgnoredCharacters,
 } from 'graphql';
 import queryString from 'query-string';
 import graphQLFetcher from '../../utils/graphQLFetcher';
 import getPreferredTheme from '../../utils/getPreferredTheme';
+import { createInMemoryStorage } from '../../utils/inMemoryStorage';
 import history from '../../utils/history';
 const GeocoderModal = lazy(() => import('../GeocoderModal'));
 import './custom.css';
 import findServiceName from '../../utils/findServiceName';
 
-import explorerDarkColors from './DarkmodeExplorerColors';
-import 'graphiql/graphiql.css';
+import 'graphiql/style.css';
+import '@graphiql/plugin-explorer/style.css';
 
 import MapView from '../MapView';
+import MapPortal from './MapPortal';
+import AppToolbar from './AppToolbar';
 
 import whiteLogo from '../../static/images/entur-white.png';
 import normalLogo from '../../static/images/entur.png';
@@ -62,34 +62,19 @@ export const App: React.FC<AppProps> = ({
   const { services, enturClientName } = useConfig();
   const [showGeocoderModal, setShowGeocoderModal] = useState<boolean>(false);
   const [schema, setSchema] = useState<GraphQLSchema | undefined>();
-  const [showExplorer, setShowExplorer] = useState<boolean>(false);
   const [showMap, setShowMap] = useState<boolean>(false);
   const [response, setResponse] = useState<any>();
   const [currentTheme, setCurrentTheme] = useState<string>(getPreferredTheme());
-  const [isSubscriptionActive, setIsSubscriptionActive] =
-    useState<boolean>(false);
   const [query, setQuery] = useState('');
   const hasInitializedQuery = useRef(false);
   const loadedExampleQuery = useRef<string | null>(null);
   const loadedExampleVariables = useRef<string | null>(null);
 
-  let graphiql = useRef<any>(null);
-
   const serviceName = findServiceName(pathname, BASE_PATH);
 
-  const isSubscriptionQuery = useMemo(() => {
-    if (!query) return false;
-    try {
-      const queryDoc = parse(query);
-      return queryDoc.definitions.some(
-        (definition) =>
-          definition.kind === 'OperationDefinition' &&
-          definition.operation === 'subscription'
-      );
-    } catch {
-      return false;
-    }
-  }, [query]);
+  const explorer = useMemo(() => explorerPlugin(), []);
+  const graphiqlStorage = useMemo(() => createInMemoryStorage(), []);
+  const [queryInitialized, setQueryInitialized] = useState(false);
 
   // Load dark theme CSS once and toggle with body class
   useEffect(() => {
@@ -138,11 +123,7 @@ export const App: React.FC<AppProps> = ({
     return graphQLFetcher(
       currentService.url,
       currentService.subscriptionsUrl,
-      enturClientName,
-      {
-        onSubscriptionStart: () => setIsSubscriptionActive(true),
-        onSubscriptionEnd: () => setIsSubscriptionActive(false),
-      }
+      enturClientName
     );
   }, [currentService, enturClientName]);
 
@@ -221,62 +202,6 @@ export const App: React.FC<AppProps> = ({
     setCurrentTheme(theme);
   };
 
-  const handleClickPrettifyButton = () => {
-    if (!graphiql || !graphiql.current) return;
-
-    try {
-      const queryEditor = graphiql.current.getQueryEditor();
-      const variablesEditor = graphiql.current.getVariableEditor();
-
-      if (queryEditor) {
-        const currentQueryText = queryEditor.getValue();
-        if (currentQueryText) {
-          const prettyQueryText = print(parse(currentQueryText));
-          queryEditor.setValue(prettyQueryText);
-        }
-      }
-
-      if (variablesEditor) {
-        const currentVariablesText = variablesEditor.getValue();
-        if (currentVariablesText && currentVariablesText.trim() !== '') {
-          const prettyVariablesText = JSON.stringify(
-            JSON.parse(currentVariablesText),
-            null,
-            2
-          );
-          variablesEditor.setValue(prettyVariablesText);
-        }
-      }
-    } catch (error) {
-      console.warn('Prettify failed:', error);
-    }
-  };
-
-  const handleClickMinifyButton = () => {
-    if (!graphiql) return;
-
-    const queryEditor = graphiql.current.getQueryEditor();
-    const currentQueryText = queryEditor.getValue();
-    const uglyQueryText = stripIgnoredCharacters(currentQueryText);
-    queryEditor.setValue(uglyQueryText);
-
-    const variablesEditor = graphiql.current.getVariableEditor();
-    const currentVariablesText = variablesEditor.getValue();
-    const uglyVariablesText = JSON.stringify(JSON.parse(currentVariablesText));
-    variablesEditor.setValue(uglyVariablesText);
-  };
-
-  const handleHistoryButton = () => {
-    if (!graphiql) return;
-    graphiql.current.setState({
-      historyPaneOpen: !graphiql.current.state.historyPaneOpen,
-    });
-  };
-
-  const toggleExplorer = () => {
-    setShowExplorer((prevShowExplorer) => !prevShowExplorer);
-  };
-
   const toggleMap = () => {
     setShowMap((prev) => !prev);
   };
@@ -317,27 +242,6 @@ export const App: React.FC<AppProps> = ({
     window.location.href = url;
   };
 
-  const renderExamplesMenu = () => {
-    if (!exampleQueries || Object.keys(exampleQueries).length === 0) {
-      return null;
-    }
-
-    return (
-      <GraphiQL.Menu label="Examples" title="Examples">
-        {Object.entries(
-          exampleQueries as Record<string, { query: string; variables?: any }>
-        ).map(([key]) => (
-          <GraphiQL.MenuItem
-            key={key}
-            label={key}
-            title={key}
-            onSelect={() => handleExampleSelect(key)}
-          />
-        ))}
-      </GraphiQL.Menu>
-    );
-  };
-
   const searchForId = () => {
     setShowGeocoderModal(!showGeocoderModal);
   };
@@ -350,6 +254,7 @@ export const App: React.FC<AppProps> = ({
       if (urlQuery) {
         // Explicit query parameter takes precedence
         setQuery(urlQuery);
+        setQueryInitialized(true);
         hasInitializedQuery.current = true;
       } else if (exampleKey && currentService && !hasInitializedQuery.current) {
         // Load example query by key from URL (e.g., ?example=tripQuery)
@@ -398,6 +303,7 @@ export const App: React.FC<AppProps> = ({
           console.warn(`Failed to load example query "${exampleKey}":`, error);
           setQuery('');
         }
+        setQueryInitialized(true);
         hasInitializedQuery.current = true;
       } else if (currentService && !hasInitializedQuery.current) {
         // Only load default query on initial load, not when user clears the query
@@ -414,10 +320,12 @@ export const App: React.FC<AppProps> = ({
           );
           setQuery('');
         }
+        setQueryInitialized(true);
         hasInitializedQuery.current = true;
       } else if (urlQuery === '' && hasInitializedQuery.current) {
         // Allow empty query if user has cleared it
         setQuery('');
+        setQueryInitialized(true);
       }
     };
     setInitialQuery();
@@ -463,166 +371,90 @@ export const App: React.FC<AppProps> = ({
     [fetcher]
   );
 
-  // Monitor for subscription query changes to reset state
-  useEffect(() => {
-    if (!isSubscriptionQuery) {
-      setIsSubscriptionActive(false);
-    }
-  }, [isSubscriptionQuery]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const executeButton = document.querySelector(
-        '.graphiql-container .execute-button'
-      ) as HTMLElement;
-      if (!executeButton) return;
-
-      const svg = executeButton.querySelector('svg');
-      if (isSubscriptionQuery && isSubscriptionActive) {
-        executeButton.classList.add('subscription-active');
-        svg.innerHTML = `<path d="M 10 10 L 23 10 L 23 23 L 10 23 z" />`;
-      } else {
-        executeButton.classList.remove('subscription-active');
-        svg.innerHTML = `<path d="M 11 9 L 24 16 L 11 23 z" />`;
-      }
-    }, 10);
-
-    return () => clearTimeout(timer);
-  }, [isSubscriptionQuery, isSubscriptionActive]);
+  const exampleKeys = Object.keys(exampleQueries || {});
 
   if (currentService == null) {
     return <NotFound />;
   }
 
   return (
-    <div className="App graphiql-container">
-      <GraphiQLExplorer
-        schema={schema}
-        query={query}
-        onEdit={(value) => editParameter('query', value)}
-        onRunOperation={(operationName) =>
-          graphiql.current.handleRunQuery(operationName)
-        }
-        explorerIsOpen={showExplorer}
-        onToggleExplorer={toggleExplorer}
-        colors={currentTheme === 'dark' ? explorerDarkColors : undefined}
+    <div className="App">
+      <AppToolbar
+        logoSrc={currentTheme === 'dark' ? whiteLogo : normalLogo}
+        services={services}
+        currentServiceId={currentService.id}
+        onServiceChange={handleServiceChange}
+        onEnvironmentChange={handleEnvironmentChange}
+        exampleKeys={exampleKeys}
+        onExampleSelect={handleExampleSelect}
+        onToggleMap={toggleMap}
+        onSearchForId={searchForId}
+        currentTheme={currentTheme}
+        onThemeChange={handleThemeChange}
       />
-      <div style={{ flex: 1 }}>
-        <GraphiQL
-          ref={graphiql}
-          fetcher={customFetcher}
-          query={query}
-          variables={variables}
-          operationName={operationName}
-          onEditQuery={(value) => editParameter('query', value)}
-          onEditVariables={(value) => editParameter('variables', value)}
-          onEditOperationName={(value) => editParameter('operationName', value)}
-        >
-          <GraphiQL.Logo>
-            <img
-              alt="logo"
-              src={currentTheme === 'dark' ? whiteLogo : normalLogo}
-              className="logo"
-            />
-          </GraphiQL.Logo>
-          <GraphiQL.Toolbar>
-            <GraphiQL.Button
-              onClick={handleClickPrettifyButton}
-              label="Prettify"
-              title="Prettify Query (Shift-Ctrl-P)"
-            />
-            <GraphiQL.Button
-              onClick={handleClickMinifyButton}
-              label="Minify"
-              title="Minify Query"
-            />
-
-            <GraphiQL.Button
-              onClick={handleHistoryButton}
-              label="History"
-              title="Show History"
-            />
-
-            <GraphiQL.Button
-              onClick={toggleExplorer}
-              label="Explorer"
-              title="Show Explorer"
-            />
-
-            <GraphiQL.Button onClick={toggleMap} label="Map" title="Show Map" />
-
-            <GraphiQL.Menu label="Service" title="Service">
-              {services.map((service) => (
-                <GraphiQL.MenuItem
-                  key={service.id}
-                  label={service.name}
-                  title={service.name}
-                  onSelect={() => handleServiceChange(service.id)}
-                />
-              ))}
-            </GraphiQL.Menu>
-
-            <GraphiQL.Menu label="Environment" title="Environment">
-              <GraphiQL.MenuItem
-                label="Prod"
-                title="Prod"
-                onSelect={() => handleEnvironmentChange('prod')}
+      <div className="graphiql-wrapper">
+        {queryInitialized ? (
+          /* GraphiQL 5 reads initialQuery/initialVariables once at mount (uncontrolled
+            store). Deep-links work because service/example/env changes hard-reload the
+            page. NOTE: browser back/forward that changes ?query in place is NOT reflected
+            in the editor without a remount. Do NOT add key={query} — query state changes
+            on every keystroke and that would remount on each character. A correct fix keys
+            on a stable navigation identity; deferred. */
+          <GraphiQL
+            fetcher={customFetcher}
+            schema={schema}
+            plugins={[explorer]}
+            storage={graphiqlStorage}
+            forcedTheme={currentTheme === 'dark' ? 'dark' : 'light'}
+            initialQuery={query}
+            initialVariables={variables}
+            operationName={operationName}
+            onEditQuery={(value) => editParameter('query', value)}
+            onEditVariables={(value) => editParameter('variables', value)}
+            onEditOperationName={(value) =>
+              editParameter('operationName', value)
+            }
+          >
+            <GraphiQL.Logo>
+              <img
+                alt="logo"
+                src={currentTheme === 'dark' ? whiteLogo : normalLogo}
+                className="logo"
               />
-              <GraphiQL.MenuItem
-                label="Staging"
-                title="Staging"
-                onSelect={() => handleEnvironmentChange('staging')}
-              />
-              <GraphiQL.MenuItem
-                label="Dev"
-                title="Dev"
-                onSelect={() => handleEnvironmentChange('dev')}
-              />
-            </GraphiQL.Menu>
-
-            {renderExamplesMenu()}
-
-            <GraphiQL.Menu label="Theme" title="Theme">
-              <GraphiQL.MenuItem
-                label="Light"
-                title="Light"
-                onSelect={() => handleThemeChange('light')}
-              />
-              <GraphiQL.MenuItem
-                label="Dark"
-                title="Dark"
-                onSelect={() => handleThemeChange('dark')}
-              />
-            </GraphiQL.Menu>
-
-            <GraphiQL.Button
-              onClick={() => {
-                searchForId();
-              }}
-              label="Search for ID"
-              title="Search for ID"
-            />
-          </GraphiQL.Toolbar>
-          <GraphiQL.Footer>
-            <div className="label">
-              {currentService.name}:{' '}
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={currentService.url}
-              >
-                {currentService.url}
-              </a>
-            </div>
-          </GraphiQL.Footer>
-        </GraphiQL>
-        {showGeocoderModal ? (
-          <Suspense fallback={<div>Loading...</div>}>
-            <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
-          </Suspense>
-        ) : null}
+            </GraphiQL.Logo>
+            <GraphiQL.Footer>
+              <div className="label">
+                {currentService.name}:{' '}
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={currentService.url}
+                >
+                  {currentService.url}
+                </a>
+              </div>
+            </GraphiQL.Footer>
+          </GraphiQL>
+        ) : (
+          <div className="graphiql-loading">Loading…</div>
+        )}
+        <div id="map-portal-root" />
       </div>
-      {showMap ? <MapView response={response} /> : null}
+      {showGeocoderModal ? (
+        <Suspense fallback={<div>Loading...</div>}>
+          <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
+        </Suspense>
+      ) : null}
+      <MapPortal show={showMap} onClose={() => setShowMap(false)}>
+        {response ? (
+          <MapView response={response} />
+        ) : (
+          <p>
+            No map data available. Run a query that returns geographic data to
+            see the map.
+          </p>
+        )}
+      </MapPortal>
     </div>
   );
 };
