@@ -84,9 +84,12 @@ describe('App', () => {
     );
 
     // Wait for initial render to complete
-    await waitFor(() => {
-      expect(setParameters).not.toHaveBeenCalled();
-    }, { timeout: 100 });
+    await waitFor(
+      () => {
+        expect(setParameters).not.toHaveBeenCalled();
+      },
+      { timeout: 100 }
+    );
 
     // Clear the query by setting it to empty string
     rerender(
@@ -100,10 +103,13 @@ describe('App', () => {
     );
 
     // Wait a bit to ensure no automatic refill happens
-    await waitFor(() => {
-      // setParameters should not be called to refill the query
-      expect(setParameters).not.toHaveBeenCalled();
-    }, { timeout: 100 });
+    await waitFor(
+      () => {
+        // setParameters should not be called to refill the query
+        expect(setParameters).not.toHaveBeenCalled();
+      },
+      { timeout: 100 }
+    );
 
     // Verify the component still renders correctly with empty query
     expect(true).toBe(true);

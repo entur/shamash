@@ -52,7 +52,9 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
           {options.map((option) => (
             <li
               key={option.value}
-              className={`${styles.option}${option.value === selected ? ` ${styles.selected}` : ''}`}
+              className={`${styles.option}${
+                option.value === selected ? ` ${styles.selected}` : ''
+              }`}
               role="option"
               aria-selected={option.value === selected}
               onClick={() => {
