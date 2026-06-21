@@ -1,3 +1,5 @@
+// GraphiQL 5 uses the Monaco editor; this registers its web workers for Vite.
+import 'graphiql/setup-workers/vite';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './components/App';
