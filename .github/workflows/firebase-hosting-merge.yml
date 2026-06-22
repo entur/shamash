@@ -14,7 +14,7 @@ concurrency:
 jobs:
   build:
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: actions/setup-node@v6.4.0
         with:
           node-version: 24.17.0
@@ -50,7 +50,7 @@ jobs:
     needs: [build]
     environment: 'dev'
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v8.0.1
         with:
@@ -67,7 +67,7 @@ jobs:
     needs: [deploy_dev]
     environment: 'staging'
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v8.0.1
         with:
@@ -84,7 +84,7 @@ jobs:
     needs: [deploy_dev, deploy_staging]
     environment: 'prod'
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v8.0.1
         with:
