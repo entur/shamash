@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@apollo/client": "4.2.4",
+    "@apollo/client": "4.2.7",
     "@entur/form": "9.3.8",
     "@entur/icons": "9.0.4",
     "@entur/table": "4.10.16",
