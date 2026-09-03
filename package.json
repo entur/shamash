@@ -23,7 +23,7 @@
     "https-browserify": "1.0.0",
     "isomorphic-fetch": "3.0.0",
     "lodash.debounce": "4.0.8",
-    "maplibre-gl": "5.24.0",
+    "maplibre-gl": "6.6.0",
     "monaco-editor": "0.52.2",
     "monaco-graphql": "1.8.0",
     "query-string": "9.4.1",
