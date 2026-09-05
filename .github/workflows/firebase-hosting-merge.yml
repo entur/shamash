@@ -11,10 +11,10 @@ concurrency:
 jobs:
   build:
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
       - uses: actions/setup-node@v7.0.0
         with:
-          node-version: 24.18.0
+          node-version: 24.20.0
       - name: Cache node modules
         id: cache-npm
         uses: actions/cache@v6.1.0
@@ -49,7 +49,7 @@ jobs:
       contents: read
       pull-requests: write
       id-token: write
-    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@v1.2.7
+    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@v1.2.9
     with:
       gcp_project_id: ent-shamash-dev
       environment: dev
@@ -62,7 +62,7 @@ jobs:
       contents: read
       pull-requests: write
       id-token: write
-    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@v1.2.7
+    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@v1.2.9
     with:
       gcp_project_id: ent-shamash-tst
       environment: tst
@@ -75,7 +75,7 @@ jobs:
       contents: read
       pull-requests: write
       id-token: write
-    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@v1.2.7
+    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@v1.2.9
     with:
       gcp_project_id: ent-shamash-prd
       environment: prd
