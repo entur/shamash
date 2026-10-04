@@ -15,7 +15,7 @@
     "@turf/bbox": "7.3.5",
     "@turf/helpers": "7.3.5",
     "@turf/line-to-polygon": "7.3.5",
-    "dotenv": "16.4.7",
+    "dotenv": "18.0.5",
     "graphiql": "5.2.4",
     "graphql": "17.0.1",
     "graphql-ws": "5.16.2",
