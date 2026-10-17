@@ -5,10 +5,10 @@ jobs:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.0
-      - uses: actions/setup-node@v7.0.0
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
         with:
-          node-version: 24.18.0
+          node-version: 24.21.0
       - name: Cache node modules
         id: cache-npm
         uses: actions/cache@v6.1.0
@@ -31,7 +31,7 @@ jobs:
           REACT_APP_ENTUR_CLIENT_NAME: entur-shamash2023
           PUBLIC_URL: ''
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: build
           path: |
@@ -44,7 +44,7 @@ jobs:
       contents: read
       pull-requests: write
       id-token: write
-    uses: entur/gha-firebase/.github/workflows/firebase-hosting-preview.yml@v1.2.7
+    uses: entur/gha-firebase/.github/workflows/firebase-hosting-preview.yml@v1.2.10
     with:
       gcp_project_id: ent-shamash-dev
       environment: dev
