@@ -35,6 +35,13 @@
       "url": "https://api.dev.entur.io/realtime/invalid-et/graphql",
       "queries": "estimated-timetables",
       "defaultQuery": "estimated-vehicle-journey"
+    },
+    {
+      "id": "transit-data",
+      "name": "transit-data (beta)",
+      "url": "https://api.dev.entur.io/transit-data/v1beta/graphql",
+      "queries": "transit-data",
+      "defaultQuery": "lines"
     }
   ]
 }
