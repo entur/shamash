@@ -72,7 +72,8 @@ export const App: React.FC<AppProps> = ({
 
   const serviceName = findServiceName(pathname, BASE_PATH);
 
-  const explorer = useMemo(() => explorerPlugin(), []);
+  // Stable array: GraphiQL resets the visible plugin whenever `plugins` changes identity
+  const plugins = useMemo(() => [explorerPlugin()], []);
   const graphiqlStorage = useMemo(() => createInMemoryStorage(), []);
   const [queryInitialized, setQueryInitialized] = useState(false);
 
@@ -403,7 +404,7 @@ export const App: React.FC<AppProps> = ({
           <GraphiQL
             fetcher={customFetcher}
             schema={schema}
-            plugins={[explorer]}
+            plugins={plugins}
             storage={graphiqlStorage}
             forcedTheme={currentTheme === 'dark' ? 'dark' : 'light'}
             initialQuery={query}
