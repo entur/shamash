@@ -7,8 +7,12 @@ export function toISOStringWithTimezone(date) {
   const seconds = `${date.getSeconds()}`.padStart(2, '0');
   const ms = `${date.getMilliseconds()}`.padStart(3, '0');
 
-  const offsetHours = `${date.getTimezoneOffset() / -60}`.padStart(2, '0');
-  const timezonePostfix = offsetHours === 0 ? 'Z' : `+${offsetHours}:00`;
+  const offset = -date.getTimezoneOffset();
+  const sign = offset < 0 ? '-' : '+';
+  const offsetHours = `${Math.floor(Math.abs(offset) / 60)}`.padStart(2, '0');
+  const offsetMinutes = `${Math.abs(offset) % 60}`.padStart(2, '0');
+  const timezonePostfix =
+    offset === 0 ? 'Z' : `${sign}${offsetHours}:${offsetMinutes}`;
 
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${ms}${timezonePostfix}`;
 }

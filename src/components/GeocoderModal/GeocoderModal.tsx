@@ -62,7 +62,7 @@ function GeocoderModal({ onDismiss }) {
   const handleRowClick = (newClip, event) => {
     const { clientX, clientY } = event;
     navigator.permissions
-      .query({ name: 'clipboard-write' as 'clipboard-write' })
+      .query({ name: 'clipboard-write' as PermissionName })
       .then((result) => {
         if (result.state === 'granted' || result.state === 'prompt') {
           navigator.clipboard.writeText(newClip).then(
