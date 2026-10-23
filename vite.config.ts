@@ -115,6 +115,12 @@ export default defineConfig(({ mode }) => {
         'react-map-gl/maplibre',
         'buffer',
         'process',
+        // CJS deps of the monaco-graphql worker, which the dep scanner can't
+        // see; without these the worker fails to load in dev
+        'nullthrows',
+        'picomatch-browser',
+        'prettier/standalone',
+        'prettier/parser-graphql',
       ],
     },
   };
