@@ -16,18 +16,18 @@
 
 ## File Structure
 
-| File | Responsibility | Action |
-|---|---|---|
-| `package.json` | dependency versions | Modify |
-| `src/index.tsx` | app entry; Monaco worker setup | Modify |
-| `src/utils/inMemoryStorage.ts` | non-persistent Storage so URL wins over saved tab state | Create |
-| `src/components/App/CustomDropdown.tsx` (+ `.module.css`) | menu replacement for removed `GraphiQL.Menu` | Create (port from #269) |
-| `src/components/App/MapPortal.tsx` (+ `.module.css`) | map overlay container | Create (port + adapt from #269) |
-| `src/components/App/AppToolbar.tsx` (+ `.module.css`) | Entur header bar (logo + dropdowns + buttons) | Create |
-| `src/components/App/App.tsx` | main component; GraphiQL 5 wiring + URL state | Modify (rewrite render + remove imperative API) |
-| `src/components/App/App.test.tsx` | unit tests incl. deep-link wiring | Modify |
-| `src/components/App/DarkmodeExplorerColors.ts` | old explorer dark colors | Delete |
-| `src/components/App/custom.css`, `src/darktheme.css` | reconcile to v5/Monaco | Modify |
+| File                                                      | Responsibility                                          | Action                                          |
+| --------------------------------------------------------- | ------------------------------------------------------- | ----------------------------------------------- |
+| `package.json`                                            | dependency versions                                     | Modify                                          |
+| `src/index.tsx`                                           | app entry; Monaco worker setup                          | Modify                                          |
+| `src/utils/inMemoryStorage.ts`                            | non-persistent Storage so URL wins over saved tab state | Create                                          |
+| `src/components/App/CustomDropdown.tsx` (+ `.module.css`) | menu replacement for removed `GraphiQL.Menu`            | Create (port from #269)                         |
+| `src/components/App/MapPortal.tsx` (+ `.module.css`)      | map overlay container                                   | Create (port + adapt from #269)                 |
+| `src/components/App/AppToolbar.tsx` (+ `.module.css`)     | Entur header bar (logo + dropdowns + buttons)           | Create                                          |
+| `src/components/App/App.tsx`                              | main component; GraphiQL 5 wiring + URL state           | Modify (rewrite render + remove imperative API) |
+| `src/components/App/App.test.tsx`                         | unit tests incl. deep-link wiring                       | Modify                                          |
+| `src/components/App/DarkmodeExplorerColors.ts`            | old explorer dark colors                                | Delete                                          |
+| `src/components/App/custom.css`, `src/darktheme.css`      | reconcile to v5/Monaco                                  | Modify                                          |
 
 **Removed dependencies/imports:** `graphiql-explorer`, `import GraphiQL from 'graphiql'` (default), `graphiql/graphiql.css`, `DarkmodeExplorerColors`, the `.execute-button` SVG `useEffect`, and the imperative `graphiql.current.*` handlers.
 
@@ -36,6 +36,7 @@
 ## Task 1: Port `CustomDropdown` (standalone, keeps app green)
 
 **Files:**
+
 - Create: `src/components/App/CustomDropdown.tsx`
 - Create: `src/components/App/CustomDropdown.module.css`
 - Test: `src/components/App/CustomDropdown.test.tsx`
@@ -179,6 +180,7 @@ git commit -m "feat(app): add CustomDropdown (replaces removed GraphiQL.Menu)"
 ## Task 2: Port + adapt `MapPortal` (React-19-safe, app-owned target)
 
 **Files:**
+
 - Create: `src/components/App/MapPortal.tsx`
 - Create: `src/components/App/MapPortal.module.css`
 - Test: `src/components/App/MapPortal.test.tsx`
@@ -286,6 +288,7 @@ git commit -m "feat(app): add MapPortal overlay (React 19 createPortal, app-owne
 GraphiQL persists tab/query state in `localStorage`; `initialQuery` only applies when no persisted state exists. To guarantee a URL deep-link always wins (spec hard requirement), give GraphiQL an in-memory `Storage` so it never persists query/tab state across reloads. The URL is the app's persistence layer.
 
 **Files:**
+
 - Create: `src/utils/inMemoryStorage.ts`
 - Test: `src/utils/inMemoryStorage.test.ts`
 
@@ -366,6 +369,7 @@ git commit -m "feat(app): add in-memory storage so URL deep-links win over saved
 This task changes deps and entry wiring. The app will **not** compile until Task 6 finishes the `App.tsx` rewrite — that is expected; this task and Tasks 5–6 form one logical unit and are committed in sequence.
 
 **Files:**
+
 - Modify: `package.json`
 - Modify: `src/index.tsx`
 
@@ -418,6 +422,7 @@ git commit -m "build: bump to graphiql 5 + react 19, drop graphiql-explorer, add
 Encapsulates all Entur-specific controls so `App.tsx` stays focused. Uses `CustomDropdown` for menus and plain buttons for toggles.
 
 **Files:**
+
 - Create: `src/components/App/AppToolbar.tsx`
 - Create: `src/components/App/AppToolbar.module.css`
 - Test: `src/components/App/AppToolbar.test.tsx`
@@ -606,6 +611,7 @@ git commit -m "feat(app): add Entur AppToolbar (service/env/examples/theme/map/g
 Replace the GraphiQL 1.x integration with v5. Keep all non-GraphiQL logic (config, routing/`ConnectedApp`, example loading, subscription detection, fetcher). Remove the imperative `graphiql.current.*` handlers, the compound `GraphiQL.*` toolbar, `graphiql-explorer`, `DarkmodeExplorerColors`, and the `.execute-button` SVG effect.
 
 **Files:**
+
 - Modify: `src/components/App/App.tsx`
 - Delete: `src/components/App/DarkmodeExplorerColors.ts`
 
@@ -662,12 +668,13 @@ import {
 After the existing `const serviceName = ...` line, add:
 
 ```tsx
-  const explorer = useMemo(() => explorerPlugin(), []);
-  const graphiqlStorage = useMemo(() => createInMemoryStorage(), []);
-  const [queryInitialized, setQueryInitialized] = useState(false);
+const explorer = useMemo(() => explorerPlugin(), []);
+const graphiqlStorage = useMemo(() => createInMemoryStorage(), []);
+const [queryInitialized, setQueryInitialized] = useState(false);
 ```
 
 Delete these now-unused pieces:
+
 - `let graphiql = useRef<any>(null);`
 - `handleClickPrettifyButton`, `handleClickMinifyButton`, `handleHistoryButton`, `toggleExplorer`, `showExplorer`/`setShowExplorer`, `renderExamplesMenu`.
 - the `print` / `stripIgnoredCharacters` imports (already removed in Step 1) and the `.execute-button` SVG `useEffect` (the whole `useEffect` that queries `.graphiql-container .execute-button`).
@@ -678,89 +685,88 @@ In the `setInitialQuery` effect, set `setQueryInitialized(true)` immediately bef
 - [ ] **Step 3: Replace the `return (...)` render block** (everything from `return (` after the `if (currentService == null)` guard)
 
 ```tsx
-  const exampleKeys = Object.keys(exampleQueries || {});
+const exampleKeys = Object.keys(exampleQueries || {});
 
-  if (currentService == null) {
-    return <NotFound />;
-  }
+if (currentService == null) {
+  return <NotFound />;
+}
 
-  return (
-    <div className="App">
-      <AppToolbar
-        logoSrc={currentTheme === 'dark' ? whiteLogo : normalLogo}
-        services={services}
-        currentServiceId={currentService.id}
-        onServiceChange={handleServiceChange}
-        onEnvironmentChange={handleEnvironmentChange}
-        exampleKeys={exampleKeys}
-        onExampleSelect={handleExampleSelect}
-        onToggleMap={toggleMap}
-        onSearchForId={searchForId}
-        currentTheme={currentTheme}
-        onThemeChange={handleThemeChange}
-      />
-      <div className="graphiql-wrapper">
-        {queryInitialized ? (
-          <GraphiQL
-            fetcher={customFetcher}
-            schema={schema}
-            plugins={[explorer]}
-            storage={graphiqlStorage}
-            forcedTheme={currentTheme === 'dark' ? 'dark' : 'light'}
-            initialQuery={query}
-            initialVariables={variables}
-            operationName={operationName}
-            onEditQuery={(value) => editParameter('query', value)}
-            onEditVariables={(value) => editParameter('variables', value)}
-            onEditOperationName={(value) =>
-              editParameter('operationName', value)
-            }
-          >
-            <GraphiQL.Logo>
-              <img
-                alt="logo"
-                src={currentTheme === 'dark' ? whiteLogo : normalLogo}
-                className="logo"
-              />
-            </GraphiQL.Logo>
-            <GraphiQL.Footer>
-              <div className="label">
-                {currentService.name}:{' '}
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={currentService.url}
-                >
-                  {currentService.url}
-                </a>
-              </div>
-            </GraphiQL.Footer>
-          </GraphiQL>
-        ) : (
-          <div className="graphiql-loading">Loading…</div>
-        )}
-        <div id="map-portal-root" />
-      </div>
-      {showGeocoderModal ? (
-        <Suspense fallback={<div>Loading...</div>}>
-          <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
-        </Suspense>
-      ) : null}
-      <MapPortal show={showMap} onClose={() => setShowMap(false)}>
-        {response ? (
-          <MapView response={response} />
-        ) : (
-          <p>
-            No map data available. Run a query that returns geographic data to
-            see the map.
-          </p>
-        )}
-      </MapPortal>
+return (
+  <div className="App">
+    <AppToolbar
+      logoSrc={currentTheme === 'dark' ? whiteLogo : normalLogo}
+      services={services}
+      currentServiceId={currentService.id}
+      onServiceChange={handleServiceChange}
+      onEnvironmentChange={handleEnvironmentChange}
+      exampleKeys={exampleKeys}
+      onExampleSelect={handleExampleSelect}
+      onToggleMap={toggleMap}
+      onSearchForId={searchForId}
+      currentTheme={currentTheme}
+      onThemeChange={handleThemeChange}
+    />
+    <div className="graphiql-wrapper">
+      {queryInitialized ? (
+        <GraphiQL
+          fetcher={customFetcher}
+          schema={schema}
+          plugins={[explorer]}
+          storage={graphiqlStorage}
+          forcedTheme={currentTheme === 'dark' ? 'dark' : 'light'}
+          initialQuery={query}
+          initialVariables={variables}
+          operationName={operationName}
+          onEditQuery={(value) => editParameter('query', value)}
+          onEditVariables={(value) => editParameter('variables', value)}
+          onEditOperationName={(value) => editParameter('operationName', value)}
+        >
+          <GraphiQL.Logo>
+            <img
+              alt="logo"
+              src={currentTheme === 'dark' ? whiteLogo : normalLogo}
+              className="logo"
+            />
+          </GraphiQL.Logo>
+          <GraphiQL.Footer>
+            <div className="label">
+              {currentService.name}:{' '}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={currentService.url}
+              >
+                {currentService.url}
+              </a>
+            </div>
+          </GraphiQL.Footer>
+        </GraphiQL>
+      ) : (
+        <div className="graphiql-loading">Loading…</div>
+      )}
+      <div id="map-portal-root" />
     </div>
-  );
+    {showGeocoderModal ? (
+      <Suspense fallback={<div>Loading...</div>}>
+        <GeocoderModal onDismiss={() => setShowGeocoderModal(false)} />
+      </Suspense>
+    ) : null}
+    <MapPortal show={showMap} onClose={() => setShowMap(false)}>
+      {response ? (
+        <MapView response={response} />
+      ) : (
+        <p>
+          No map data available. Run a query that returns geographic data to see
+          the map.
+        </p>
+      )}
+    </MapPortal>
+  </div>
+);
 ```
 
 Notes:
+
 - `variables` and `operationName` already come from `const { variables, operationName } = parameters;` — keep that line.
 - `customFetcher`, `fetcher`, `schema`, the `setInitialQuery` effect, `editParameter`, `handleServiceChange`, `handleEnvironmentChange`, `handleThemeChange`, `handleExampleSelect`, `toggleMap`, `searchForId`, `exampleQueries` loading, and `isSubscriptionQuery` are all unchanged.
 - The `currentTheme` `useEffect` that toggled `body.dark-theme` can stay (harmless) or be removed; prefer removing the `body.dark-theme` toggle since GraphiQL now owns theming via `forcedTheme`. Keep the `import('../../darktheme.css')` line only if `darktheme.css` still styles app chrome (see Task 8).
@@ -794,6 +800,7 @@ git commit -m "feat(app): migrate App to GraphiQL 5 (Monaco, plugins, URL-seeded
 ## Task 7: Update tests (incl. deep-link wiring) and make green
 
 **Files:**
+
 - Modify: `src/components/App/App.test.tsx`
 
 The current test mocks `graphiql` (default export) and `graphiql-explorer`. Update mocks to the v5 named export and the explorer plugin, and add a deep-link assertion that the URL `query` reaches GraphiQL's `initialQuery` and edits call `setParameters`/URL sync.
@@ -876,6 +883,7 @@ git commit -m "test(app): update App tests for GraphiQL 5 + deep-link wiring"
 ## Task 8: Reconcile CSS (Monaco / theme) and remove dead styles
 
 **Files:**
+
 - Modify: `src/components/App/custom.css`
 - Modify: `src/darktheme.css`
 
@@ -937,6 +945,7 @@ Run: `npm run dev` (port 3000).
 - [ ] **Step 3: Entur controls** — Service switch, Environment switch (non-localhost behavior is a no-op locally — expected), Examples selection (URL becomes `?example=…`), **Map** overlay opens and renders for a geo query, **Search for ID** opens the geocoder, **Theme** Light/Dark swaps GraphiQL theme and the logo.
 
 - [ ] **Step 4: Deep-link acceptance (HARD requirement)** —
+
   1. Build a URL with explicit `query` and `variables`, open it in a **fresh** browser profile (clean storage) → editors show exactly those contents.
   2. Edit the query → URL updates; copy the URL, open in a **returning** browser (populated storage) → still shows the URL's contents, not the previous session's. (This is what `createInMemoryStorage` guarantees.)
 

@@ -117,20 +117,20 @@ A single `<GraphiQL>` in `App.tsx`:
 
 ## Feature mapping
 
-| Today (graphiql 1.x) | GraphiQL 5 plan |
-|---|---|
-| `import GraphiQL from 'graphiql'` | `import { GraphiQL } from 'graphiql'` |
-| `ref` imperative API (`getQueryEditor`, `getVariableEditor`, `handleRunQuery`, `setState({historyPaneOpen})`) | removed; built-ins + `@graphiql/react` hooks |
-| Custom Prettify button | built-in `prettify` from `GraphiQL.Toolbar` render-prop |
-| Custom Minify button | **dropped** (no built-in) |
-| Custom History button | built-in History plugin |
-| `graphiql-explorer` sidebar + `DarkmodeExplorerColors` | `explorerPlugin()` via `plugins` |
-| Custom dark CSS + `body.dark-theme` + Theme menu | built-in theming (`defaultTheme` / `useTheme`) |
-| Service / Environment / Examples menus (`GraphiQL.Menu`) | `CustomDropdown` in `GraphiQL.Toolbar` |
-| Map button + `MapView` | Map toolbar button + `MapPortal` overlay |
-| Geocoder "Search for ID" | toolbar button → existing `GeocoderModal` (unchanged) |
-| Logo / Footer | `GraphiQL.Logo` / `GraphiQL.Footer` (kept) |
-| Subscription run/stop SVG DOM hack | dropped (native stop button) |
+| Today (graphiql 1.x)                                                                                          | GraphiQL 5 plan                                         |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| `import GraphiQL from 'graphiql'`                                                                             | `import { GraphiQL } from 'graphiql'`                   |
+| `ref` imperative API (`getQueryEditor`, `getVariableEditor`, `handleRunQuery`, `setState({historyPaneOpen})`) | removed; built-ins + `@graphiql/react` hooks            |
+| Custom Prettify button                                                                                        | built-in `prettify` from `GraphiQL.Toolbar` render-prop |
+| Custom Minify button                                                                                          | **dropped** (no built-in)                               |
+| Custom History button                                                                                         | built-in History plugin                                 |
+| `graphiql-explorer` sidebar + `DarkmodeExplorerColors`                                                        | `explorerPlugin()` via `plugins`                        |
+| Custom dark CSS + `body.dark-theme` + Theme menu                                                              | built-in theming (`defaultTheme` / `useTheme`)          |
+| Service / Environment / Examples menus (`GraphiQL.Menu`)                                                      | `CustomDropdown` in `GraphiQL.Toolbar`                  |
+| Map button + `MapView`                                                                                        | Map toolbar button + `MapPortal` overlay                |
+| Geocoder "Search for ID"                                                                                      | toolbar button → existing `GeocoderModal` (unchanged)   |
+| Logo / Footer                                                                                                 | `GraphiQL.Logo` / `GraphiQL.Footer` (kept)              |
+| Subscription run/stop SVG DOM hack                                                                            | dropped (native stop button)                            |
 
 ## URL deep-linking (HARD REQUIREMENT)
 
@@ -140,6 +140,7 @@ the URL query string, so a shared/bookmarked URL reproduces the exact editor
 state. The URL is the **source of truth**.
 
 Current mechanism (must be kept working):
+
 - `ConnectedApp` parses `window.location.search` into `parameters` and re-parses
   on `popstate` and on a 500 ms path/search poll.
 - `editParameter(key, value)` writes back via
@@ -148,6 +149,7 @@ Current mechanism (must be kept working):
   (tracked by `loadedExampleQuery`/`loadedExampleVariables` refs).
 
 v5 wiring for deep-linking (verified against `@graphiql/react@0.37.3`):
+
 - **Inbound:** seed `initialQuery` / `initialVariables` (and `operationName`) from
   the parsed URL params on mount.
 - **Outbound:** v5 exposes `onEditQuery`, `onEditVariables`, **and
@@ -160,6 +162,7 @@ variables, headers) in `localStorage`, and `initialQuery`/`initialVariables` app
 therefore restore the last session's editor contents and **silently override a URL
 deep-link**. This must not happen. Mitigations to evaluate during implementation
 (pick the simplest that passes a deep-link test):
+
 1. `disableTabs` (as WIP #269 did) to avoid multi-tab persisted state, and/or
 2. force the URL to win by remounting GraphiQL with a `key` derived from the
    deep-link payload (service + query/variables/example), and/or
