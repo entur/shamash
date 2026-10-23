@@ -12,7 +12,12 @@ import { lineString, featureCollection, point } from '@turf/helpers';
 import lineToPolygon from '@turf/line-to-polygon';
 import { toGeoJSON } from '@mapbox/polyline';
 import { colors } from '@entur/tokens';
-import type { LngLatBoundsLike } from 'maplibre-gl';
+import { setWorkerUrl, type LngLatBoundsLike } from 'maplibre-gl';
+import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
+
+// maplibre builds its worker URL at runtime, which Vite can't see, so the
+// worker is missing from both the dev server and the build
+setWorkerUrl(maplibreWorkerUrl);
 
 const DEFAULT_CENTER: [number, number] = [10, 60]; // [lng, lat]
 
