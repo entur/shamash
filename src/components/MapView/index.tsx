@@ -1,5 +1,11 @@
-import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
-import MapGL, { Source, Layer, Marker, NavigationControl, useMap } from 'react-map-gl/maplibre';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import MapGL, {
+  Source,
+  Layer,
+  Marker,
+  NavigationControl,
+  useMap,
+} from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import bbox from '@turf/bbox';
 import { lineString, featureCollection, point } from '@turf/helpers';
@@ -29,7 +35,7 @@ function getLegLines(responseData) {
     .map((leg) =>
       lineString(toGeoJSON(leg.pointsOnLink.points).coordinates, {
         color: getTransportColor(leg.mode),
-      }),
+      })
     );
 }
 
@@ -70,7 +76,7 @@ function getServiceJourneyLines(responseData) {
     toGeoJSON(serviceJourney.pointsOnLink.points).coordinates,
     {
       color: getTransportColor(serviceJourney.transportMode),
-    },
+    }
   );
 
   return [polyline];
@@ -159,18 +165,24 @@ function MapContent({ mapData }) {
     if (!cumulativeBoundsRef.current) {
       cumulativeBoundsRef.current = newBounds;
     } else {
-      const prev = cumulativeBoundsRef.current as [[number, number], [number, number]];
+      const prev = cumulativeBoundsRef.current as [
+        [number, number],
+        [number, number]
+      ];
       cumulativeBoundsRef.current = [
         [Math.min(prev[0][0], minX), Math.min(prev[0][1], minY)],
         [Math.max(prev[1][0], maxX), Math.max(prev[1][1], maxY)],
       ];
     }
 
-    mapRef.fitBounds(cumulativeBoundsRef.current as [[number, number], [number, number]], {
-      padding: 40,
-      animate: true,
-      duration: 2000,
-    });
+    mapRef.fitBounds(
+      cumulativeBoundsRef.current as [[number, number], [number, number]],
+      {
+        padding: 40,
+        animate: true,
+        duration: 2000,
+      }
+    );
   }, [mapRef, allFeatures]);
 
   return (
@@ -281,7 +293,7 @@ export default function MapView({ response }) {
           point(coords, {
             vehicleKey,
             age: ageIndex,
-          }),
+          })
         );
       });
     });
@@ -295,7 +307,9 @@ export default function MapView({ response }) {
   return (
     <MapGL
       onLoad={(e) => {
-        const el = e.target.getContainer().querySelector('.maplibregl-compact-show');
+        const el = e.target
+          .getContainer()
+          .querySelector('.maplibregl-compact-show');
         el?.classList.remove('maplibregl-compact-show');
       }}
       initialViewState={{
@@ -309,9 +323,14 @@ export default function MapView({ response }) {
         sources: {
           osm: {
             type: 'raster',
-            tiles: ['https://a.tile.osm.org/{z}/{x}/{y}.png', 'https://b.tile.osm.org/{z}/{x}/{y}.png', 'https://c.tile.osm.org/{z}/{x}/{y}.png'],
+            tiles: [
+              'https://a.tile.osm.org/{z}/{x}/{y}.png',
+              'https://b.tile.osm.org/{z}/{x}/{y}.png',
+              'https://c.tile.osm.org/{z}/{x}/{y}.png',
+            ],
             tileSize: 256,
-            attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
+            attribution:
+              '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
           },
         },
         layers: [{ id: 'osm', type: 'raster', source: 'osm' }],
