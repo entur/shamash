@@ -47,22 +47,17 @@
     "test:run": "vitest run",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" && npm run format:check",
     "format:check": "prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prepare": "husky"
   },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not op_mini all"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "prettier": {
