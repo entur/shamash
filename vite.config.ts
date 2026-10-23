@@ -61,16 +61,25 @@ export default defineConfig(({ mode }) => {
       rolldownOptions: {
         output: {
           manualChunks(id) {
-            if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) {
+            if (
+              id.includes('node_modules/react-dom') ||
+              id.includes('node_modules/react/')
+            ) {
               return 'vendor';
             }
             if (id.includes('node_modules/@apollo/client')) {
               return 'apollo';
             }
-            if (id.includes('node_modules/maplibre-gl/') || id.includes('node_modules/react-map-gl/')) {
+            if (
+              id.includes('node_modules/maplibre-gl/') ||
+              id.includes('node_modules/react-map-gl/')
+            ) {
               return 'maplibre';
             }
-            if (id.includes('node_modules/graphql/') || id.includes('node_modules/graphql-ws/')) {
+            if (
+              id.includes('node_modules/graphql/') ||
+              id.includes('node_modules/graphql-ws/')
+            ) {
               return 'graphql';
             }
           },
