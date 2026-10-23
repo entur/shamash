@@ -11,32 +11,20 @@ concurrency:
 jobs:
   build:
     steps:
-      - uses: actions/checkout@v7.0.0
-      - uses: actions/setup-node@v7.0.0
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 24.18.0
-      - name: Cache node modules
-        id: cache-npm
-        uses: actions/cache@v6.1.0
-        env:
-          cache-name: cache-node-modules
-        with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+          cache: npm
       - name: Install dependencies
-        run: yarn --immutable
-      - run: yarn test
-      - run: yarn build --base /graphql-explorer/ --outDir build/graphql-explorer
+        run: npm ci
+      - run: npm test
+      - run: npm run build -- --base /graphql-explorer/ --outDir build/graphql-explorer
         env:
           REACT_APP_VERSION: ${{ github.sha }}
           REACT_APP_ENTUR_CLIENT_NAME: entur-shamash2023
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: build
           path: |
@@ -49,7 +37,7 @@ jobs:
       contents: read
       pull-requests: write
       id-token: write
-    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@v1.2.7
+    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@92840f7854647f3bb6922d0a1cec093c901bd98f # v1.2.7
     with:
       gcp_project_id: ent-shamash-dev
       environment: dev
@@ -62,7 +50,7 @@ jobs:
       contents: read
       pull-requests: write
       id-token: write
-    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@v1.2.7
+    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@92840f7854647f3bb6922d0a1cec093c901bd98f # v1.2.7
     with:
       gcp_project_id: ent-shamash-tst
       environment: tst
@@ -75,7 +63,7 @@ jobs:
       contents: read
       pull-requests: write
       id-token: write
-    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@v1.2.7
+    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@92840f7854647f3bb6922d0a1cec093c901bd98f # v1.2.7
     with:
       gcp_project_id: ent-shamash-prd
       environment: prd
