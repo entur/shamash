@@ -49,8 +49,7 @@ interface AppProps {
   parameters: Record<string, any>;
   setParameters: (
     params:
-      | Record<string, any>
-      | ((prev: Record<string, any>) => Record<string, any>)
+      Record<string, any> | ((prev: Record<string, any>) => Record<string, any>)
   ) => void;
 }
 
