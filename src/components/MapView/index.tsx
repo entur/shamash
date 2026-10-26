@@ -172,7 +172,7 @@ function MapContent({ mapData }) {
     } else {
       const prev = cumulativeBoundsRef.current as [
         [number, number],
-        [number, number]
+        [number, number],
       ];
       cumulativeBoundsRef.current = [
         [Math.min(prev[0][0], minX), Math.min(prev[0][1], minY)],
