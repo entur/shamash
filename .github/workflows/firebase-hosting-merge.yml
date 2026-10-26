@@ -17,7 +17,7 @@ jobs:
           node-version: 24.18.0
           cache: npm
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - run: npm test
       - run: npm run build -- --base /graphql-explorer/ --outDir build/graphql-explorer
         env:
