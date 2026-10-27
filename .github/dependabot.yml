@@ -3,120 +3,120 @@
 # Same file in every repo: comment out the ecosystems the repo does not use.
 version: 2
 updates:
-  - package-ecosystem: "github-actions"
-    directories: ["/", "/.github/actions/*"]
+  - package-ecosystem: 'github-actions'
+    directories: ['/', '/.github/actions/*']
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "06:00"
-      timezone: "Europe/Oslo"
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
+      timezone: 'Europe/Oslo'
     open-pull-requests-limit: 100
     cooldown:
       default-days: 4
-      exclude: ["entur/*"]
+      exclude: ['entur/*']
     commit-message:
-      prefix: "chore"
-      include: "scope"
+      prefix: 'chore'
+      include: 'scope'
 
-#   - package-ecosystem: "gradle"
-#     directories: ["/"]
-#     schedule:
-#       interval: "weekly"
-#       day: "monday"
-#       time: "06:00"
-#       timezone: "Europe/Oslo"
-#     open-pull-requests-limit: 100
-#     cooldown:
-#       default-days: 4
-#       exclude: ["org.entur*", "org.rutebanken*"]
-#     commit-message:
-#       prefix: "chore"
-#       include: "scope"
+  #   - package-ecosystem: "gradle"
+  #     directories: ["/"]
+  #     schedule:
+  #       interval: "weekly"
+  #       day: "monday"
+  #       time: "06:00"
+  #       timezone: "Europe/Oslo"
+  #     open-pull-requests-limit: 100
+  #     cooldown:
+  #       default-days: 4
+  #       exclude: ["org.entur*", "org.rutebanken*"]
+  #     commit-message:
+  #       prefix: "chore"
+  #       include: "scope"
 
-#   - package-ecosystem: "maven"
-#     directories: ["/"]
-#     schedule:
-#       interval: "weekly"
-#       day: "monday"
-#       time: "06:00"
-#       timezone: "Europe/Oslo"
-#     open-pull-requests-limit: 100
-#     cooldown:
-#       default-days: 4
-#       exclude: ["org.entur*", "org.rutebanken*"]
-#     commit-message:
-#       prefix: "chore"
-#       include: "scope"
+  #   - package-ecosystem: "maven"
+  #     directories: ["/"]
+  #     schedule:
+  #       interval: "weekly"
+  #       day: "monday"
+  #       time: "06:00"
+  #       timezone: "Europe/Oslo"
+  #     open-pull-requests-limit: 100
+  #     cooldown:
+  #       default-days: 4
+  #       exclude: ["org.entur*", "org.rutebanken*"]
+  #     commit-message:
+  #       prefix: "chore"
+  #       include: "scope"
 
-  - package-ecosystem: "npm"
-    directories: ["/"]
+  - package-ecosystem: 'npm'
+    directories: ['/']
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "06:00"
-      timezone: "Europe/Oslo"
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
+      timezone: 'Europe/Oslo'
     open-pull-requests-limit: 100
     cooldown:
       default-days: 4
-      exclude: ["@entur/*"]
+      exclude: ['@entur/*']
     commit-message:
-      prefix: "chore"
-      include: "scope"
+      prefix: 'chore'
+      include: 'scope'
 
-#   - package-ecosystem: "bun"
-#     directories: ["/"]
-#     schedule:
-#       interval: "weekly"
-#       day: "monday"
-#       time: "06:00"
-#       timezone: "Europe/Oslo"
-#     open-pull-requests-limit: 100
-#     cooldown:
-#       default-days: 4
-#       exclude: ["@entur/*"]
-#     commit-message:
-#       prefix: "chore"
-#       include: "scope"
+  #   - package-ecosystem: "bun"
+  #     directories: ["/"]
+  #     schedule:
+  #       interval: "weekly"
+  #       day: "monday"
+  #       time: "06:00"
+  #       timezone: "Europe/Oslo"
+  #     open-pull-requests-limit: 100
+  #     cooldown:
+  #       default-days: 4
+  #       exclude: ["@entur/*"]
+  #     commit-message:
+  #       prefix: "chore"
+  #       include: "scope"
 
-#   - package-ecosystem: "docker"
-#     directories: ["/", "/[!.]*"]
-#     schedule:
-#       interval: "weekly"
-#       day: "monday"
-#       time: "06:00"
-#       timezone: "Europe/Oslo"
-#     open-pull-requests-limit: 100
-#     cooldown:
-#       default-days: 4
-#     commit-message:
-#       prefix: "chore"
-#       include: "scope"
+  #   - package-ecosystem: "docker"
+  #     directories: ["/", "/[!.]*"]
+  #     schedule:
+  #       interval: "weekly"
+  #       day: "monday"
+  #       time: "06:00"
+  #       timezone: "Europe/Oslo"
+  #     open-pull-requests-limit: 100
+  #     cooldown:
+  #       default-days: 4
+  #     commit-message:
+  #       prefix: "chore"
+  #       include: "scope"
 
-#   - package-ecosystem: "helm"
-#     directories: ["/helm/*"]
-#     schedule:
-#       interval: "weekly"
-#       day: "monday"
-#       time: "06:00"
-#       timezone: "Europe/Oslo"
-#     open-pull-requests-limit: 100
-#     cooldown:
-#       default-days: 4
-#       exclude: ["common"]
-#     commit-message:
-#       prefix: "chore"
-#       include: "scope"
+  #   - package-ecosystem: "helm"
+  #     directories: ["/helm/*"]
+  #     schedule:
+  #       interval: "weekly"
+  #       day: "monday"
+  #       time: "06:00"
+  #       timezone: "Europe/Oslo"
+  #     open-pull-requests-limit: 100
+  #     cooldown:
+  #       default-days: 4
+  #       exclude: ["common"]
+  #     commit-message:
+  #       prefix: "chore"
+  #       include: "scope"
 
-#   - package-ecosystem: "terraform"
-#     directories: ["/terraform"]
-#     schedule:
-#       interval: "weekly"
-#       day: "monday"
-#       time: "06:00"
-#       timezone: "Europe/Oslo"
-#     open-pull-requests-limit: 100
-#     cooldown:
-#       default-days: 4
-#     commit-message:
-#       prefix: "chore"
-#       include: "scope"
+  #   - package-ecosystem: "terraform"
+  #     directories: ["/terraform"]
+  #     schedule:
+  #       interval: "weekly"
+  #       day: "monday"
+  #       time: "06:00"
+  #       timezone: "Europe/Oslo"
+  #     open-pull-requests-limit: 100
+  #     cooldown:
+  #       default-days: 4
+  #     commit-message:
+  #       prefix: "chore"
+  #       include: "scope"
