@@ -7,7 +7,7 @@
     "@apollo/client": "4.3.5",
     "@entur/form": "10.2.1",
     "@entur/icons": "10.0.6",
-    "@entur/table": "5.1.1",
+    "@entur/table": "5.2.0",
     "@graphiql/plugin-explorer": "5.1.5",
     "@graphiql/react": "0.39.1",
     "@graphiql/toolkit": "0.12.1",
