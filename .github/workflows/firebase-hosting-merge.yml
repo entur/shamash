@@ -37,7 +37,7 @@ jobs:
       contents: read
       pull-requests: write
       id-token: write
-    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@0e0a7ed58ab5d51d1d88138cbdddb58158eaba9c # v1.2.10
+    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@c18ca6427014d73b54daf1afe77d18908e01da3b # v1.3.0
     with:
       gcp_project_id: ent-shamash-dev
       environment: dev
@@ -50,7 +50,7 @@ jobs:
       contents: read
       pull-requests: write
       id-token: write
-    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@0e0a7ed58ab5d51d1d88138cbdddb58158eaba9c # v1.2.10
+    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@c18ca6427014d73b54daf1afe77d18908e01da3b # v1.3.0
     with:
       gcp_project_id: ent-shamash-tst
       environment: tst
@@ -63,7 +63,7 @@ jobs:
       contents: read
       pull-requests: write
       id-token: write
-    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@0e0a7ed58ab5d51d1d88138cbdddb58158eaba9c # v1.2.10
+    uses: entur/gha-firebase/.github/workflows/firebase-hosting-deploy.yml@c18ca6427014d73b54daf1afe77d18908e01da3b # v1.3.0
     with:
       gcp_project_id: ent-shamash-prd
       environment: prd
