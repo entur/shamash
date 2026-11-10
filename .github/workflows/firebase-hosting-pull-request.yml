@@ -32,7 +32,7 @@ jobs:
       contents: read
       pull-requests: write
       id-token: write
-    uses: entur/gha-firebase/.github/workflows/firebase-hosting-preview.yml@c18ca6427014d73b54daf1afe77d18908e01da3b # v1.3.0
+    uses: entur/gha-firebase/.github/workflows/firebase-hosting-preview.yml@v1
     with:
       gcp_project_id: ent-shamash-dev
       environment: dev
