@@ -10,7 +10,7 @@
     "@entur/table": "5.2.1",
     "@graphiql/plugin-explorer": "5.1.5",
     "@graphiql/react": "0.39.1",
-    "@graphiql/toolkit": "0.12.1",
+    "@graphiql/toolkit": "1.0.0",
     "@mapbox/polyline": "1.2.1",
     "@turf/bbox": "7.4.0",
     "@turf/helpers": "7.4.0",
